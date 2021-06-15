@@ -3,6 +3,7 @@ package com.peakmain.analytics.plugin
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.Handle
+import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
@@ -12,13 +13,14 @@ class BuryPointVisitor extends ClassVisitor {
     private ClassVisitor classVisitor
     private String[] mInterfaces
     private HashMap<String, BuryPointMethodCell> mMethodCells = new HashMap<>()
+    private String peakmainHandlerName = "com/peakmain/asmactualcombat/PeakmainHandler"
+    private String handlerName = "android/os/Handler"
 
     BuryPointVisitor(ClassVisitor classVisitor) {
         super(Opcodes.ASM6, classVisitor)
         this.classVisitor = classVisitor
     }
     /**
-     * 扫描类的时候进入这里
      * @param version 类版本
      * @param access 修饰符
      * @param name 类名
@@ -28,6 +30,9 @@ class BuryPointVisitor extends ClassVisitor {
      */
     @Override
     void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+        if (superName == handlerName && name != peakmainHandlerName) {
+            superName = peakmainHandlerName
+        }
         super.visit(version, access, name, signature, superName, interfaces)
         this.mInterfaces = interfaces
     }
@@ -43,6 +48,7 @@ class BuryPointVisitor extends ClassVisitor {
     @Override
     MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions)
+
         String nameDesc = name + descriptor
         boolean isSensorsDataTrackViewOnClickAnnotation = false
         methodVisitor = new BuryPointDefalutMethodVisitor(methodVisitor, access, name, descriptor) {
@@ -66,9 +72,13 @@ class BuryPointVisitor extends ClassVisitor {
             }
 
             @Override
+            void visitCode() {
+                super.visitCode()
+            }
+
+            @Override
             protected void onMethodEnter() {
                 super.onMethodEnter()
-
                 /**
                  * 在 android.gradle 的 3.2.1 版本中，针对 view 的 setOnClickListener 方法 的 lambda 表达式做特殊处理。
                  */
@@ -87,7 +97,7 @@ class BuryPointVisitor extends ClassVisitor {
                             }
                         }
                     }
-                    boolean isStaticMethod = SensorsAnalyticsUtils.isStatic(access)
+                    boolean isStaticMethod = BuryPointUtils.isStatic(access)
                     if (!isStaticMethod) {
                         if (lambdaMethodCell.desc == '(Landroid/view/MenuItem;)Z') {
                             methodVisitor.visitVarInsn(ALOAD, 0)
@@ -170,11 +180,12 @@ class BuryPointVisitor extends ClassVisitor {
                 }
 
             }
+
             @Override
             AnnotationVisitor visitAnnotation(String s, boolean b) {
-                 if(s=="Lcom/peakmain/sdk/SensorsDataTrackViewOnClick"){
-                     isSensorsDataTrackViewOnClickAnnotation = true
-                 }
+                if (s == "Lcom/peakmain/sdk/SensorsDataTrackViewOnClick") {
+                    isSensorsDataTrackViewOnClickAnnotation = true
+                }
                 return super.visitAnnotation(s, b)
             }
         }
