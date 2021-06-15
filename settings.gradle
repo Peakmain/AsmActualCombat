@@ -1,0 +1,4 @@
+include ':sdk'
+include ':plugin'
+include ':app'
+rootProject.name = "AsmActualCombat"
