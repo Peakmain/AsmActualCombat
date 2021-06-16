@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.peakmain.sdk.utils.LogMessageTime
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,13 +19,6 @@ class MainActivity : AppCompatActivity() {
         }
         val handler = PeakmainHandler(Looper.getMainLooper())
 
-        handler.post {
-            Log.e("MainActivity", "开始了")
-            try {
-                Thread.sleep(1000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-        }
+        handler.Test()
     }
 }

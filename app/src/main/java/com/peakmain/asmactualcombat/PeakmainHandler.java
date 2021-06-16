@@ -7,6 +7,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.peakmain.sdk.utils.LogMessageTime;
+
 import org.json.JSONObject;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -60,5 +62,8 @@ public class PeakmainHandler extends Handler {
             }
         }
     }
-
+    @LogMessageTime
+    void Test(){
+        int a=100;
+    }
 }

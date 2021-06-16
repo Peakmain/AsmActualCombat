@@ -51,6 +51,7 @@ class BuryPointVisitor extends ClassVisitor {
 
         String nameDesc = name + descriptor
         boolean isSensorsDataTrackViewOnClickAnnotation = false
+        boolean isLogMessageTime = false
         methodVisitor = new BuryPointDefalutMethodVisitor(methodVisitor, access, name, descriptor) {
             @Override
             void visitEnd() {
@@ -74,7 +75,22 @@ class BuryPointVisitor extends ClassVisitor {
             @Override
             void visitCode() {
                 super.visitCode()
+                if(isLogMessageTime){
+                    getMessageStartCostTime(methodVisitor)
+                }
             }
+
+
+
+            @Override
+            protected void onMethodExit(int opcode) {
+                super.onMethodExit(opcode)
+                if(isLogMessageTime){
+                    getMessageEndCostTime(methodVisitor, name)
+                }
+            }
+
+
 
             @Override
             protected void onMethodEnter() {
@@ -183,8 +199,12 @@ class BuryPointVisitor extends ClassVisitor {
 
             @Override
             AnnotationVisitor visitAnnotation(String s, boolean b) {
-                if (s == "Lcom/peakmain/sdk/SensorsDataTrackViewOnClick") {
+                if (s == "Lcom/peakmain/sdk/SensorsDataTrackViewOnClick;") {
                     isSensorsDataTrackViewOnClickAnnotation = true
+                }
+                if(s=="Lcom/peakmain/sdk/utils/LogMessageTime;"){
+                    println("进来了")
+                    isLogMessageTime=true
                 }
                 return super.visitAnnotation(s, b)
             }
@@ -207,5 +227,32 @@ class BuryPointVisitor extends ClassVisitor {
         } else {
             return getVisitPosition(types, index - 1, isStaticMethod) + types[index - 1].getSize()
         }
+    }
+    private void getMessageStartCostTime(MethodVisitor methodVisitor) {
+        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+        methodVisitor.visitVarInsn(LSTORE, 1)
+        Label label1 = new Label()
+        methodVisitor.visitLabel(label1)
+    }
+    private void getMessageEndCostTime(MethodVisitor methodVisitor, String name) {
+        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+        methodVisitor.visitVarInsn(LLOAD, 1)
+        methodVisitor.visitInsn(LSUB)
+        methodVisitor.visitVarInsn(LSTORE, 2)
+        Label label2 = new Label();
+        methodVisitor.visitLabel(label2)
+        methodVisitor.visitLdcInsn("LogMessageCostTime")
+        methodVisitor.visitTypeInsn(NEW, "java/lang/StringBuilder");
+        methodVisitor.visitInsn(DUP);
+        methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false)
+        methodVisitor.visitLdcInsn(name + "消耗的时间:")
+        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+        methodVisitor.visitVarInsn(LLOAD, 2)
+        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
+        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false)
+        methodVisitor.visitMethodInsn(INVOKESTATIC, "android/util/Log", "e", "(Ljava/lang/String;Ljava/lang/String;)I", false)
+        methodVisitor.visitInsn(POP);
+        Label label3 = new Label()
+        methodVisitor.visitLabel(label3)
     }
 }
