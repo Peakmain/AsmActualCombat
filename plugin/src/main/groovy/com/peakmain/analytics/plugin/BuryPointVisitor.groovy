@@ -229,29 +229,29 @@ class BuryPointVisitor extends ClassVisitor {
         }
     }
     private void getMessageStartCostTime(MethodVisitor methodVisitor) {
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-        methodVisitor.visitVarInsn(LSTORE, 1)
+        methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+        methodVisitor.visitVarInsn(Opcodes.LSTORE, 1)
         Label label1 = new Label()
         methodVisitor.visitLabel(label1)
     }
     private void getMessageEndCostTime(MethodVisitor methodVisitor, String name) {
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-        methodVisitor.visitVarInsn(LLOAD, 1)
-        methodVisitor.visitInsn(LSUB)
-        methodVisitor.visitVarInsn(LSTORE, 2)
+        methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+        methodVisitor.visitVarInsn(Opcodes.LLOAD, 1)
+        methodVisitor.visitInsn(Opcodes.LSUB)
+        methodVisitor.visitVarInsn(Opcodes.LSTORE, 2)
         Label label2 = new Label();
         methodVisitor.visitLabel(label2)
         methodVisitor.visitLdcInsn("LogMessageCostTime")
-        methodVisitor.visitTypeInsn(NEW, "java/lang/StringBuilder");
-        methodVisitor.visitInsn(DUP);
-        methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false)
+        methodVisitor.visitTypeInsn(Opcodes.NEW, "java/lang/StringBuilder");
+        methodVisitor.visitInsn(Opcodes.DUP);
+        methodVisitor.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false)
         methodVisitor.visitLdcInsn(name + "消耗的时间:")
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-        methodVisitor.visitVarInsn(LLOAD, 2)
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false)
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "android/util/Log", "e", "(Ljava/lang/String;Ljava/lang/String;)I", false)
-        methodVisitor.visitInsn(POP);
+        methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+        methodVisitor.visitVarInsn(Opcodes.LLOAD, 2)
+        methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
+        methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false)
+        methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "android/util/Log", "e", "(Ljava/lang/String;Ljava/lang/String;)I", false)
+        methodVisitor.visitInsn(Opcodes.POP)
         Label label3 = new Label()
         methodVisitor.visitLabel(label3)
     }

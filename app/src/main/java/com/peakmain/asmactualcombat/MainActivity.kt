@@ -17,8 +17,15 @@ class MainActivity : AppCompatActivity() {
         tvName.setOnClickListener {
             Toast.makeText(this, "你好", Toast.LENGTH_SHORT).show()
         }
-        val handler = PeakmainHandler(Looper.getMainLooper())
+        val handler = Handler(Looper.getMainLooper())
 
-        handler.Test()
+        handler.post {
+            Log.e("MainActivity", "开始了")
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+        }
     }
 }
