@@ -392,7 +392,7 @@ public class SensorsDataAutoTrackHelper {
      * @param view View
      */
     @Keep
-    public static void trackViewOnClick(View view) {
+    public static boolean trackViewOnClick(View view) {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("$element_type", SensorsDataPrivate.getElementType(view));
@@ -405,8 +405,10 @@ public class SensorsDataAutoTrackHelper {
             }
 
             SensorsDataAPI.getInstance().track("$AppClick", jsonObject);
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 }

@@ -30,9 +30,6 @@ class BuryPointVisitor extends ClassVisitor {
      */
     @Override
     void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-        if (superName == handlerName && name != peakmainHandlerName) {
-            superName = peakmainHandlerName
-        }
         super.visit(version, access, name, signature, superName, interfaces)
         this.mInterfaces = interfaces
     }
@@ -132,7 +129,12 @@ class BuryPointVisitor extends ClassVisitor {
                 if ((mInterfaces != null && mInterfaces.length > 0)) {
                     if ((mInterfaces.contains('android/view/View$OnClickListener') && nameDesc == 'onClick(Landroid/view/View;)V')) {
                         methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/view/View;)V", false)
+                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/view/View;)Z", false)
+                        methodVisitor.visitVarInsn(ISTORE, 2)
+                        Label label1 = new Label()
+                        methodVisitor.visitLabel(label1)
+
+
                     } else if (mInterfaces.contains('android/content/DialogInterface$OnClickListener') && nameDesc == 'onClick(Landroid/content/DialogInterface;I)V') {
                         methodVisitor.visitVarInsn(ALOAD, 1)
                         methodVisitor.visitVarInsn(ILOAD, 2)
@@ -191,6 +193,7 @@ class BuryPointVisitor extends ClassVisitor {
         }
         return methodVisitor
     }
+
     /**
      * 获取方法参数下标为 index 的对应 ASM index
      * @param types 方法参数类型数组
