@@ -11,9 +11,8 @@ public class Test {
     private String userKey;
 
     public void test() {
-        boolean a = false;
+        boolean a = A();
         if (!a) {
-            return;
         }
 
     }

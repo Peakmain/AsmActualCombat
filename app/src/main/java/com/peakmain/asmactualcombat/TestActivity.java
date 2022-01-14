@@ -30,9 +30,4 @@ public class TestActivity extends AppCompatActivity {
         });
     }
 
-    @SensorsDataTrackViewOnClick
-    public void fun(View view) {
-
-    }
-
 }

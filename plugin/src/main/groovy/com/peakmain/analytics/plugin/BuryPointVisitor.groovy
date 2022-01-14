@@ -72,21 +72,19 @@ class BuryPointVisitor extends ClassVisitor {
             @Override
             void visitCode() {
                 super.visitCode()
-                if(isLogMessageTime){
+                if (isLogMessageTime) {
                     getMessageStartCostTime(methodVisitor)
                 }
             }
 
 
-
             @Override
             protected void onMethodExit(int opcode) {
                 super.onMethodExit(opcode)
-                if(isLogMessageTime){
+                if (isLogMessageTime) {
                     getMessageEndCostTime(methodVisitor, name)
                 }
             }
-
 
 
             @Override
@@ -149,8 +147,12 @@ class BuryPointVisitor extends ClassVisitor {
                         methodVisitor.visitVarInsn(ISTORE, 2)
                         Label label1 = new Label()
                         methodVisitor.visitLabel(label1)
-
-
+                        methodVisitor.visitVarInsn(ILOAD, 2)
+                        Label label2 = new Label()
+                        methodVisitor.visitJumpInsn(IFNE, label2)
+                        methodVisitor.visitInsn(RETURN)
+                        methodVisitor.visitLabel(label2)
+                        //methodVisitor.visitFrame(F_APPEND, 1, null, 0, null)
                     } else if (mInterfaces.contains('android/content/DialogInterface$OnClickListener') && nameDesc == 'onClick(Landroid/content/DialogInterface;I)V') {
                         methodVisitor.visitVarInsn(ALOAD, 1)
                         methodVisitor.visitVarInsn(ILOAD, 2)
@@ -204,9 +206,9 @@ class BuryPointVisitor extends ClassVisitor {
                 if (s == "Lcom/peakmain/sdk/SensorsDataTrackViewOnClick;") {
                     isSensorsDataTrackViewOnClickAnnotation = true
                 }
-                if(s=="Lcom/peakmain/sdk/utils/LogMessageTime;"){
+                if (s == "Lcom/peakmain/sdk/utils/LogMessageTime;") {
                     println("进来了")
-                    isLogMessageTime=true
+                    isLogMessageTime = true
                 }
                 return super.visitAnnotation(s, b)
             }
@@ -231,12 +233,14 @@ class BuryPointVisitor extends ClassVisitor {
             return getVisitPosition(types, index - 1, isStaticMethod) + types[index - 1].getSize()
         }
     }
+
     private void getMessageStartCostTime(MethodVisitor methodVisitor) {
         methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
         methodVisitor.visitVarInsn(Opcodes.LSTORE, 1)
         Label label1 = new Label()
         methodVisitor.visitLabel(label1)
     }
+
     private void getMessageEndCostTime(MethodVisitor methodVisitor, String name) {
         methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
         methodVisitor.visitVarInsn(Opcodes.LLOAD, 1)
