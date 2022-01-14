@@ -69,7 +69,9 @@ public class SensorsDataAPI {
             jsonObject.put("properties", sendProperties);
             jsonObject.put("time", System.currentTimeMillis());
 
-            Log.i(TAG, SensorsDataPrivate.formatJson(jsonObject.toString()));
+            if(BuildConfig.DEBUG){
+                Log.i(TAG, SensorsDataPrivate.formatJson(jsonObject.toString()));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
