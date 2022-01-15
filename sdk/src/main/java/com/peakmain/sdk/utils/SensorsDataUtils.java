@@ -1,4 +1,4 @@
-package com.peakmain.sdk;
+package com.peakmain.sdk.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,6 +25,8 @@ import android.widget.ToggleButton;
 
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.peakmain.sdk.SensorsDataAPI;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,7 +44,7 @@ import java.util.Map;
  * mail:2726449200@qq.com
  * describe：
  */
-/*public*/ class SensorsDataPrivate {
+public class SensorsDataUtils {
     private static final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"
             + ".SSS", Locale.CHINA);
 

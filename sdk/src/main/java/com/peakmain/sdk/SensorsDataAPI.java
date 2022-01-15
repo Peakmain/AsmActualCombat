@@ -2,10 +2,13 @@ package com.peakmain.sdk;
 
 import android.app.Application;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.peakmain.sdk.utils.SensorsDataUtils;
 
 import org.json.JSONObject;
 
@@ -25,6 +28,31 @@ public class SensorsDataAPI {
     private static final Object mLock = new Object();
     private static Map<String, Object> mDeviceInfo;
     private String mDeviceId;
+    ListenerInfo mListenerInfo;
+
+    ListenerInfo getListenerInfo() {
+        if (mListenerInfo != null) {
+            return mListenerInfo;
+        }
+        mListenerInfo = new ListenerInfo();
+        return mListenerInfo;
+    }
+
+
+    public interface OnUserAgreementListener {
+        /**
+         * 是否同意用户协议接口
+         */
+        boolean onUserAgreement();
+    }
+
+    public void setOnUserAgreementListener(@Nullable OnUserAgreementListener l) {
+        getListenerInfo().mOnUserAgreement = l;
+    }
+
+    static class ListenerInfo {
+        OnUserAgreementListener mOnUserAgreement;
+    }
 
     @Keep
     @SuppressWarnings("UnusedReturnValue")
@@ -33,8 +61,8 @@ public class SensorsDataAPI {
             if (null == INSTANCE) {
                 INSTANCE = new SensorsDataAPI(application);
             }
-            return INSTANCE;
         }
+        return INSTANCE;
     }
 
     @Keep
@@ -43,8 +71,8 @@ public class SensorsDataAPI {
     }
 
     private SensorsDataAPI(Application application) {
-        mDeviceId = SensorsDataPrivate.getAndroidID(application.getApplicationContext());
-        mDeviceInfo = SensorsDataPrivate.getDeviceInfo(application.getApplicationContext());
+        mDeviceId = SensorsDataUtils.getAndroidID(application.getApplicationContext());
+        mDeviceInfo = SensorsDataUtils.getDeviceInfo(application.getApplicationContext());
     }
 
     /**
@@ -63,14 +91,14 @@ public class SensorsDataAPI {
             JSONObject sendProperties = new JSONObject(mDeviceInfo);
 
             if (properties != null) {
-                SensorsDataPrivate.mergeJSONObject(properties, sendProperties);
+                SensorsDataUtils.mergeJSONObject(properties, sendProperties);
             }
 
             jsonObject.put("properties", sendProperties);
             jsonObject.put("time", System.currentTimeMillis());
 
-            if(BuildConfig.DEBUG){
-                Log.i(TAG, SensorsDataPrivate.formatJson(jsonObject.toString()));
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, SensorsDataUtils.formatJson(jsonObject.toString()));
             }
         } catch (Exception e) {
             e.printStackTrace();

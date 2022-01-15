@@ -23,6 +23,8 @@ import android.widget.ToggleButton;
 import androidx.annotation.Keep;
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.peakmain.sdk.utils.SensorsDataUtils;
+
 import org.json.JSONObject;
 
 import java.util.Locale;
@@ -47,7 +49,7 @@ public class SensorsDataAutoTrackHelper {
 
             Context context = dialog.getContext();
             //将Context转成Activity
-            Activity activity = SensorsDataPrivate.getActivityFromContext(context);
+            Activity activity = SensorsDataUtils.getActivityFromContext(context);
 
             if (activity == null) {
                 activity = dialog.getOwnerActivity();
@@ -87,7 +89,7 @@ public class SensorsDataAutoTrackHelper {
 
             JSONObject properties = new JSONObject();
 
-            Activity activity = SensorsDataPrivate.getActivityFromContext(context);
+            Activity activity = SensorsDataUtils.getActivityFromContext(context);
 
             try {
                 String idString = context.getResources().getResourceEntryName(view.getId());
@@ -175,7 +177,7 @@ public class SensorsDataAutoTrackHelper {
 
             Context context = dialog.getContext();
             //将Context转成Activity
-            Activity activity = SensorsDataPrivate.getActivityFromContext(context);
+            Activity activity = SensorsDataUtils.getActivityFromContext(context);
 
             if (activity == null) {
                 activity = dialog.getOwnerActivity();
@@ -242,7 +244,7 @@ public class SensorsDataAutoTrackHelper {
                     jsonObject.put("$element_id", idString);
                 }
 
-                Activity activity = SensorsDataPrivate.getActivityFromContext(context);
+                Activity activity = SensorsDataUtils.getActivityFromContext(context);
                 if (activity != null) {
                     jsonObject.put("$activity", activity.getClass().getCanonicalName());
                 }
@@ -283,7 +285,7 @@ public class SensorsDataAutoTrackHelper {
             }
 
             JSONObject properties = new JSONObject();
-            Activity activity = SensorsDataPrivate.getActivityFromContext(context);
+            Activity activity = SensorsDataUtils.getActivityFromContext(context);
             if (activity != null) {
                 properties.put("$activity", activity.getClass().getCanonicalName());
             }
@@ -294,7 +296,7 @@ public class SensorsDataAutoTrackHelper {
                 properties.put("$element_position", String.format(Locale.CHINA, "%d", groupPosition));
             }
 
-            String idString = SensorsDataPrivate.getViewId(expandableListView);
+            String idString = SensorsDataUtils.getViewId(expandableListView);
             if (!TextUtils.isEmpty(idString)) {
                 properties.put("$element_id", idString);
             }
@@ -305,7 +307,7 @@ public class SensorsDataAutoTrackHelper {
             if (view instanceof ViewGroup) {
                 try {
                     StringBuilder stringBuilder = new StringBuilder();
-                    viewText = SensorsDataPrivate.traverseViewContent(stringBuilder, (ViewGroup) view);
+                    viewText = SensorsDataUtils.traverseViewContent(stringBuilder, (ViewGroup) view);
                     if (!TextUtils.isEmpty(viewText)) {
                         viewText = viewText.substring(0, viewText.length() - 1);
                     }
@@ -335,8 +337,8 @@ public class SensorsDataAutoTrackHelper {
 
             JSONObject properties = new JSONObject();
 
-            Activity activity = SensorsDataPrivate.getActivityFromContext(context);
-            String idString = SensorsDataPrivate.getViewId(adapterView);
+            Activity activity = SensorsDataUtils.getActivityFromContext(context);
+            String idString = SensorsDataUtils.getViewId(adapterView);
             if (!TextUtils.isEmpty(idString)) {
                 properties.put("$element_id", idString);
             }
@@ -365,7 +367,7 @@ public class SensorsDataAutoTrackHelper {
                 if (view instanceof ViewGroup) {
                     try {
                         StringBuilder stringBuilder = new StringBuilder();
-                        viewText = SensorsDataPrivate.traverseViewContent(stringBuilder, (ViewGroup) view);
+                        viewText = SensorsDataUtils.traverseViewContent(stringBuilder, (ViewGroup) view);
                         if (!TextUtils.isEmpty(viewText)) {
                             viewText = viewText.substring(0, viewText.length() - 1);
                         }
@@ -373,7 +375,7 @@ public class SensorsDataAutoTrackHelper {
                         e.printStackTrace();
                     }
                 } else {
-                    viewText = SensorsDataPrivate.getElementContent(view);
+                    viewText = SensorsDataUtils.getElementContent(view);
                 }
                 //$element_content
                 if (!TextUtils.isEmpty(viewText)) {
@@ -390,25 +392,32 @@ public class SensorsDataAutoTrackHelper {
      * View 被点击，自动埋点
      *
      * @param view View
+     * @return 是否通过用户协议，false表示没有通过协议，true表示通过用户协议
      */
     @Keep
     public static boolean trackViewOnClick(View view) {
+        boolean isUserAgreement=true;
         try {
+            SensorsDataAPI.OnUserAgreementListener mOnUserAgreement = SensorsDataAPI.getInstance().getListenerInfo().mOnUserAgreement;
+            if(mOnUserAgreement!=null){
+                isUserAgreement= mOnUserAgreement.onUserAgreement();
+            }
+            if(!isUserAgreement){
+                return false;
+            }
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("$element_type", SensorsDataPrivate.getElementType(view));
-            jsonObject.put("$element_id", SensorsDataPrivate.getViewId(view));
-            jsonObject.put("$element_content", SensorsDataPrivate.getElementContent(view));
+            jsonObject.put("$element_type", SensorsDataUtils.getElementType(view));
+            jsonObject.put("$element_id", SensorsDataUtils.getViewId(view));
+            jsonObject.put("$element_content", SensorsDataUtils.getElementContent(view));
 
-            Activity activity = SensorsDataPrivate.getActivityFromView(view);
+            Activity activity = SensorsDataUtils.getActivityFromView(view);
             if (activity != null) {
                 jsonObject.put("$activity", activity.getClass().getCanonicalName());
             }
-
             SensorsDataAPI.getInstance().track("$AppClick", jsonObject);
-            return false;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 }

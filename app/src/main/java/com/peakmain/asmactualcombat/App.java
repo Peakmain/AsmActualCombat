@@ -14,5 +14,6 @@ public class App  extends Application {
     public void onCreate() {
         super.onCreate();
         SensorsDataAPI.init(this);
+        SensorsDataAPI.getInstance().setOnUserAgreementListener(() -> true);
     }
 }
