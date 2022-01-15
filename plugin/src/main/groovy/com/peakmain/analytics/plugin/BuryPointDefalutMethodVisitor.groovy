@@ -7,7 +7,7 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.AdviceAdapter
 
-class BuryPointDefalutMethodVisitor extends AdviceAdapter{
+class BuryPointDefalutMethodVisitor extends AdviceAdapter {
 
     /**
      * Constructs a new {@link AdviceAdapter}.
@@ -20,7 +20,7 @@ class BuryPointDefalutMethodVisitor extends AdviceAdapter{
      * @param descriptor the method's descriptor (see {@link Type Type}).
      */
     BuryPointDefalutMethodVisitor(MethodVisitor mv, int access, String name, String desc) {
-        super(Opcodes.ASM6, mv, access, name, desc)
+        super(Opcodes.ASM7, mv, access, name, desc)
     }
     /**
      * 表示 ASM 开始扫描这个方法
@@ -29,10 +29,12 @@ class BuryPointDefalutMethodVisitor extends AdviceAdapter{
     void visitCode() {
         super.visitCode()
     }
+
     @Override
     void visitMethodInsn(int opcode, String owner, String name, String desc) {
         super.visitMethodInsn(opcode, owner, name, desc)
     }
+
     @Override
     void visitAttribute(Attribute attribute) {
         super.visitAttribute(attribute)
@@ -44,6 +46,7 @@ class BuryPointDefalutMethodVisitor extends AdviceAdapter{
     void visitEnd() {
         super.visitEnd()
     }
+
     @Override
     void visitFieldInsn(int opcode, String owner, String name, String desc) {
         super.visitFieldInsn(opcode, owner, name, desc)
@@ -66,6 +69,11 @@ class BuryPointDefalutMethodVisitor extends AdviceAdapter{
     @Override
     void visitMaxs(int maxStack, int maxLocals) {
         super.visitMaxs(maxStack, maxLocals)
+    }
+
+    @Override
+    void visitFrame(int type, int numLocal, Object[] local, int numStack, Object[] stack) {
+        mv.visitFrame(type, numLocal, local, numStack, stack)
     }
 
     @Override

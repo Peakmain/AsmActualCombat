@@ -106,7 +106,7 @@ class BuryPointTransform extends Transform {
                     // 用来读 class 信息
                     ClassReader classReader = new ClassReader(file.bytes)
                     // 用来写
-                    ClassWriter classWriter = new ClassWriter(0 /* flags */)
+                    ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
                     //todo 改这里就可以了
                     ClassVisitor classVisitor = new BuryPointVisitor(classWriter)
                     // 下面还可以包多层
@@ -152,7 +152,7 @@ class BuryPointTransform extends Transform {
                     //class文件处理
                     jarOutputStream.putNextEntry(zipEntry)
                     ClassReader classReader = new ClassReader(IOUtils.toByteArray(inputStream))
-                    ClassWriter classWriter = new ClassWriter(0)
+                    ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
                     //todo 改这里就可以了
                     ClassVisitor classVisitor = new BuryPointVisitor(classWriter)
                     // 下面还可以包多层

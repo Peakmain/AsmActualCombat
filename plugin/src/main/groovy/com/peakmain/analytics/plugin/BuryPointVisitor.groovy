@@ -17,7 +17,7 @@ class BuryPointVisitor extends ClassVisitor {
     private String handlerName = "android/os/Handler"
 
     BuryPointVisitor(ClassVisitor classVisitor) {
-        super(Opcodes.ASM6, classVisitor)
+        super(Opcodes.ASM7, classVisitor)
         this.classVisitor = classVisitor
     }
     /**
@@ -86,7 +86,6 @@ class BuryPointVisitor extends ClassVisitor {
                 }
             }
 
-
             @Override
             protected void onMethodEnter() {
                 super.onMethodEnter()
@@ -149,10 +148,16 @@ class BuryPointVisitor extends ClassVisitor {
                         methodVisitor.visitLabel(label1)
                         methodVisitor.visitVarInsn(ILOAD, 2)
                         Label label2 = new Label()
+                        println(label2)
                         methodVisitor.visitJumpInsn(IFNE, label2)
-                        methodVisitor.visitInsn(RETURN)
+                        Label l3 = new Label()
+                        methodVisitor.visitLabel(l3)
+                        methodVisitor.visitInsn(Opcodes.RETURN)
                         methodVisitor.visitLabel(label2)
-                        //methodVisitor.visitFrame(F_APPEND, 1, null, 0, null)
+                        Object[] obj=new Object[1]
+                        obj[0]= INTEGER
+                        methodVisitor.visitFrame(F_APPEND, 1, obj, 0, null);
+
                     } else if (mInterfaces.contains('android/content/DialogInterface$OnClickListener') && nameDesc == 'onClick(Landroid/content/DialogInterface;I)V') {
                         methodVisitor.visitVarInsn(ALOAD, 1)
                         methodVisitor.visitVarInsn(ILOAD, 2)

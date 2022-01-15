@@ -9,32 +9,32 @@
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
-      <version>7.1</version>
-      <scope>runtime</scope>
+      <version>9.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm-commons</artifactId>
-      <version>7.1</version>
-      <scope>runtime</scope>
+      <version>9.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm-analysis</artifactId>
-      <version>7.1</version>
-      <scope>runtime</scope>
+      <version>9.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm-util</artifactId>
-      <version>7.0</version>
-      <scope>runtime</scope>
+      <version>9.1</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm-tree</artifactId>
-      <version>7.1</version>
-      <scope>runtime</scope>
+      <version>9.1</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 </project>

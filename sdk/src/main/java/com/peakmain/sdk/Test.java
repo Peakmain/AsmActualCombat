@@ -1,6 +1,8 @@
 package com.peakmain.sdk;
 
 
+import android.util.Log;
+
 /**
  * author ：Peakmain
  * createTime：2022/1/14
@@ -11,9 +13,7 @@ public class Test {
     private String userKey;
 
     public void test() {
-        boolean a = A();
-        if (!a) {
-        }
+       int a=1;
 
     }
 
