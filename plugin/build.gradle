@@ -1,16 +1,48 @@
+
+plugins {
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+    id 'com.gradle.plugin-publish' version '0.16.0'
+}
 apply plugin: 'groovy'
 apply plugin: 'maven'
+
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    compile 'org.ow2.asm:asm:9.1'
-    compile 'org.ow2.asm:asm-commons:9.1'
-    compile 'org.ow2.asm:asm-analysis:9.1'
-    compile 'org.ow2.asm:asm-util:9.1'
-    compile 'org.ow2.asm:asm-tree:9.1'
+    implementation 'org.ow2.asm:asm:9.1'
+    implementation 'org.ow2.asm:asm-commons:9.1'
+    implementation 'org.ow2.asm:asm-analysis:9.1'
+    implementation 'org.ow2.asm:asm-util:9.1'
+    implementation 'org.ow2.asm:asm-tree:9.1'
     compileOnly 'com.android.tools.build:gradle:3.4.1', {
-        exclude group:'org.ow2.asm'
+        exclude group: 'org.ow2.asm'
+    }
+}
+version = '1.0'
+group = 'com.peakmain'
+gradlePlugin {
+    plugins {
+        peakmainPlugin {
+            id = 'com.peakmain.plugin'
+            implementationClass = 'com.peakmain.analytics.plugin.BuryPointPlugin'
+        }
+    }
+}
+pluginBundle {
+    // These settings are set for the whole plugin bundle
+    website = 'https://github.com/johndoe/GradlePlugins'
+    vcsUrl = 'https://github.com/johndoe/GradlePlugins'
+
+    description = 'Peakmain ASM plugin!'
+
+    plugins {
+        peakmainPlugin {
+            // id is captured from java-gradle-plugin configuration
+            displayName = 'com.peakmain.plugin'
+            tags = ['individual', 'tags', 'per', 'plugin']
+        }
     }
 }
 repositories {
