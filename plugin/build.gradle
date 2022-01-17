@@ -6,17 +6,18 @@ plugins {
 }
 apply plugin: 'groovy'
 apply plugin: 'maven'
-
+targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_8
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    implementation 'org.ow2.asm:asm:9.1'
-    implementation 'org.ow2.asm:asm-commons:9.1'
-    implementation 'org.ow2.asm:asm-analysis:9.1'
-    implementation 'org.ow2.asm:asm-util:9.1'
-    implementation 'org.ow2.asm:asm-tree:9.1'
-    compileOnly 'com.android.tools.build:gradle:3.4.1', {
+    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm-commons:7.1'
+    implementation 'org.ow2.asm:asm-analysis:7.1'
+    implementation 'org.ow2.asm:asm-util:7.1'
+    implementation 'org.ow2.asm:asm-tree:7.1'
+    compileOnly 'com.android.tools.build:gradle:4.0.1', {
         exclude group: 'org.ow2.asm'
     }
 }
