@@ -12,7 +12,7 @@ import android.view.View;
  */
 public class Test {
 
-    public void  test(View view) {
+    public boolean  test(View view) {
         boolean flag=false;
         long curClickTime = System. currentTimeMillis();
         long lastClickTime =  null == view.getTag() ?  0L : (Long) view.getTag();
@@ -23,8 +23,9 @@ public class Test {
             }
         }
         if(!flag){
-             return;
+             return false;
         }
+        return true;
     }
 
 

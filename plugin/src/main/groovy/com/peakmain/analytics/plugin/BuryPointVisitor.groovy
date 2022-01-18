@@ -192,7 +192,7 @@ class BuryPointVisitor extends ClassVisitor {
                         methodVisitor.visitVarInsn(LLOAD, 3)
                         methodVisitor.visitVarInsn(LLOAD, 4)
                         methodVisitor.visitInsn(LSUB)
-                        methodVisitor.visitLdcInsn(new Long(1500L))
+                        methodVisitor.visitLdcInsn(new Long(2000L))
                         methodVisitor.visitInsn(LCMP)
                         Label label9 = new Label()
                         methodVisitor.visitJumpInsn(IFLT, label9)
@@ -210,7 +210,14 @@ class BuryPointVisitor extends ClassVisitor {
                         Object[] obj4 = new Object[1]
                         obj4[0] = LONG
                         methodVisitor.visitFrame(F_APPEND, 1, obj4, 0, null)
-
+                        //if(!flag)return false
+                        methodVisitor.visitVarInsn(ILOAD, 4)
+                        Label label11 = new Label()
+                        methodVisitor.visitJumpInsn(IFNE, label11)
+                        methodVisitor.visitInsn(ICONST_0)
+                        methodVisitor.visitInsn(IRETURN)
+                        methodVisitor.visitLabel(label11)
+                        methodVisitor.visitFrame(F_SAME, 0, null, 0, null)
 
 
                     } else if (mInterfaces.contains('android/content/DialogInterface$OnClickListener') && nameDesc == 'onClick(Landroid/content/DialogInterface;I)V') {
