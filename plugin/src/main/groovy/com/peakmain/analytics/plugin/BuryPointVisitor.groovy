@@ -159,7 +159,7 @@ class BuryPointVisitor extends ClassVisitor {
                         methodVisitor.visitInsn(ICONST_0)
                         methodVisitor.visitVarInsn(ISTORE, 4)
                         Label label7 = new Label()
-                        mv.visitLabel(label7)
+                        methodVisitor.visitLabel(label7)
                         //long var3 = System.currentTimeMillis();
                         methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false)
                         methodVisitor.visitVarInsn(LSTORE, 3)
@@ -183,12 +183,34 @@ class BuryPointVisitor extends ClassVisitor {
                         methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Long", "longValue", "()J", false)
                         methodVisitor.visitLabel(label6)
                         Object[] obj3 = new Object[1]
-                        obj3[0]=LONG
+                        obj3[0] = LONG
                         methodVisitor.visitFrame(F_SAME1, 0, null, 1, obj3)
                         methodVisitor.visitVarInsn(LSTORE, 4)
                         Label label8 = new Label()
                         methodVisitor.visitLabel(label8)
                         //if ((curClickTime - lastClickTime) >=  1500){}
+                        methodVisitor.visitVarInsn(LLOAD, 3)
+                        methodVisitor.visitVarInsn(LLOAD, 4)
+                        methodVisitor.visitInsn(LSUB)
+                        methodVisitor.visitLdcInsn(new Long(1500L))
+                        methodVisitor.visitInsn(LCMP)
+                        Label label9 = new Label()
+                        methodVisitor.visitJumpInsn(IFLT, label9)
+                        //flag=true;
+                        methodVisitor.visitInsn(ICONST_1)
+                        methodVisitor.visitVarInsn(ISTORE, 4)
+                        methodVisitor.visitVarInsn(ALOAD, 1)
+                        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "android/view/View", "isClickable", "()Z", false)
+                        methodVisitor.visitJumpInsn(IFEQ, label9)
+                        methodVisitor.visitVarInsn(ALOAD, 1)
+                        methodVisitor.visitVarInsn(LLOAD, 3)
+                        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;", false);
+                        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "android/view/View", "setTag", "(Ljava/lang/Object;)V", false)
+                        methodVisitor.visitLabel(label9)
+                        Object[] obj4 = new Object[1]
+                        obj4[0] = LONG
+                        methodVisitor.visitFrame(F_APPEND, 1, obj4, 0, null)
+
 
 
                     } else if (mInterfaces.contains('android/content/DialogInterface$OnClickListener') && nameDesc == 'onClick(Landroid/content/DialogInterface;I)V') {

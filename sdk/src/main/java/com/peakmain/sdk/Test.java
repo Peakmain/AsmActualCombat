@@ -13,15 +13,18 @@ import android.view.View;
 public class Test {
 
     public void  test(View view) {
-        //long curClickTime = System. currentTimeMillis();
+        boolean flag=false;
+        long curClickTime = System. currentTimeMillis();
         long lastClickTime =  null == view.getTag() ?  0L : (Long) view.getTag();
-        System.out.println(lastClickTime);
-       /* if ((curClickTime - lastClickTime) >=  1500) {
+        if ((curClickTime - lastClickTime) >=  1500) {
             flag=true;
             if(view.isClickable()){
                 view.setTag(curClickTime);
             }
-        }*/
+        }
+        if(!flag){
+             return;
+        }
     }
 
 
