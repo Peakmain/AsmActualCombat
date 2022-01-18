@@ -2,6 +2,7 @@ package com.peakmain.sdk;
 
 
 import android.util.Log;
+import android.view.View;
 
 /**
  * author ：Peakmain
@@ -10,15 +11,17 @@ import android.util.Log;
  * describe：
  */
 public class Test {
-    private String userKey;
 
-    public void test() {
-       int a=1;
-
-    }
-
-    private boolean A() {
-        return false;
+    public void  test(View view) {
+        //long curClickTime = System. currentTimeMillis();
+        long lastClickTime =  null == view.getTag() ?  0L : (Long) view.getTag();
+        System.out.println(lastClickTime);
+       /* if ((curClickTime - lastClickTime) >=  1500) {
+            flag=true;
+            if(view.isClickable()){
+                view.setTag(curClickTime);
+            }
+        }*/
     }
 
 
