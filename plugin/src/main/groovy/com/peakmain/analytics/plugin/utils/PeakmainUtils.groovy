@@ -1,10 +1,10 @@
 
 
-package com.peakmain.analytics.plugin
+package com.peakmain.analytics.plugin.utils
 
 import org.objectweb.asm.Opcodes
 
-class BuryPointUtils implements Opcodes {
+class PeakmainUtils implements Opcodes {
     static boolean isSynthetic(int access) {
         return (access & ACC_SYNTHETIC) != 0
     }

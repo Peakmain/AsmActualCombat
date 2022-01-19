@@ -16,7 +16,7 @@ public class Test {
         boolean flag=false;
         long curClickTime = System. currentTimeMillis();
         long lastClickTime =  null == view.getTag() ?  0L : (Long) view.getTag();
-        if ((curClickTime - lastClickTime) >=  1500) {
+        if (curClickTime - lastClickTime >=  1500L) {
             flag=true;
             if(view.isClickable()){
                 view.setTag(curClickTime);

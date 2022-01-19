@@ -1,20 +1,17 @@
-package com.peakmain.analytics.plugin
+package com.peakmain.analytics.plugin.visitor
 
-import org.objectweb.asm.AnnotationVisitor
-import org.objectweb.asm.ClassVisitor
-import org.objectweb.asm.Handle
-import org.objectweb.asm.Label
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
-import org.objectweb.asm.Type
+import com.peakmain.analytics.plugin.entity.PeakmainHookConfig
+import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
+import com.peakmain.analytics.plugin.utils.PeakmainUtils
+import org.objectweb.asm.*
 
-class BuryPointVisitor extends ClassVisitor {
+class PeakmainVisitor extends ClassVisitor {
     private final static String SDK_API_CLASS = "com/peakmain/sdk/SensorsDataAutoTrackHelper"
     private ClassVisitor classVisitor
     private String[] mInterfaces
-    private HashMap<String, BuryPointMethodCell> mMethodCells = new HashMap<>()
+    private HashMap<String, PeakmainMethodCell> mMethodCells = new HashMap<>()
 
-    BuryPointVisitor(ClassVisitor classVisitor) {
+    PeakmainVisitor(ClassVisitor classVisitor) {
         super(Opcodes.ASM7, classVisitor)
         this.classVisitor = classVisitor
     }
@@ -47,7 +44,7 @@ class BuryPointVisitor extends ClassVisitor {
         String nameDesc = name + descriptor
         boolean isSensorsDataTrackViewOnClickAnnotation = false
         boolean isLogMessageTime = false
-        methodVisitor = new BuryPointDefalutMethodVisitor(methodVisitor, access, name, descriptor) {
+        methodVisitor = new PeakmainDefaultMethodVisitor(methodVisitor, access, name, descriptor) {
             @Override
             void visitEnd() {
                 super.visitEnd()
@@ -60,7 +57,7 @@ class BuryPointVisitor extends ClassVisitor {
             void visitInvokeDynamicInsn(String name1, String descriptor1, Handle bootstrapMethodHandle, Object... bootstrapMethodArguments) {
                 super.visitInvokeDynamicInsn(name1, descriptor1, bootstrapMethodHandle, bootstrapMethodArguments)
                 String desc2 = (String) bootstrapMethodArguments[0]
-                BuryPointMethodCell buryPointMethodCell = BuryPointHookConfig.LAMBDA_METHODS.get(Type.getReturnType(descriptor1).getDescriptor() + name1 + desc2)
+                PeakmainMethodCell buryPointMethodCell = PeakmainHookConfig.LAMBDA_METHODS.get(Type.getReturnType(descriptor1).getDescriptor() + name1 + desc2)
                 if (buryPointMethodCell != null) {
                     Handle it = (Handle) bsmArgs[1]
                     mMethodCells.put(it.name + it.desc, buryPointMethodCell)
@@ -90,7 +87,7 @@ class BuryPointVisitor extends ClassVisitor {
                 /**
                  * 在 android.gradle 的 3.2.1 版本中，针对 view 的 setOnClickListener 方法 的 lambda 表达式做特殊处理。
                  */
-                BuryPointMethodCell lambdaMethodCell = mMethodCells.get(nameDesc)
+                PeakmainMethodCell lambdaMethodCell = mMethodCells.get(nameDesc)
                 if (lambdaMethodCell != null) {
                     Type[] types = Type.getArgumentTypes(lambdaMethodCell.desc)
                     int length = types.length
@@ -105,7 +102,7 @@ class BuryPointVisitor extends ClassVisitor {
                             }
                         }
                     }
-                    boolean isStaticMethod = BuryPointUtils.isStatic(access)
+                    boolean isStaticMethod = PeakmainUtils.isStatic(access)
                     if (!isStaticMethod) {
                         if (lambdaMethodCell.desc == '(Landroid/view/MenuItem;)Z') {
                             methodVisitor.visitVarInsn(ALOAD, 0)
@@ -153,19 +150,19 @@ class BuryPointVisitor extends ClassVisitor {
                         methodVisitor.visitLabel(label2)
                         Object[] obj = new Object[1]
                         obj[0] = INTEGER
-                        methodVisitor.visitFrame(F_APPEND, 1, obj, 0, null);
+                        methodVisitor.visitFrame(F_APPEND, 1, obj, 0, null)
                         //拦截事件start
                         //boolean flag=false;
                         methodVisitor.visitInsn(ICONST_0)
                         methodVisitor.visitVarInsn(ISTORE, 4)
                         Label label7 = new Label()
                         methodVisitor.visitLabel(label7)
-                        //long var3 = System.currentTimeMillis();
+                        //long var3 = System.currentTimeMillis()
                         methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false)
                         methodVisitor.visitVarInsn(LSTORE, 3)
                         Label label4 = new Label()
                         methodVisitor.visitLabel(label4)
-                        // long lastClickTime =  null == view.getTag() ?  0L : (Long) view.getTag();
+                        // long lastClickTime =  null == view.getTag() ?  0L : (Long) view.getTag()
                         methodVisitor.visitInsn(ACONST_NULL)
                         methodVisitor.visitVarInsn(ALOAD, 1)
                         methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "android/view/View", "getTag", "()Ljava/lang/Object;", false)
@@ -204,7 +201,7 @@ class BuryPointVisitor extends ClassVisitor {
                         methodVisitor.visitJumpInsn(IFEQ, label9)
                         methodVisitor.visitVarInsn(ALOAD, 1)
                         methodVisitor.visitVarInsn(LLOAD, 3)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;", false);
+                        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;", false)
                         methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "android/view/View", "setTag", "(Ljava/lang/Object;)V", false)
                         methodVisitor.visitLabel(label9)
                         Object[] obj4 = new Object[1]
@@ -302,27 +299,27 @@ class BuryPointVisitor extends ClassVisitor {
     }
 
     private void getMessageStartCostTime(MethodVisitor methodVisitor) {
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false)
         methodVisitor.visitVarInsn(LSTORE, 1)
         Label label1 = new Label()
         methodVisitor.visitLabel(label1)
     }
 
     private void getMessageEndCostTime(MethodVisitor methodVisitor, String name) {
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false)
         methodVisitor.visitVarInsn(LLOAD, 1)
         methodVisitor.visitInsn(LSUB)
         methodVisitor.visitVarInsn(LSTORE, 2)
-        Label label2 = new Label();
+        Label label2 = new Label()
         methodVisitor.visitLabel(label2)
         methodVisitor.visitLdcInsn("LogMessageCostTime")
-        methodVisitor.visitTypeInsn(NEW, "java/lang/StringBuilder");
-        methodVisitor.visitInsn(DUP);
+        methodVisitor.visitTypeInsn(NEW, "java/lang/StringBuilder")
+        methodVisitor.visitInsn(DUP)
         methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false)
         methodVisitor.visitLdcInsn(name + "消耗的时间:")
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false)
         methodVisitor.visitVarInsn(LLOAD, 2)
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
+        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false)
         methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false)
         methodVisitor.visitMethodInsn(INVOKESTATIC, "android/util/Log", "e", "(Ljava/lang/String;Ljava/lang/String;)I", false)
         methodVisitor.visitInsn(POP)

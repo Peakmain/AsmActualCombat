@@ -1,6 +1,6 @@
-package com.peakmain.analytics.plugin
+package com.peakmain.analytics.plugin.entity
 
-class BuryPointMethodCell{
+class PeakmainMethodCell {
     /**
      * 原方法名
      */
@@ -34,13 +34,13 @@ class BuryPointMethodCell{
      */
     List<Integer> opcodes
 
-    BuryPointMethodCell(String name, String desc, String agentName) {
+    PeakmainMethodCell(String name, String desc, String agentName) {
         this.name = name
         this.desc = desc
         this.agentName = agentName
     }
 
-    BuryPointMethodCell(String name, String desc, String parent, String agentName, String agentDesc, int paramsStart, int paramsCount, List<Integer> opcodes) {
+    PeakmainMethodCell(String name, String desc, String parent, String agentName, String agentDesc, int paramsStart, int paramsCount, List<Integer> opcodes) {
         this.name = name
         this.desc = desc
         this.parent = parent

@@ -1,14 +1,15 @@
-package com.peakmain.analytics.plugin
+package com.peakmain.analytics.plugin.entity
+
 
 import org.objectweb.asm.Opcodes
 
-class BuryPointHookConfig{
+class PeakmainHookConfig {
     /**
      * android.gradle 3.2.1 版本中，针对 Lambda 表达式处理
      */
-    public final static HashMap<String, BuryPointMethodCell> LAMBDA_METHODS = new HashMap<>()
+    public final static HashMap<String, PeakmainMethodCell> LAMBDA_METHODS = new HashMap<>()
     static {
-        BuryPointMethodCell onClick = new BuryPointMethodCell(
+        PeakmainMethodCell onClick = new PeakmainMethodCell(
                 'onClick',
                 '(Landroid/view/View;)V',
                 'Landroid/view/View$OnClickListener;',
@@ -17,7 +18,7 @@ class BuryPointHookConfig{
                 1, 1,
                 [Opcodes.ALOAD])
         LAMBDA_METHODS.put(onClick.parent + onClick.name + onClick.desc, onClick)
-        BuryPointMethodCell onCheckedChanged = new BuryPointMethodCell(
+        PeakmainMethodCell onCheckedChanged = new PeakmainMethodCell(
                 'onCheckedChanged',
                 '(Landroid/widget/CompoundButton;Z)V',
                 'Landroid/widget/CompoundButton$OnCheckedChangeListener;',
@@ -27,7 +28,7 @@ class BuryPointHookConfig{
                 [Opcodes.ALOAD])
         LAMBDA_METHODS.put(onCheckedChanged.parent + onCheckedChanged.name + onCheckedChanged.desc, onCheckedChanged)
 
-        BuryPointMethodCell onRatingChanged = new BuryPointMethodCell(
+        PeakmainMethodCell onRatingChanged = new PeakmainMethodCell(
                 'onRatingChanged',
                 '(Landroid/widget/RatingBar;FZ)V',
                 'Landroid/widget/RatingBar$OnRatingBarChangeListener;',
@@ -38,7 +39,7 @@ class BuryPointHookConfig{
         LAMBDA_METHODS.put(onRatingChanged.parent + onRatingChanged.name + onRatingChanged.desc, onRatingChanged)
 
 
-        BuryPointMethodCell onStopTrackingTouch = new BuryPointMethodCell(
+        PeakmainMethodCell onStopTrackingTouch = new PeakmainMethodCell(
                 'onStopTrackingTouch',
                 '(Landroid/widget/SeekBar;)V',
                 'Landroid/widget/SeekBar$OnSeekBarChangeListener;',
@@ -48,7 +49,7 @@ class BuryPointHookConfig{
                 [Opcodes.ALOAD])
         LAMBDA_METHODS.put(onStopTrackingTouch.parent + onStopTrackingTouch.name + onStopTrackingTouch.desc, onStopTrackingTouch)
 
-        BuryPointMethodCell onClick1 = new BuryPointMethodCell(
+        PeakmainMethodCell onClick1 = new PeakmainMethodCell(
                 'onClick',
                 '(Landroid/content/DialogInterface;I)V',
                 'Landroid/content/DialogInterface$OnClickListener;',
@@ -58,7 +59,7 @@ class BuryPointHookConfig{
                 [Opcodes.ALOAD, Opcodes.ILOAD])
         LAMBDA_METHODS.put(onClick1.parent + onClick1.name + onClick1.desc, onClick1)
 
-        BuryPointMethodCell onItemClick = new BuryPointMethodCell(
+        PeakmainMethodCell onItemClick = new PeakmainMethodCell(
                 'onItemClick',
                 '(Landroid/widget/AdapterView;Landroid/view/View;IJ)V',
                 'Landroid/widget/AdapterView$OnItemClickListener;',
@@ -68,7 +69,7 @@ class BuryPointHookConfig{
                 [Opcodes.ALOAD, Opcodes.ALOAD, Opcodes.ILOAD])
         LAMBDA_METHODS.put(onItemClick.parent + onItemClick.name + onItemClick.desc, onItemClick)
 
-        BuryPointMethodCell onGroupClick = new BuryPointMethodCell(
+        PeakmainMethodCell onGroupClick = new PeakmainMethodCell(
                 'onGroupClick',
                 '(Landroid/widget/ExpandableListView;Landroid/view/View;IJ)Z',
                 'Landroid/widget/ExpandableListView$OnGroupClickListener;',
@@ -78,7 +79,7 @@ class BuryPointHookConfig{
                 [Opcodes.ALOAD, Opcodes.ALOAD, Opcodes.ILOAD])
         LAMBDA_METHODS.put(onGroupClick.parent + onGroupClick.name + onGroupClick.desc, onGroupClick)
 
-        BuryPointMethodCell onChildClick = new BuryPointMethodCell(
+        PeakmainMethodCell onChildClick = new PeakmainMethodCell(
                 'onChildClick',
                 '(Landroid/widget/ExpandableListView;Landroid/view/View;IIJ)Z',
                 'Landroid/widget/ExpandableListView$OnChildClickListener;',
@@ -88,7 +89,7 @@ class BuryPointHookConfig{
                 [Opcodes.ALOAD, Opcodes.ALOAD, Opcodes.ILOAD, Opcodes.ILOAD])
         LAMBDA_METHODS.put(onChildClick.parent + onChildClick.name + onChildClick.desc, onChildClick)
 
-        BuryPointMethodCell onTabChanged = new BuryPointMethodCell(
+        PeakmainMethodCell onTabChanged = new PeakmainMethodCell(
                 'onTabChanged',
                 '(Ljava/lang/String;)V',
                 'Landroid/widget/TabHost$OnTabChangeListener;',

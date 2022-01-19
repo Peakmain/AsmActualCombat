@@ -1,4 +1,4 @@
-package com.peakmain.analytics.plugin
+package com.peakmain.analytics.plugin.transform
 
 import com.android.build.api.transform.Context
 import com.android.build.api.transform.DirectoryInput
@@ -11,6 +11,8 @@ import com.android.build.api.transform.TransformInput
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.api.transform.TransformOutputProvider
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.peakmain.analytics.plugin.visitor.PeakmainVisitor
+import com.peakmain.analytics.plugin.ext.PeakmainExtension
 import org.objectweb.asm.ClassVisitor
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
@@ -23,13 +25,13 @@ import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
 
-class BuryPointTransform extends Transform {
+class PeakmainTransform extends Transform {
     private static Project project
-    private BuryPointExtension buryPointExtension
+    private PeakmainExtension buryPointExtension
 
-    BuryPointTransform(Project project, BuryPointExtension buryPointExtension) {
+    PeakmainTransform(Project project, PeakmainExtension peakmainExtension) {
         this.project = project
-        this.buryPointExtension = buryPointExtension
+        this.buryPointExtension = peakmainExtension
     }
 
     @Override
@@ -108,7 +110,7 @@ class BuryPointTransform extends Transform {
                     // 用来写
                     ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
                     //todo 改这里就可以了
-                    ClassVisitor classVisitor = new BuryPointVisitor(classWriter)
+                    ClassVisitor classVisitor = new PeakmainVisitor(classWriter)
                     // 下面还可以包多层
                     classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
                     // 重新覆盖写入文件
@@ -154,7 +156,7 @@ class BuryPointTransform extends Transform {
                     ClassReader classReader = new ClassReader(IOUtils.toByteArray(inputStream))
                     ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
                     //todo 改这里就可以了
-                    ClassVisitor classVisitor = new BuryPointVisitor(classWriter)
+                    ClassVisitor classVisitor = new PeakmainVisitor(classWriter)
                     // 下面还可以包多层
                     classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
                     byte[] code = classWriter.toByteArray()

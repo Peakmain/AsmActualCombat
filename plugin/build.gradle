@@ -1,13 +1,30 @@
 
 plugins {
-    id 'java-gradle-plugin'
     id 'maven-publish'
+    id 'java-gradle-plugin'
+    id 'kotlin'
+    id 'kotlin-kapt'
     id 'com.gradle.plugin-publish' version '0.16.0'
 }
 apply plugin: 'groovy'
 apply plugin: 'maven'
-targetCompatibility = JavaVersion.VERSION_1_8
-sourceCompatibility = JavaVersion.VERSION_1_8
+apply from :'upload.gradle'
+sourceSets {
+    main {
+        java {
+            srcDirs += []
+        }
+        kotlin {
+            srcDirs += ['src/main/kotlin', 'src/main/java']
+        }
+    }
+
+
+}
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+}
+
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
@@ -21,48 +38,18 @@ dependencies {
         exclude group: 'org.ow2.asm'
     }
 }
-version = '1.0'
-group = 'com.peakmain'
-gradlePlugin {
-    plugins {
-        peakmainPlugin {
-            id = 'com.peakmain.plugin'
-            implementationClass = 'com.peakmain.analytics.plugin.BuryPointPlugin'
-        }
+/**
+ * 删除指定目录下的文件
+ */
+task deleteSource(type: Delete) {
+    doLast {
+        delete './src/main/kotlin'
     }
 }
-pluginBundle {
-    // These settings are set for the whole plugin bundle
-    website = 'https://github.com/johndoe/GradlePlugins'
-    vcsUrl = 'https://github.com/johndoe/GradlePlugins'
 
-    description = 'Peakmain ASM plugin!'
 
-    plugins {
-        peakmainPlugin {
-            // id is captured from java-gradle-plugin configuration
-            displayName = 'com.peakmain.plugin'
-            tags = ['individual', 'tags', 'per', 'plugin']
-        }
-    }
-}
 repositories {
-    jcenter()
-}
-
-uploadArchives {
-    repositories.mavenDeployer {
-        //本地仓库路径，以放到项目根目录下的 repo 的文件夹为例
-        repository(url: uri('../repo'))
-
-        //groupId
-        pom.groupId = 'com.peakmain'
-
-        //artifactId
-        pom.artifactId = 'android.plugin'
-
-        //插件版本号
-        pom.version = '1.0.0'
-    }
+    google()
+    mavenCentral()
 }
 
