@@ -5,7 +5,7 @@ gradlePlugin {
     plugins {
         peakmainPlugin {
             id = 'com.peakmain.plugin'
-            implementationClass = 'com.peakmain.analytics.plugin.BuryPointPlugin'
+            implementationClass = 'com.peakmain.analytics.plugin.PeakmainPlugin'
         }
     }
 }

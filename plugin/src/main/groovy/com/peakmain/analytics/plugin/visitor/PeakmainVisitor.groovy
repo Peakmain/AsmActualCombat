@@ -44,7 +44,7 @@ class PeakmainVisitor extends ClassVisitor {
         String nameDesc = name + descriptor
         boolean isSensorsDataTrackViewOnClickAnnotation = false
         boolean isLogMessageTime = false
-        methodVisitor = new PeakmainDefaultMethodVisitor(methodVisitor, access, name, descriptor) {
+        methodVisitor = new PeakmainDefalutMethodVisitor(methodVisitor, access, name, descriptor) {
             @Override
             void visitEnd() {
                 super.visitEnd()

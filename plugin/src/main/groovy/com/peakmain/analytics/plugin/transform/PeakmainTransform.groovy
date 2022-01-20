@@ -11,8 +11,8 @@ import com.android.build.api.transform.TransformInput
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.api.transform.TransformOutputProvider
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.peakmain.analytics.plugin.visitor.PeakmainVisitor
 import com.peakmain.analytics.plugin.ext.PeakmainExtension
+import com.peakmain.analytics.plugin.visitor.PeakmainVisitor
 import org.objectweb.asm.ClassVisitor
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
@@ -27,16 +27,16 @@ import java.util.zip.ZipEntry
 
 class PeakmainTransform extends Transform {
     private static Project project
-    private PeakmainExtension buryPointExtension
+    private PeakmainExtension peakmainExtension
 
     PeakmainTransform(Project project, PeakmainExtension peakmainExtension) {
         this.project = project
-        this.buryPointExtension = peakmainExtension
+        this.peakmainExtension = peakmainExtension
     }
 
     @Override
     String getName() {
-        return "BuryPoint"
+        return "Peakmain"
     }
     /**
      * 需要处理的数据类型，有两种枚举类型
