@@ -16,11 +16,7 @@ buildscript {
 }
 
 ```
-- Step 2. Add the dependency
-```
- implementation 'io.github.peakmain:plugin:1.0.0'
-```
-- Step 3. Add the Use
+- Step 2. Add the Use
 Add it in your app module build.gradle at the end of repositories:
 ```
 apply plugin: "com.peakmain.plugin"
