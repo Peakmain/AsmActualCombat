@@ -16,11 +16,7 @@ buildscript {
 }
 
 ```
-- Step 2. Add the dependency
-```
- implementation 'io.github.peakmain:plugin:1.0.0'
-```
-- Step 3. Add the Use
+- Step 2. Add the Use
 Add it in your app module build.gradle at the end of repositories:
 ```
 apply plugin: "com.peakmain.plugin"
@@ -39,7 +35,7 @@ Add it in your root build.gradle at the end of repositories:
 - Step 2. Add the dependency
 ```
 	dependencies {
-	       implementation 'com.github.Peakmain:AsmActualCombat:0.1.0'
+	       implementation 'com.github.Peakmain:AsmActualCombat:0.1.1'
 	}
 ```
 #### 使用文档
