@@ -2,30 +2,13 @@
 plugins {
     id 'maven-publish'
     id 'java-gradle-plugin'
-    id 'kotlin'
-    id 'kotlin-kapt'
     id 'com.gradle.plugin-publish' version '0.16.0'
 }
 apply plugin: 'groovy'
 apply plugin: 'maven'
 //apply from :'upload.gradle'
 apply from :'uploadMaven.gradle'
-sourceSets {
-    main {
-        java {
-            srcDirs += []
-        }
-        kotlin {
-            srcDirs += ['src/main/kotlin', 'src/main/java']
-        }
-    }
-
-
-}
-compileKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
-}
-
+apply from :'local.gradle'
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
@@ -39,15 +22,6 @@ dependencies {
         exclude group: 'org.ow2.asm'
     }
 }
-/**
- * 删除指定目录下的文件
- */
-task deleteSource(type: Delete) {
-    doLast {
-        delete './src/main/kotlin'
-    }
-}
-
 
 repositories {
     google()

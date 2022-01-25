@@ -37,7 +37,8 @@ ext["signing.password"] = ""  //GPG密码
 ext["signing.secretKeyRingFile"] = "" //GPG私钥
 ext["ossrhUsername"] = ""
 ext["ossrhPassword"] = ""
-
+def userName = ""
+def userPassword = ""
 File secretPropsFile = project.rootProject.file('local.properties')
 if (secretPropsFile.exists()) {
     println "Found secret props file, loading props"
@@ -45,6 +46,12 @@ if (secretPropsFile.exists()) {
     p.load(new FileInputStream(secretPropsFile))
     p.each { name, value ->
         ext[name] = value
+        if (name == "ossrhUsername") {
+            userName = value
+        }
+        if (name == "ossrhPassword") {
+            userPassword = value
+        }
     }
 } else {
     println "No props file, loading env vars"
@@ -57,7 +64,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'io.github.peakmain'  //sonatype平台创建的groupId
             artifactId = "plugin"
-            version = '1.0.0'  //库版本名
+            version = '1.0.2'  //库版本名
             from components.java
 
             artifact sourcesJar
@@ -103,8 +110,8 @@ publishing {
             url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
             // The username and password we've fetched earlier
             credentials {
-                username username
-                password password
+                username userName
+                password userPassword
             }
         }
     }
