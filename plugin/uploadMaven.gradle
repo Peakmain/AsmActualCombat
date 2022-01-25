@@ -64,7 +64,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'io.github.peakmain'  //sonatype平台创建的groupId
             artifactId = "plugin"
-            version = '1.0.2'  //库版本名
+            version = '1.0.3'  //库版本名
             from components.java
 
             artifact sourcesJar
