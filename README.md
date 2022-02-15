@@ -1,6 +1,5 @@
 # AsmActualCombat
 ASM实战——埋点
-- 默认解决大部分多次重复点击的问题
 - 可动态设置方法对点击事件处理之前进行拦截
 - 可获取方法的耗时时间
 - 可动态配置是否开启插件，默认是开启
@@ -11,7 +10,7 @@ Add it in your root build.gradle at the end of repositories:
 ```
 buildscript {
     dependencies {
-        classpath "io.github.peakmain:plugin:1.0.0"
+        classpath "io.github.peakmain:plugin:1.0.3"
     }
 }
 
@@ -35,7 +34,7 @@ Add it in your root build.gradle at the end of repositories:
 - Step 2. Add the dependency
 ```
 	dependencies {
-	       implementation 'com.github.Peakmain:AsmActualCombat:0.1.1'
+	       implementation 'com.github.Peakmain:AsmActualCombat:0.1.3'
 	}
 ```
 #### 使用文档
