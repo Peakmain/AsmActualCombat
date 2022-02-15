@@ -1,5 +1,5 @@
 
-version = '1.0.2'
+version = '1.0.0'
 group = 'com.peakmain'
 gradlePlugin {
     plugins {
@@ -11,8 +11,8 @@ gradlePlugin {
 }
 pluginBundle {
     // These settings are set for the whole plugin bundle
-    website = 'https://github.com/johndoe/GradlePlugins'
-    vcsUrl = 'https://github.com/johndoe/GradlePlugins'
+    website = 'https://github.com/Peakmain/AsmActualCombat'
+    vcsUrl = 'https://github.com/Peakmain/AsmActualCombat'
 
     description = 'Peakmain ASM plugin!'
 
@@ -24,6 +24,7 @@ pluginBundle {
         }
     }
 }
+/*
 uploadArchives {
     repositories.mavenDeployer {
         //本地仓库路径，以放到项目根目录下的 repo 的文件夹为例
@@ -40,3 +41,4 @@ uploadArchives {
     }
 }
 
+*/
