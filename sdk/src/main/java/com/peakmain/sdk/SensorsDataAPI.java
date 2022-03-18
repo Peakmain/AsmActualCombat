@@ -29,7 +29,6 @@ public class SensorsDataAPI {
     private static Map<String, Object> mDeviceInfo;
     private String mDeviceId;
     ListenerInfo mListenerInfo;
-    private Application mApplication;
 
     ListenerInfo getListenerInfo() {
         if (mListenerInfo != null) {
@@ -72,7 +71,7 @@ public class SensorsDataAPI {
     }
 
     private SensorsDataAPI(Application application) {
-        mApplication = application;
+        mDeviceInfo = SensorsDataUtils.getDeviceInfo(application.getApplicationContext());
     }
 
     /**
@@ -85,7 +84,7 @@ public class SensorsDataAPI {
     public void track(@NonNull final String eventName, @Nullable JSONObject properties) {
         try {
            // mDeviceId = SensorsDataUtils.getAndroidID(mApplication.getApplicationContext());
-            mDeviceInfo = SensorsDataUtils.getDeviceInfo(mApplication.getApplicationContext());
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("event", eventName);
             //jsonObject.put("device_id", mDeviceId);
@@ -100,7 +99,7 @@ public class SensorsDataAPI {
             jsonObject.put("time", System.currentTimeMillis());
 
             if (BuildConfig.DEBUG) {
-                Log.i(TAG, SensorsDataUtils.formatJson(jsonObject.toString()));
+                Log.d(TAG, SensorsDataUtils.formatJson(jsonObject.toString()));
             }
         } catch (Exception e) {
             e.printStackTrace();
