@@ -460,6 +460,7 @@ public class SensorsDataAutoTrackHelper {
     }
 
     private static boolean clickEnable(View view) {
+        setDelayTime(view, 750);
         boolean isClickEnable = false;
         long currentTimeMillis = System.currentTimeMillis();
         if (currentTimeMillis - getLastClickTime(view) >= getDelayTime(view)) {
