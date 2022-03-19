@@ -28,6 +28,7 @@ import com.peakmain.sdk.utils.SensorsDataUtils;
 import org.json.JSONObject;
 
 import java.util.Locale;
+
 /**
  * author:Peakmain
  * createTime:2021/6/15
@@ -82,6 +83,9 @@ public class SensorsDataAutoTrackHelper {
 
     public static void trackViewOnClick(CompoundButton view, boolean isChecked) {
         try {
+            if (!clickEnable(view)) {
+                return;
+            }
             Context context = view.getContext();
             if (context == null) {
                 return;
@@ -279,6 +283,9 @@ public class SensorsDataAutoTrackHelper {
     public static void trackExpandableListViewChildOnClick(ExpandableListView expandableListView, View view,
                                                            int groupPosition, int childPosition) {
         try {
+            if (!clickEnable(view)) {
+                return;
+            }
             Context context = expandableListView.getContext();
             if (context == null) {
                 return;
@@ -329,6 +336,9 @@ public class SensorsDataAutoTrackHelper {
 
     @Keep
     public static void trackViewOnClick(android.widget.AdapterView adapterView, View view, int position) {
+        if (!clickEnable(view)) {
+            return;
+        }
         try {
             Context context = adapterView.getContext();
             if (context == null) {
@@ -396,13 +406,16 @@ public class SensorsDataAutoTrackHelper {
      */
     @Keep
     public static boolean trackViewOnClick(View view) {
-        boolean isUserAgreement=true;
+        if (!clickEnable(view)) {
+            return false;
+        }
+        boolean isUserAgreement = true;
         try {
             SensorsDataAPI.OnUserAgreementListener mOnUserAgreement = SensorsDataAPI.getInstance().getListenerInfo().mOnUserAgreement;
-            if(mOnUserAgreement!=null){
-                isUserAgreement= mOnUserAgreement.onUserAgreement();
+            if (mOnUserAgreement != null) {
+                isUserAgreement = mOnUserAgreement.onUserAgreement();
             }
-            if(!isUserAgreement){
+            if (!isUserAgreement) {
                 return false;
             }
             JSONObject jsonObject = new JSONObject();
@@ -421,4 +434,38 @@ public class SensorsDataAutoTrackHelper {
         return true;
     }
 
+    //防止多次点击事件
+    private static long getLastClickTime(View view) {
+        if (view.getTag(1638288000) != null) {
+            return (long) view.getTag(1638288000);
+        } else {
+            return -1;
+        }
+    }
+
+    private static void setLastClickTime(View view, long value) {
+        view.setTag(1638288000, value);
+    }
+
+    private static long getDelayTime(View view) {
+        if (view.getTag(1638288600) != null) {
+            return (long) view.getTag(1638288000);
+        } else {
+            return -1;
+        }
+    }
+
+    private static void setDelayTime(View view, long value) {
+        view.setTag(1638288600, value);
+    }
+
+    private static boolean clickEnable(View view) {
+        boolean isClickEnable = false;
+        long currentTimeMillis = System.currentTimeMillis();
+        if (currentTimeMillis - getLastClickTime(view) >= getDelayTime(view)) {
+            isClickEnable = true;
+        }
+        setLastClickTime(view, currentTimeMillis);
+        return isClickEnable;
+    }
 }
