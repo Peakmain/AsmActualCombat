@@ -449,7 +449,7 @@ public class SensorsDataAutoTrackHelper {
 
     private static long getDelayTime(View view) {
         if (view.getTag(1638288600) != null) {
-            return (long) view.getTag(1638288000);
+            return (long) view.getTag(1638288600);
         } else {
             return -1;
         }
