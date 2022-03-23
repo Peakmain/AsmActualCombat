@@ -59,7 +59,7 @@ class PeakmainVisitor extends ClassVisitor {
                 String desc2 = (String) bootstrapMethodArguments[0]
                 PeakmainMethodCell buryPointMethodCell = PeakmainHookConfig.LAMBDA_METHODS.get(Type.getReturnType(descriptor1).getDescriptor() + name1 + desc2)
                 if (buryPointMethodCell != null) {
-                    Handle it = (Handle) bsmArgs[1]
+                    Handle it = (Handle) bootstrapMethodArguments[1]
                     mMethodCells.put(it.name + it.desc, buryPointMethodCell)
                 }
             }
