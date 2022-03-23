@@ -2,6 +2,7 @@
 ASM实战——埋点
 - 可动态设置方法对点击事件处理之前进行拦截
 - 可获取方法的耗时时间
+- 默认包含防止多次点击事件的处理
 - 可动态配置是否开启插件，默认是开启
 #### 怎样使用
 **ASM插件依赖**
@@ -34,7 +35,7 @@ Add it in your root build.gradle at the end of repositories:
 - Step 2. Add the dependency
 ```
 	dependencies {
-	       implementation 'com.github.Peakmain:AsmActualCombat:0.1.3'
+	       implementation 'com.github.Peakmain:AsmActualCombat:0.1.10'
 	}
 ```
 #### 使用文档
