@@ -1,6 +1,6 @@
 
 version = '1.0.0'
-group = 'io.peakmain'
+group = 'io.github.peakmain'
 gradlePlugin {
     plugins {
         peakmainPlugin {
