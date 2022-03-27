@@ -2,7 +2,7 @@ package com.peakmain.analytics.plugin.visitor
 
 import com.peakmain.analytics.plugin.entity.PeakmainHookConfig
 import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
-import com.peakmain.analytics.plugin.utils.PeakmainUtils
+import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import org.objectweb.asm.*
 
 class PeakmainVisitor extends ClassVisitor {
@@ -102,7 +102,7 @@ class PeakmainVisitor extends ClassVisitor {
                             }
                         }
                     }
-                    boolean isStaticMethod = PeakmainUtils.isStatic(access)
+                    boolean isStaticMethod = OpcodesUtils.isStatic(access)
                     if (!isStaticMethod) {
                         if (lambdaMethodCell.desc == '(Landroid/view/MenuItem;)Z') {
                             methodVisitor.visitVarInsn(ALOAD, 0)

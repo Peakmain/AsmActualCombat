@@ -3,6 +3,7 @@ package com.peakmain.analytics.plugin
 import com.android.build.gradle.AppExtension
 import com.peakmain.analytics.plugin.ext.PeakmainExtension
 import com.peakmain.analytics.plugin.transform.PeakmainTransform
+import com.peakmain.analytics.plugin.utils.log.Logger
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.DataInputStream
@@ -30,6 +31,7 @@ class PeakmainPlugin implements Plugin<Project> {
         }
         //如果disableBuryPointPlugin可用
         if(!disableBuryPointPlugin){
+            Logger.printPluginStart()
             AppExtension appExtension = project.extensions.findByType(AppExtension.class)
             appExtension.registerTransform(new PeakmainTransform(project,extension))
         }else{
