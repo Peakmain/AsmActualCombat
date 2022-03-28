@@ -1,12 +1,19 @@
 package com.peakmain.analytics.plugin.visitor
 
-import com.peakmain.analytics.plugin.entity.PeakmainHookConfig
-import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
-import com.peakmain.analytics.plugin.utils.OpcodesUtils
-import org.objectweb.asm.*
 
+import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
+import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Opcodes
+import org.objectweb.asm.Type
+
+/**
+ * author ：Peakmain
+ * createTime：2021/1/5
+ * mail:2726449200@qq.com
+ * describe：
+ */
 class PeakmainVisitor extends ClassVisitor {
-    private final static String SDK_API_CLASS = "com/peakmain/sdk/SensorsDataAutoTrackHelper"
     private ClassVisitor classVisitor
     private String[] mInterfaces
     private HashMap<String, PeakmainMethodCell> mMethodCells = new HashMap<>()
@@ -40,175 +47,7 @@ class PeakmainVisitor extends ClassVisitor {
     @Override
     MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions)
-
-        String nameDesc = name + descriptor
-        boolean isSensorsDataTrackViewOnClickAnnotation = false
-        boolean isLogMessageTime = false
-        methodVisitor = new PeakmainDefalutMethodVisitor(methodVisitor, access, name, descriptor) {
-            @Override
-            void visitEnd() {
-                super.visitEnd()
-                if (mMethodCells.containsKey(nameDesc)) {
-                    mMethodCells.remove(nameDesc)
-                }
-            }
-
-            @Override
-            void visitInvokeDynamicInsn(String name1, String descriptor1, Handle bootstrapMethodHandle, Object... bootstrapMethodArguments) {
-                super.visitInvokeDynamicInsn(name1, descriptor1, bootstrapMethodHandle, bootstrapMethodArguments)
-                String desc2 = (String) bootstrapMethodArguments[0]
-                PeakmainMethodCell buryPointMethodCell = PeakmainHookConfig.LAMBDA_METHODS.get(Type.getReturnType(descriptor1).getDescriptor() + name1 + desc2)
-                if (buryPointMethodCell != null) {
-                    Handle it = (Handle) bootstrapMethodArguments[1]
-                    mMethodCells.put(it.name + it.desc, buryPointMethodCell)
-                }
-            }
-
-            @Override
-            void visitCode() {
-                super.visitCode()
-                if (isLogMessageTime) {
-                }
-            }
-
-
-            @Override
-            protected void onMethodExit(int opcode) {
-                super.onMethodExit(opcode)
-                if (isLogMessageTime) {
-                }
-            }
-
-            @Override
-            protected void onMethodEnter() {
-                super.onMethodEnter()
-                /**
-                 * 在 android.gradle 的 3.2.1 版本中，针对 view 的 setOnClickListener 方法 的 lambda 表达式做特殊处理。
-                 */
-                PeakmainMethodCell lambdaMethodCell = mMethodCells.get(nameDesc)
-                if (lambdaMethodCell != null) {
-                    Type[] types = Type.getArgumentTypes(lambdaMethodCell.desc)
-                    int length = types.length
-                    Type[] lambdaTypes = Type.getArgumentTypes(descriptor)
-                    int paramStart = lambdaTypes.length - length
-                    if (paramStart < 0) {
-                        return
-                    } else {
-                        for (int i = 0; i < length; i++) {
-                            if (lambdaTypes[paramStart + i].descriptor != types[i].descriptor) {
-                                return
-                            }
-                        }
-                    }
-                    boolean isStaticMethod = OpcodesUtils.isStatic(access)
-                    if (!isStaticMethod) {
-                        if (lambdaMethodCell.desc == '(Landroid/view/MenuItem;)Z') {
-                            methodVisitor.visitVarInsn(ALOAD, 0)
-                            methodVisitor.visitVarInsn(ALOAD, getVisitPosition(lambdaTypes, paramStart, isStaticMethod))
-                            methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, lambdaMethodCell.agentName, '(Ljava/lang/Object;Landroid/view/MenuItem;)V', false)
-                            return
-                        }
-                    }
-
-                    for (int i = paramStart; i < paramStart + lambdaMethodCell.paramsCount; i++) {
-                        methodVisitor.visitVarInsn(lambdaMethodCell.opcodes.get(i - paramStart), getVisitPosition(lambdaTypes, i, isStaticMethod))
-                    }
-                    methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, lambdaMethodCell.agentName, lambdaMethodCell.agentDesc, false)
-                    return
-                }
-
-                if (nameDesc == 'onContextItemSelected(Landroid/view/MenuItem;)Z' ||
-                        nameDesc == 'onOptionsItemSelected(Landroid/view/MenuItem;)Z') {
-                    methodVisitor.visitVarInsn(ALOAD, 0)
-                    methodVisitor.visitVarInsn(ALOAD, 1)
-                    methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Ljava/lang/Object;Landroid/view/MenuItem;)V", false)
-                }
-
-                if (isSensorsDataTrackViewOnClickAnnotation) {
-                    if (descriptor == '(Landroid/view/View;)V') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/view/View;)Z", false)
-                        return
-                    }
-                }
-
-                if ((mInterfaces != null && mInterfaces.length > 0)) {
-                    if ((mInterfaces.contains('android/view/View$OnClickListener') && nameDesc == 'onClick(Landroid/view/View;)V')) {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/view/View;)Z", false)
-                        methodVisitor.visitVarInsn(ISTORE, 2)
-                        Label label1 = new Label()
-                        methodVisitor.visitLabel(label1)
-                        methodVisitor.visitVarInsn(ILOAD, 2)
-                        Label label2 = new Label()
-                        methodVisitor.visitJumpInsn(IFNE, label2)
-                        Label l3 = new Label()
-                        methodVisitor.visitLabel(l3)
-                        methodVisitor.visitInsn(RETURN)
-                        methodVisitor.visitLabel(label2)
-                        Object[] obj = new Object[1]
-                        obj[0] = INTEGER
-                        methodVisitor.visitFrame(F_APPEND, 1, obj, 0, null)
-
-                    } else if (mInterfaces.contains('android/content/DialogInterface$OnClickListener') && nameDesc == 'onClick(Landroid/content/DialogInterface;I)V') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitVarInsn(ILOAD, 2)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/content/DialogInterface;I)V", false)
-                    } else if (mInterfaces.contains('android/content/DialogInterface$OnMultiChoiceClickListener') && nameDesc == 'onClick(Landroid/content/DialogInterface;IZ)V') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitVarInsn(ILOAD, 2)
-                        methodVisitor.visitVarInsn(ILOAD, 3)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/content/DialogInterface;IZ)V", false)
-                    } else if (mInterfaces.contains('android/widget/CompoundButton$OnCheckedChangeListener') && nameDesc == 'onCheckedChanged(Landroid/widget/CompoundButton;Z)V') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitVarInsn(ILOAD, 2)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/widget/CompoundButton;Z)V", false)
-                    } else if (mInterfaces.contains('android/widget/RatingBar$OnRatingBarChangeListener') && nameDesc == 'onRatingChanged(Landroid/widget/RatingBar;FZ)V') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/view/View;)Z", false)
-                    } else if (mInterfaces.contains('android/widget/SeekBar$OnSeekBarChangeListener') && nameDesc == 'onStopTrackingTouch(Landroid/widget/SeekBar;)V') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/view/View;)Z", false)
-                    } else if (mInterfaces.contains('android/widget/AdapterView$OnItemSelectedListener') && nameDesc == 'onItemSelected(Landroid/widget/AdapterView;Landroid/view/View;IJ)V') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitVarInsn(ALOAD, 2)
-                        methodVisitor.visitVarInsn(ILOAD, 3)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/widget/AdapterView;Landroid/view/View;I)V", false)
-                    } else if (mInterfaces.contains('android/widget/TabHost$OnTabChangeListener') && nameDesc == 'onTabChanged(Ljava/lang/String;)V') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackTabHost", "(Ljava/lang/String;)V", false)
-                    } else if (mInterfaces.contains('android/widget/AdapterView$OnItemClickListener') && nameDesc == 'onItemClick(Landroid/widget/AdapterView;Landroid/view/View;IJ)V') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitVarInsn(ALOAD, 2)
-                        methodVisitor.visitVarInsn(ILOAD, 3)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/widget/AdapterView;Landroid/view/View;I)V", false)
-                    } else if (mInterfaces.contains('android/widget/ExpandableListView$OnGroupClickListener') && nameDesc == 'onGroupClick(Landroid/widget/ExpandableListView;Landroid/view/View;IJ)Z') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitVarInsn(ALOAD, 2)
-                        methodVisitor.visitVarInsn(ILOAD, 3)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackExpandableListViewGroupOnClick", "(Landroid/widget/ExpandableListView;Landroid/view/View;I)V", false)
-                    } else if (mInterfaces.contains('android/widget/ExpandableListView$OnChildClickListener') && nameDesc == 'onChildClick(Landroid/widget/ExpandableListView;Landroid/view/View;IIJ)Z') {
-                        methodVisitor.visitVarInsn(ALOAD, 1)
-                        methodVisitor.visitVarInsn(ALOAD, 2)
-                        methodVisitor.visitVarInsn(ILOAD, 3)
-                        methodVisitor.visitVarInsn(ILOAD, 4)
-                        methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackExpandableListViewChildOnClick", "(Landroid/widget/ExpandableListView;Landroid/view/View;II)V", false)
-                    }
-                }
-
-            }
-
-            @Override
-            AnnotationVisitor visitAnnotation(String s, boolean b) {
-                if (s == "Lcom/peakmain/sdk/SensorsDataTrackViewOnClick;") {
-                    isSensorsDataTrackViewOnClickAnnotation = true
-                }
-                if (s == "Lcom/peakmain/sdk/utils/LogMessageTime;") {
-                    isLogMessageTime = true
-                }
-                return super.visitAnnotation(s, b)
-            }
-        }
+        methodVisitor = new PeakmainClickVisitor(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces)
         return methodVisitor
     }
 
