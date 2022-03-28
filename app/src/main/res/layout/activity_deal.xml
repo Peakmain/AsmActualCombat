@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="handlers"
+            type="com.peakmain.asmactualcombat.activity.ClickDealActivity" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.peakmain.asmactualcombat.activity.ClickDealActivity">
+
+        <LinearLayout
+            android:id="@+id/rootView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="普通 setOnClickListener"
+                android:textAllCaps="false" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/xmlOnClick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="xmlOnClick"
+                android:text="android:onClick 绑定 OnClickListener"
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/dataBinding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{handlers.dataBindingOnClick}"
+                android:text="DataBinding 绑定 OnClickListener"
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/lambdaButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lambda 语法 setOnClickListener"
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/showDialogButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="点击出现 Dialog"
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/showMultiChoiceDialogButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="点击出现 MultiChoice Dialog"
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/tabHostButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TabHost Test"
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="插件" />
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp" />
+
+            <fragment
+                android:id="@+id/testFragment"
+                android:name="com.peakmain.asmactualcombat.fragment.TestClickFragment"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/adapterViewTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="AdapterView Test"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/expandableListViewTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="ExpandableListView Test"/>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>
