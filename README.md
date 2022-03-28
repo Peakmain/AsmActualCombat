@@ -10,15 +10,16 @@ ASM实战——埋点
 Add it in your root build.gradle at the end of repositories:
 ```
 buildscript {
-    dependencies {
-        classpath "io.github.peakmain:plugin:1.0.3"
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
     }
+  }
+  dependencies {
+    classpath "io.github.peakmain:plugin:1.0.0"
+  }
 }
 
-```
-- Step 2. Add the Use
-Add it in your app module build.gradle at the end of repositories:
-```
 apply plugin: "com.peakmain.plugin"
 ```
 **拦截事件sdk的依赖**
