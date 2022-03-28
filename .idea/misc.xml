@@ -11,7 +11,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.12487335359675786" />
+        <entry key="app/src/main/res/layout/activity_adapter_view_test.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/activity_deal.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/activity_expandable_listview.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21350762527233116" />
+        <entry key="app/src/main/res/layout/activity_tabhost.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/child_item.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/fragment_test.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_listview.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/parent_item.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/tab1.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/tab2.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/tab3.xml" value="0.10052083333333334" />
+        <entry key="app/src/main/res/menu/menu_main.xml" value="0.13125" />
       </map>
     </option>
   </component>

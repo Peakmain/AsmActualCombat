@@ -22,7 +22,7 @@ class PeakmainDefalutMethodVisitor extends AdviceAdapter {
      * @param descriptor the method's descriptor (see {@link Type Type}).
      */
     PeakmainDefalutMethodVisitor(MethodVisitor mv, int access, String name, String desc) {
-        super(Opcodes.ASM7, mv, access, name, desc)
+        super(Opcodes.ASM9, mv, access, name, desc)
     }
     /**
      * 表示 ASM 开始扫描这个方法

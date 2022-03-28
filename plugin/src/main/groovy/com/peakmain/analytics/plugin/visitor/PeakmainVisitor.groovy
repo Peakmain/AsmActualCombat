@@ -12,7 +12,7 @@ class PeakmainVisitor extends ClassVisitor {
     private HashMap<String, PeakmainMethodCell> mMethodCells = new HashMap<>()
 
     PeakmainVisitor(ClassVisitor classVisitor) {
-        super(Opcodes.ASM7, classVisitor)
+        super(Opcodes.ASM9, classVisitor)
         this.classVisitor = classVisitor
     }
     /**
@@ -68,7 +68,6 @@ class PeakmainVisitor extends ClassVisitor {
             void visitCode() {
                 super.visitCode()
                 if (isLogMessageTime) {
-                    getMessageStartCostTime(methodVisitor)
                 }
             }
 
@@ -77,7 +76,6 @@ class PeakmainVisitor extends ClassVisitor {
             protected void onMethodExit(int opcode) {
                 super.onMethodExit(opcode)
                 if (isLogMessageTime) {
-                    getMessageEndCostTime(methodVisitor, name)
                 }
             }
 
@@ -113,7 +111,7 @@ class PeakmainVisitor extends ClassVisitor {
                     }
 
                     for (int i = paramStart; i < paramStart + lambdaMethodCell.paramsCount; i++) {
-                        methodVisitor.visitVarInsn(lambdaMethodCell.get(i - paramStart), getVisitPosition(lambdaTypes, i, isStaticMethod))
+                        methodVisitor.visitVarInsn(lambdaMethodCell.opcodes.get(i - paramStart), getVisitPosition(lambdaTypes, i, isStaticMethod))
                     }
                     methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, lambdaMethodCell.agentName, lambdaMethodCell.agentDesc, false)
                     return
@@ -127,7 +125,7 @@ class PeakmainVisitor extends ClassVisitor {
                 }
 
                 if (isSensorsDataTrackViewOnClickAnnotation) {
-                    if (desc == '(Landroid/view/View;)V') {
+                    if (descriptor == '(Landroid/view/View;)V') {
                         methodVisitor.visitVarInsn(ALOAD, 1)
                         methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/view/View;)Z", false)
                         return
@@ -206,7 +204,6 @@ class PeakmainVisitor extends ClassVisitor {
                     isSensorsDataTrackViewOnClickAnnotation = true
                 }
                 if (s == "Lcom/peakmain/sdk/utils/LogMessageTime;") {
-                    println("进来了")
                     isLogMessageTime = true
                 }
                 return super.visitAnnotation(s, b)
@@ -233,32 +230,4 @@ class PeakmainVisitor extends ClassVisitor {
         }
     }
 
-    private void getMessageStartCostTime(MethodVisitor methodVisitor) {
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false)
-        methodVisitor.visitVarInsn(LSTORE, 1)
-        Label label1 = new Label()
-        methodVisitor.visitLabel(label1)
-    }
-
-    private void getMessageEndCostTime(MethodVisitor methodVisitor, String name) {
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false)
-        methodVisitor.visitVarInsn(LLOAD, 1)
-        methodVisitor.visitInsn(LSUB)
-        methodVisitor.visitVarInsn(LSTORE, 2)
-        Label label2 = new Label()
-        methodVisitor.visitLabel(label2)
-        methodVisitor.visitLdcInsn("LogMessageCostTime")
-        methodVisitor.visitTypeInsn(NEW, "java/lang/StringBuilder")
-        methodVisitor.visitInsn(DUP)
-        methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false)
-        methodVisitor.visitLdcInsn(name + "消耗的时间:")
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false)
-        methodVisitor.visitVarInsn(LLOAD, 2)
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false)
-        methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false)
-        methodVisitor.visitMethodInsn(INVOKESTATIC, "android/util/Log", "e", "(Ljava/lang/String;Ljava/lang/String;)I", false)
-        methodVisitor.visitInsn(POP)
-        Label label3 = new Label()
-        methodVisitor.visitLabel(label3)
-    }
 }

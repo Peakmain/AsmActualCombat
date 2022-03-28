@@ -13,11 +13,11 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    implementation 'org.ow2.asm:asm:7.1'
-    implementation 'org.ow2.asm:asm-commons:7.1'
-    implementation 'org.ow2.asm:asm-analysis:7.1'
-    implementation 'org.ow2.asm:asm-util:7.1'
-    implementation 'org.ow2.asm:asm-tree:7.1'
+    implementation 'org.ow2.asm:asm:9.2'
+    implementation 'org.ow2.asm:asm-commons:9.2'
+    implementation 'org.ow2.asm:asm-analysis:9.2'
+    implementation 'org.ow2.asm:asm-util:9.2'
+    implementation 'org.ow2.asm:asm-tree:9.2'
     compileOnly 'com.android.tools.build:gradle:4.0.1', {
         exclude group: 'org.ow2.asm'
     }
