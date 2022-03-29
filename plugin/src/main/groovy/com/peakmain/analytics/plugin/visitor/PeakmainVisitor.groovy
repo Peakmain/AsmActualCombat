@@ -2,7 +2,10 @@ package com.peakmain.analytics.plugin.visitor
 
 
 import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
+import com.peakmain.analytics.plugin.utils.OpcodesUtils
+import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.FieldVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
@@ -17,6 +20,8 @@ class PeakmainVisitor extends ClassVisitor {
     private ClassVisitor classVisitor
     private String[] mInterfaces
     private HashMap<String, PeakmainMethodCell> mMethodCells = new HashMap<>()
+    private boolean isLogMessageTime = false
+    private String mClassName
 
     PeakmainVisitor(ClassVisitor classVisitor) {
         super(Opcodes.ASM9, classVisitor)
@@ -32,8 +37,9 @@ class PeakmainVisitor extends ClassVisitor {
      */
     @Override
     void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-        super.visit(version, access, name, signature, superName, interfaces)
         this.mInterfaces = interfaces
+        this.mClassName = name
+        super.visit(version, access, name, signature, superName, interfaces)
     }
     /**
      * 扫描类的方法进行调用
@@ -47,7 +53,8 @@ class PeakmainVisitor extends ClassVisitor {
     @Override
     MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions)
-        methodVisitor = new PeakmainClickVisitor(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces)
+        methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces)
+        methodVisitor = new MonitorMethodTimeAdapter(methodVisitor, access, name, descriptor, mClassName, cv)
         return methodVisitor
     }
 

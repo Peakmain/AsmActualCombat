@@ -15,23 +15,22 @@ import org.objectweb.asm.Type
  * mail:2726449200@qq.com
  * describe：点击事件的Visitor
  */
-class PeakmainClickVisitor extends PeakmainDefalutMethodVisitor {
+class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
     private final static String SDK_API_CLASS = "com/peakmain/sdk/SensorsDataAutoTrackHelper"
     private HashMap<String, PeakmainMethodCell> mMethodCells = new HashMap<>()
     private String nameDesc
     private MethodVisitor methodVisitor
-    boolean isLogMessageTime = false
     boolean isSensorsDataTrackViewOnClickAnnotation = false
     private String descriptor
     private String[] mInterfaces
     /**
-     * Constructs a new {@link PeakmainDefalutMethodVisitor}.
+     * Constructs a new {@link MonitorDefalutMethodAdapter}.
      *
      * @param mv @param access the method's access flags (see {@link Opcodes}).
      * @param name the method's name.
      * @param desc
      */
-    PeakmainClickVisitor(MethodVisitor mv, int access, String name, String desc, HashMap<String, PeakmainMethodCell> map, String[] interfaces) {
+    MonitorClickAdapter(MethodVisitor mv, int access, String name, String desc, HashMap<String, PeakmainMethodCell> map, String[] interfaces) {
         super(mv, access, name, desc)
         mMethodCells = map
         nameDesc = name + desc
@@ -59,20 +58,7 @@ class PeakmainClickVisitor extends PeakmainDefalutMethodVisitor {
         }
     }
 
-    @Override
-    void visitCode() {
-        super.visitCode()
-        if (isLogMessageTime) {
-        }
-    }
 
-
-    @Override
-    protected void onMethodExit(int opcode) {
-        super.onMethodExit(opcode)
-        if (isLogMessageTime) {
-        }
-    }
 
     @Override
     protected void onMethodEnter() {
@@ -198,9 +184,6 @@ class PeakmainClickVisitor extends PeakmainDefalutMethodVisitor {
         if (s == "Lcom/peakmain/sdk/SensorsDataTrackViewOnClick;") {
             isSensorsDataTrackViewOnClickAnnotation = true
         }
-        if (s == "Lcom/peakmain/sdk/utils/LogMessageTime;") {
-            isLogMessageTime = true
-        }
         return super.visitAnnotation(s, b)
     }
 
@@ -222,4 +205,5 @@ class PeakmainClickVisitor extends PeakmainDefalutMethodVisitor {
             return getVisitPosition(types, index - 1, isStaticMethod) + types[index - 1].getSize()
         }
     }
+
 }

@@ -9,7 +9,7 @@ import org.objectweb.asm.commons.AdviceAdapter
  * mail:2726449200@qq.com
  * describe：
  */
-class PeakmainDefalutMethodVisitor extends AdviceAdapter {
+class MonitorDefalutMethodAdapter extends AdviceAdapter {
 
     /**
      * Constructs a new {@link AdviceAdapter}.
@@ -21,7 +21,7 @@ class PeakmainDefalutMethodVisitor extends AdviceAdapter {
      * @param name the method's name.
      * @param descriptor the method's descriptor (see {@link Type Type}).
      */
-    PeakmainDefalutMethodVisitor(MethodVisitor mv, int access, String name, String desc) {
+    MonitorDefalutMethodAdapter(MethodVisitor mv, int access, String name, String desc) {
         super(Opcodes.ASM9, mv, access, name, desc)
     }
     /**
