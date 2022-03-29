@@ -6,7 +6,6 @@ ASM实战——埋点
 - 可动态配置是否开启插件，默认是开启
 #### 怎样使用
 **ASM插件依赖**
-- Step 1. Add the JitPack repository to your build file
 Add it in your root build.gradle at the end of repositories:
 ```
 buildscript {
