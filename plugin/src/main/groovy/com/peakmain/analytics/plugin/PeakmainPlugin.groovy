@@ -1,15 +1,11 @@
 package com.peakmain.analytics.plugin
 
 import com.android.build.gradle.AppExtension
-import com.peakmain.analytics.plugin.ext.PeakmainExtension
+import com.peakmain.analytics.plugin.ext.MonitorConfig
 import com.peakmain.analytics.plugin.transform.PeakmainTransform
 import com.peakmain.analytics.plugin.utils.log.Logger
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.io.DataInputStream
-import java.io.FileInputStream
-import java.util.*
-
 
 /**
  * author ：Peakmain
@@ -18,23 +14,28 @@ import java.util.*
  * describe：
  */
 class PeakmainPlugin implements Plugin<Project> {
+    private final String pluginName = "monitorPlugin"
+
     @Override
     void apply(Project project) {
-        PeakmainExtension extension = project.extensions.create("peakmainPlugin", PeakmainExtension)
-        boolean disableBuryPointPlugin = false
+        MonitorConfig extension = project.extensions.create(pluginName, MonitorConfig)
+        boolean disablePlugin = false
         Properties properties = new Properties()
         //gradle.properties是否存在
-        if(project.rootProject.file('gradle.properties').exists()){
+        if (project.rootProject.file('gradle.properties').exists()) {
             //gradle.properties文件->输入流
             properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
-            disableBuryPointPlugin=Boolean.parseBoolean(properties.getProperty("peakmainPlugin.disableAppClick","false"))
+            disablePlugin = Boolean.parseBoolean(properties.getProperty("monitorPlugin.disableAppPlugin", "false"))
         }
-        //如果disableBuryPointPlugin可用
-        if(!disableBuryPointPlugin){
+        //如果disablePlugin可用
+        if (!disablePlugin) {
             Logger.printPluginStart()
+            project.afterEvaluate {
+                extension.convertConfig()
+            }
             AppExtension appExtension = project.extensions.findByType(AppExtension.class)
-            appExtension.registerTransform(new PeakmainTransform(project,extension))
-        }else{
+            appExtension.registerTransform(new PeakmainTransform(project, extension))
+        } else {
             println("------------您已关闭了埋点插件--------------")
         }
     }

@@ -11,7 +11,7 @@ import com.android.build.api.transform.TransformInput
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.api.transform.TransformOutputProvider
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.peakmain.analytics.plugin.ext.PeakmainExtension
+import com.peakmain.analytics.plugin.ext.MonitorConfig
 import com.peakmain.analytics.plugin.visitor.PeakmainVisitor
 import org.objectweb.asm.ClassVisitor
 import org.apache.commons.codec.digest.DigestUtils
@@ -27,9 +27,9 @@ import java.util.zip.ZipEntry
 
 class PeakmainTransform extends Transform {
     private static Project project
-    private PeakmainExtension peakmainExtension
+    private MonitorConfig peakmainExtension
 
-    PeakmainTransform(Project project, PeakmainExtension peakmainExtension) {
+    PeakmainTransform(Project project, MonitorConfig peakmainExtension) {
         this.project = project
         this.peakmainExtension = peakmainExtension
     }
