@@ -73,7 +73,7 @@ class MonitorMethodTimeAdapter extends MonitorDefalutMethodAdapter {
 
     @Override
     AnnotationVisitor visitAnnotation(String s, boolean b) {
-        if (s == "Lcom/peakmain/sdk/utils/LogMessageTime;") {
+        if (s == "Lcom/peakmain/sdk/annotation/LogMessageTime;") {
             isLogMessageTime = true
         }
         return super.visitAnnotation(s, b)

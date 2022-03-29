@@ -8,6 +8,7 @@ import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.peakmain.sdk.interfaces.OnUploadSensorsDataListener;
 import com.peakmain.sdk.utils.SensorsDataUtils;
 
 import org.json.JSONObject;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class SensorsDataAPI {
     private final String TAG = this.getClass().getSimpleName();
     public static final String SDK_VERSION = "1.0.0";
-    private static SensorsDataAPI INSTANCE;
+    private static volatile SensorsDataAPI INSTANCE;
     private static final Object mLock = new Object();
     private static Map<String, Object> mDeviceInfo;
     private String mDeviceId;
@@ -50,16 +51,23 @@ public class SensorsDataAPI {
         getListenerInfo().mOnUserAgreement = l;
     }
 
+    public void setOnUploadSensorsDataListener(@Nullable OnUploadSensorsDataListener l) {
+        getListenerInfo().mOnUploadSensorsData = l;
+    }
+
     static class ListenerInfo {
         OnUserAgreementListener mOnUserAgreement;
+        OnUploadSensorsDataListener mOnUploadSensorsData;
     }
 
     @Keep
     @SuppressWarnings("UnusedReturnValue")
     public static SensorsDataAPI init(Application application) {
-        synchronized (mLock) {
-            if (null == INSTANCE) {
-                INSTANCE = new SensorsDataAPI(application);
+        if (INSTANCE == null) {
+            synchronized (mLock) {
+                if (null == INSTANCE) {
+                    INSTANCE = new SensorsDataAPI(application);
+                }
             }
         }
         return INSTANCE;
@@ -83,7 +91,7 @@ public class SensorsDataAPI {
     @Keep
     public void track(@NonNull final String eventName, @Nullable JSONObject properties) {
         try {
-           // mDeviceId = SensorsDataUtils.getAndroidID(mApplication.getApplicationContext());
+            // mDeviceId = SensorsDataUtils.getAndroidID(mApplication.getApplicationContext());
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("event", eventName);
@@ -98,8 +106,10 @@ public class SensorsDataAPI {
             jsonObject.put("properties", sendProperties);
             jsonObject.put("time", System.currentTimeMillis());
 
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, SensorsDataUtils.formatJson(jsonObject.toString()));
+            //获取到埋点之后，上传到服务器
+            OnUploadSensorsDataListener onUploadSensorsData = getListenerInfo().mOnUploadSensorsData;
+            if (onUploadSensorsData != null) {
+                onUploadSensorsData.onUploadSensors(SensorsDataUtils.formatJson(jsonObject.toString()));
             }
         } catch (Exception e) {
             e.printStackTrace();

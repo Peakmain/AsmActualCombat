@@ -7,7 +7,6 @@ plugins {
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply from :'upload.gradle'
-//apply from :'uploadMaven.gradle'
 apply from :'local.gradle'
 dependencies {
     implementation gradleApi()

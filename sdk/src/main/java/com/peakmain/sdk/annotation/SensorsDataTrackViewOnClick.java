@@ -1,4 +1,4 @@
-package com.peakmain.sdk;
+package com.peakmain.sdk.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

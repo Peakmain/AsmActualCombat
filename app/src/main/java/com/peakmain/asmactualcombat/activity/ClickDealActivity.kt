@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.DialogInterface.OnMultiChoiceClickListener
 import android.content.Intent
 import android.view.*
-import android.view.ContextMenu.ContextMenuInfo
 import android.widget.*
 import android.widget.RatingBar.OnRatingBarChangeListener
 import android.widget.SeekBar.OnSeekBarChangeListener
@@ -16,7 +15,7 @@ import com.peakmain.asmactualcombat.R
 import com.peakmain.asmactualcombat.databinding.ActivityDealBinding
 import com.peakmain.asmactualcombat.viewmodel.ClickDealViewModel
 import com.peakmain.basiclibrary.base.activity.BaseActivity
-import com.peakmain.sdk.SensorsDataTrackViewOnClick
+import com.peakmain.sdk.annotation.SensorsDataTrackViewOnClick
 import com.peakmain.ui.utils.ToastUtils
 import java.util.*
 

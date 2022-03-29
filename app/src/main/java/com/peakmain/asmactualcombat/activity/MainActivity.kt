@@ -1,14 +1,10 @@
 package com.peakmain.asmactualcombat.activity
 
 import android.content.Intent
-import android.os.Bundle
 import com.peakmain.basiclibrary.base.activity.BaseActivity
 import com.peakmain.asmactualcombat.viewmodel.ClickDealViewModel
 import com.peakmain.asmactualcombat.R
 import com.peakmain.asmactualcombat.databinding.ActivityMainBinding
-import com.peakmain.basiclibrary.extend.click
-import com.peakmain.sdk.utils.LogMessageTime
-import com.peakmain.ui.utils.ActivityUtils
 
 /**
  * author ：Peakmain

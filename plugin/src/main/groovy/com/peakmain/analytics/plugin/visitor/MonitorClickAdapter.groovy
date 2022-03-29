@@ -181,7 +181,7 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
 
     @Override
     AnnotationVisitor visitAnnotation(String s, boolean b) {
-        if (s == "Lcom/peakmain/sdk/SensorsDataTrackViewOnClick;") {
+        if (s == "Lcom/peakmain/annotation/SensorsDataTrackViewOnClick;") {
             isSensorsDataTrackViewOnClickAnnotation = true
         }
         return super.visitAnnotation(s, b)

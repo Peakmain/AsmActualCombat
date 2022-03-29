@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.peakmain.asmactualcombat.R;
-import com.peakmain.sdk.utils.LogMessageTime;
+import com.peakmain.sdk.annotation.LogMessageTime;
 
 /**
  * author ：Peakmain

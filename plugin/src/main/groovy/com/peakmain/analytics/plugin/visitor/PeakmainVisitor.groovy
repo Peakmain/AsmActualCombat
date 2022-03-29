@@ -20,7 +20,6 @@ class PeakmainVisitor extends ClassVisitor {
     private ClassVisitor classVisitor
     private String[] mInterfaces
     private HashMap<String, PeakmainMethodCell> mMethodCells = new HashMap<>()
-    private boolean isLogMessageTime = false
     private String mClassName
 
     PeakmainVisitor(ClassVisitor classVisitor) {
