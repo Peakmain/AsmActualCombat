@@ -2,7 +2,7 @@ package com.peakmain.analytics.plugin
 
 import com.android.build.gradle.AppExtension
 import com.peakmain.analytics.plugin.ext.MonitorConfig
-import com.peakmain.analytics.plugin.transform.PeakmainTransform
+import com.peakmain.analytics.plugin.transform.MonitorTransform
 import com.peakmain.analytics.plugin.utils.log.Logger
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -30,11 +30,14 @@ class PeakmainPlugin implements Plugin<Project> {
         //如果disablePlugin可用
         if (!disablePlugin) {
             Logger.printPluginStart()
+
+            AppExtension appExtension = project.extensions.findByType(AppExtension.class)
+            def transform = new MonitorTransform(project)
+            appExtension.registerTransform(transform)
             project.afterEvaluate {
                 extension.convertConfig()
+                transform.monitorConfig = extension
             }
-            AppExtension appExtension = project.extensions.findByType(AppExtension.class)
-            appExtension.registerTransform(new PeakmainTransform(project, extension))
         } else {
             println("------------您已关闭了埋点插件--------------")
         }

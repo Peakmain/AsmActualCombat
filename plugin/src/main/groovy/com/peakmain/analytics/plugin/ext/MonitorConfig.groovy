@@ -6,10 +6,28 @@ package com.peakmain.analytics.plugin.ext
  * describe：
  */
 class MonitorConfig {
-
+    /**
+     * 是否禁用多线程构建
+     */
+    public boolean disableMultiThreadBuild = false
+    /**
+     * 是否开启增量更新
+     */
+    public boolean isIncremental = false
     public ArrayList<String> whiteList = []
 
     void convertConfig() {
 
+    }
+
+    void reset() {
+        whiteList.each { info ->
+            info.reset()
+        }
+    }
+
+    @Override
+    String toString() {
+        return "是否禁用多线程构建:" + disableMultiThreadBuild + ";是否开启增量更新:" + isIncremental
     }
 }

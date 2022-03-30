@@ -11,7 +11,9 @@ import com.android.build.api.transform.TransformInput
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.api.transform.TransformOutputProvider
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.ide.common.internal.WaitableExecutor
 import com.peakmain.analytics.plugin.ext.MonitorConfig
+import com.peakmain.analytics.plugin.utils.log.Logger
 import com.peakmain.analytics.plugin.visitor.PeakmainVisitor
 import org.objectweb.asm.ClassVisitor
 import org.apache.commons.codec.digest.DigestUtils
@@ -20,18 +22,27 @@ import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.gradle.api.Project
+
+import java.util.concurrent.Callable
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
 
-class PeakmainTransform extends Transform {
+class MonitorTransform extends Transform {
     private static Project project
-    private MonitorConfig peakmainExtension
+    private MonitorConfig monitorConfig
+    private WaitableExecutor waitableExecutor
 
-    PeakmainTransform(Project project, MonitorConfig peakmainExtension) {
+    MonitorTransform(Project project) {
         this.project = project
-        this.peakmainExtension = peakmainExtension
+    }
+
+    void setMonitorConfig(MonitorConfig monitorConfig) {
+        this.monitorConfig = monitorConfig
+        if (!monitorConfig.disableMultiThreadBuild) {
+            waitableExecutor = WaitableExecutor.useGlobalSharedThreadPool()
+        }
     }
 
     @Override
@@ -69,7 +80,7 @@ class PeakmainTransform extends Transform {
      */
     @Override
     boolean isIncremental() {
-        return false
+        return monitorConfig.isIncremental
     }
 
     @Override
@@ -84,6 +95,10 @@ class PeakmainTransform extends Transform {
      * @param outputProvider 输出路径
      */
     void _transform(Context context, Collection<TransformInput> inputs, TransformOutputProvider outputProvider) throws IOException, TransformException, InterruptedException {
+        println("[MonitorTransform]: 是否开启多线程编译:${!monitorConfig.disableMultiThreadBuild}")
+        println("[MonitorTransform]: 是否开启增量编译:${!monitorConfig.isIncremental}")
+        println("[MonitorTransform]: 此次是否增量编译:${isIncremental()}")
+        long startTime = System.currentTimeMillis()
         if (!incremental) {
             //不是增量更新删除所有的outputProvider
             outputProvider.deleteAll()
@@ -91,13 +106,37 @@ class PeakmainTransform extends Transform {
         inputs.each { TransformInput input ->
             //遍历目录
             input.directoryInputs.each { DirectoryInput directoryInput ->
-                handleDirectoryInput(directoryInput, outputProvider)
+                if (waitableExecutor) {
+                    waitableExecutor.execute(new Callable<Object>() {
+                        @Override
+                        Object call() throws Exception {
+                            handleDirectoryInput(directoryInput, outputProvider)
+                            return null
+                        }
+                    })
+                } else {
+                    handleDirectoryInput(directoryInput, outputProvider)
+                }
             }
             // 遍历jar 第三方引入的 class
             input.jarInputs.each { JarInput jarInput ->
-                handleJarInput(jarInput, outputProvider)
+                if (waitableExecutor) {
+                    waitableExecutor.execute(new Callable<Object>() {
+                        @Override
+                        Object call() throws Exception {
+                            handleJarInput(jarInput, outputProvider)
+                            return null
+                        }
+                    })
+                } else {
+                    handleJarInput(jarInput, outputProvider)
+                }
             }
         }
+        if (waitableExecutor) {
+            waitableExecutor.waitForTasksWithQuickFail(true)
+        }
+        println("[MonitorTransform]: 此次编译共耗时:${System.currentTimeMillis() - startTime}毫秒")
     }
 
     void handleDirectoryInput(DirectoryInput directoryInput, TransformOutputProvider outputProvider) {
