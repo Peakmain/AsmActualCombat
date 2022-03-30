@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.peakmain.asmactualcombat.R;
+import com.peakmain.sdk.annotation.LogParametersReturnValue;
 import com.peakmain.sdk.annotation.LogMessageTime;
 
 /**
@@ -22,6 +23,7 @@ public class TestActivity extends AppCompatActivity {
     }
 
     @LogMessageTime
+    @LogParametersReturnValue
     public void getMethodTime() {
         try {
             Thread.sleep(1000);
@@ -29,5 +31,9 @@ public class TestActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    @LogParametersReturnValue
+    public String test(int a) {
 
+        return "peakmain";
+    }
 }

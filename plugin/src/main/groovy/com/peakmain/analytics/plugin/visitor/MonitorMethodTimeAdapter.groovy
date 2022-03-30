@@ -1,5 +1,6 @@
 package com.peakmain.analytics.plugin.visitor
 
+import com.peakmain.analytics.plugin.utils.MethodFieldUtils
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassWriter

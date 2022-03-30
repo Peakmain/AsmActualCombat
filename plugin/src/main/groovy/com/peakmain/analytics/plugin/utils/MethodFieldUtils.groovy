@@ -1,4 +1,4 @@
-package com.peakmain.analytics.plugin.visitor
+package com.peakmain.analytics.plugin.utils
 
 class MethodFieldUtils{
     static String getTimeFieldName(String methodName) {

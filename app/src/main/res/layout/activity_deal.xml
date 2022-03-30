@@ -41,7 +41,7 @@
                 android:id="@+id/dataBinding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{handlers.dataBindingOnClick}"
+                android:onClick="@{handlers::dataBindingOnClick}"
                 android:text="DataBinding 绑定 OnClickListener"
                 android:textAllCaps="false" />
 

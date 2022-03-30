@@ -95,9 +95,7 @@ class MonitorTransform extends Transform {
      * @param outputProvider 输出路径
      */
     void _transform(Context context, Collection<TransformInput> inputs, TransformOutputProvider outputProvider) throws IOException, TransformException, InterruptedException {
-        println("[MonitorTransform]: 是否开启多线程编译:${!monitorConfig.disableMultiThreadBuild}")
-        println("[MonitorTransform]: 是否开启增量编译:${!monitorConfig.isIncremental}")
-        println("[MonitorTransform]: 此次是否增量编译:${isIncremental()}")
+        println(monitorConfig.toString())
         long startTime = System.currentTimeMillis()
         if (!incremental) {
             //不是增量更新删除所有的outputProvider
@@ -139,7 +137,7 @@ class MonitorTransform extends Transform {
         println("[MonitorTransform]: 此次编译共耗时:${System.currentTimeMillis() - startTime}毫秒")
     }
 
-    void handleDirectoryInput(DirectoryInput directoryInput, TransformOutputProvider outputProvider) {
+    static void handleDirectoryInput(DirectoryInput directoryInput, TransformOutputProvider outputProvider) {
         if (directoryInput.file.isDirectory()) {
             directoryInput.file.eachFileRecurse { File file ->
                 String name = file.name
@@ -167,7 +165,7 @@ class MonitorTransform extends Transform {
         FileUtils.copyDirectory(directoryInput.file, dest)
     }
 
-    void handleJarInput(JarInput jarInput, TransformOutputProvider outputProvider) {
+    static void handleJarInput(JarInput jarInput, TransformOutputProvider outputProvider) {
         if (jarInput.file.absolutePath.endsWith(".jar")) {
             // 重名名输出文件,因为可能同名,会覆盖
             def jarName = jarInput.name
@@ -216,7 +214,7 @@ class MonitorTransform extends Transform {
         }
     }
 
-    boolean filterClass(String className) {
+    static boolean filterClass(String className) {
         return (className.endsWith(".class") && !className.startsWith("R\$")
                 && "R.class" != className && "BuildConfig.class" != className)
     }

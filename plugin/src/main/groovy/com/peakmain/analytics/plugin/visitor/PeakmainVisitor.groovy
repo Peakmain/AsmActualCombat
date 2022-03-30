@@ -54,6 +54,7 @@ class PeakmainVisitor extends ClassVisitor {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions)
         methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces)
         methodVisitor = new MonitorMethodTimeAdapter(methodVisitor, access, name, descriptor, mClassName, cv)
+        methodVisitor=new MonitorPrintParametersReturnValueAdapter(methodVisitor,access,name,descriptor,mClassName)
         return methodVisitor
     }
 
