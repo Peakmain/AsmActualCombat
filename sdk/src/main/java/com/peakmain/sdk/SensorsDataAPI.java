@@ -9,10 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.peakmain.sdk.interfaces.OnUploadSensorsDataListener;
+import com.peakmain.sdk.manager.SensorsDataManager;
+import com.peakmain.sdk.manager.SensorsDatabaseHelper;
 import com.peakmain.sdk.utils.SensorsDataUtils;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 /**
@@ -80,6 +83,8 @@ public class SensorsDataAPI {
 
     private SensorsDataAPI(Application application) {
         mDeviceInfo = SensorsDataUtils.getDeviceInfo(application.getApplicationContext());
+        SensorsDataManager.registerActivityLifecycleCallbacks(application);
+        SensorsDataManager.registerActivityStateObserver(application);
     }
 
     /**
@@ -104,8 +109,10 @@ public class SensorsDataAPI {
             }
 
             jsonObject.put("properties", sendProperties);
-            jsonObject.put("time", System.currentTimeMillis());
-
+            long currentTimeMillis = System.currentTimeMillis();
+            jsonObject.put("time", currentTimeMillis);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            jsonObject.put("currentTime", simpleDateFormat.format(currentTimeMillis));
             //获取到埋点之后，上传到服务器
             OnUploadSensorsDataListener onUploadSensorsData = getListenerInfo().mOnUploadSensorsData;
             if (onUploadSensorsData != null) {

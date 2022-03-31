@@ -2,6 +2,7 @@ package com.peakmain.sdk;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -81,6 +82,7 @@ public class SensorsDataAutoTrackHelper {
         }
     }
 
+    @Keep
     public static void trackViewOnClick(CompoundButton view, boolean isChecked) {
         try {
             if (!clickEnable(view)) {
@@ -433,6 +435,8 @@ public class SensorsDataAutoTrackHelper {
         }
         return true;
     }
+
+
 
     //防止多次点击事件
     private static long getLastClickTime(View view) {
