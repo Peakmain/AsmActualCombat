@@ -12,5 +12,8 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LogMessageTime {
+public @interface LogMessage {
+    boolean isLogTime() default false;
+
+    boolean isLogParametersReturnValue() default false;
 }

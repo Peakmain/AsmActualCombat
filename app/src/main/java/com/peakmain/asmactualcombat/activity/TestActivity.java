@@ -6,8 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.peakmain.asmactualcombat.R;
-import com.peakmain.sdk.annotation.LogParametersReturnValue;
-import com.peakmain.sdk.annotation.LogMessageTime;
+import com.peakmain.sdk.annotation.LogMessage;
 
 /**
  * author ：Peakmain
@@ -22,18 +21,43 @@ public class TestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    @LogMessageTime
-    @LogParametersReturnValue
-    public void getMethodTime() {
+    @LogMessage
+    public String getMethod(boolean b) {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return "getMethod";
     }
-    @LogParametersReturnValue
-    public String test(int a) {
 
+    @LogMessage(isLogTime = true)
+    public String getMethodTime(long l) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "getMethod";
+    }
+
+    @LogMessage(isLogParametersReturnValue = true)
+    public String getMethodParametersReturnValue(String name) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "treasure";
+    }
+
+    @LogMessage(isLogTime = true, isLogParametersReturnValue = true)
+    public String test(int a) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return "peakmain";
     }
 }
