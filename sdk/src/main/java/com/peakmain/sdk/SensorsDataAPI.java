@@ -8,6 +8,7 @@ import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.peakmain.sdk.constants.SensorsDataConstants;
 import com.peakmain.sdk.interfaces.OnUploadSensorsDataListener;
 import com.peakmain.sdk.manager.SensorsDataManager;
 import com.peakmain.sdk.manager.SensorsDatabaseHelper;
@@ -16,6 +17,7 @@ import com.peakmain.sdk.utils.SensorsDataUtils;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +35,8 @@ public class SensorsDataAPI {
     private static Map<String, Object> mDeviceInfo;
     private String mDeviceId;
     ListenerInfo mListenerInfo;
+    private @SensorsDataConstants.STATE
+    int mState = SensorsDataConstants.APP_VIEW_CLICK__EVENT_STATE;
 
     ListenerInfo getListenerInfo() {
         if (mListenerInfo != null) {
@@ -116,7 +120,21 @@ public class SensorsDataAPI {
             //获取到埋点之后，上传到服务器
             OnUploadSensorsDataListener onUploadSensorsData = getListenerInfo().mOnUploadSensorsData;
             if (onUploadSensorsData != null) {
-                onUploadSensorsData.onUploadSensors(SensorsDataUtils.formatJson(jsonObject.toString()));
+                switch (eventName) {
+                    case SensorsDataConstants.APP_START_EVENT_NAME:
+                        mState = SensorsDataConstants.APP_START_EVENT_STATE;
+                        break;
+                    case SensorsDataConstants.APP_END__EVENT_NAME:
+                        mState = SensorsDataConstants.APP_END__EVENT_STATE;
+                        break;
+                    case SensorsDataConstants.APP_VIEW_SCREEN__EVENT_NAME:
+                        mState = SensorsDataConstants.APP_VIEW_SCREEN__EVENT_STATE;
+                        break;
+                    default:
+                        mState = SensorsDataConstants.APP_VIEW_CLICK__EVENT_STATE;
+                        break;
+                }
+                onUploadSensorsData.onUploadSensors(mState, SensorsDataUtils.formatJson(jsonObject.toString()));
             }
         } catch (Exception e) {
             e.printStackTrace();

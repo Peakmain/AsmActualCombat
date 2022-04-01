@@ -24,6 +24,8 @@ import android.widget.ToggleButton;
 import androidx.annotation.Keep;
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.peakmain.sdk.constants.SensorsDataConstants;
+import com.peakmain.sdk.manager.SensorsDataManager;
 import com.peakmain.sdk.utils.SensorsDataUtils;
 
 import org.json.JSONObject;
@@ -61,6 +63,7 @@ public class SensorsDataAutoTrackHelper {
             //$screen_name & $title
             if (activity != null) {
                 properties.put("$activity", activity.getClass().getCanonicalName());
+                properties.put("$activity_title", SensorsDataManager.getActivityTitle(activity));
             }
 
             Button button = null;
@@ -68,6 +71,8 @@ public class SensorsDataAutoTrackHelper {
                 button = ((android.app.AlertDialog) dialog).getButton(whichButton);
             } else if (dialog instanceof AlertDialog) {
                 button = ((AlertDialog) dialog).getButton(whichButton);
+            } else if (dialog instanceof androidx.appcompat.app.AlertDialog) {
+                button = ((androidx.appcompat.app.AlertDialog) dialog).getButton(whichButton);
             }
 
             if (button != null) {
@@ -76,7 +81,7 @@ public class SensorsDataAutoTrackHelper {
 
             properties.put("$element_type", "Dialog");
 
-            SensorsDataAPI.getInstance().track("$AppClick", properties);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_CLICK__EVENT_NAME, properties);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,6 +113,7 @@ public class SensorsDataAutoTrackHelper {
 
             if (activity != null) {
                 properties.put("$activity", activity.getClass().getCanonicalName());
+                properties.put("$activity_title", SensorsDataManager.getActivityTitle(activity));
             }
 
             String viewText = null;
@@ -163,7 +169,7 @@ public class SensorsDataAutoTrackHelper {
 
             properties.put("isChecked", isChecked);
 
-            SensorsDataAPI.getInstance().track("$AppClick", properties);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_CLICK__EVENT_NAME, properties);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -193,6 +199,7 @@ public class SensorsDataAutoTrackHelper {
             //$screen_name & $title
             if (activity != null) {
                 properties.put("$activity", activity.getClass().getCanonicalName());
+                properties.put("$activity_title", SensorsDataManager.getActivityTitle(activity));
             }
 
             ListView listView = null;
@@ -215,7 +222,7 @@ public class SensorsDataAutoTrackHelper {
             properties.put("isChecked", isChecked);
             properties.put("$element_type", "Dialog");
 
-            SensorsDataAPI.getInstance().track("$AppClick", properties);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_CLICK__EVENT_NAME, properties);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -253,10 +260,11 @@ public class SensorsDataAutoTrackHelper {
                 Activity activity = SensorsDataUtils.getActivityFromContext(context);
                 if (activity != null) {
                     jsonObject.put("$activity", activity.getClass().getCanonicalName());
+                    jsonObject.put("$activity_title", SensorsDataManager.getActivityTitle(activity));
                 }
             }
 
-            SensorsDataAPI.getInstance().track("$AppClick", jsonObject);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_CLICK__EVENT_NAME, jsonObject);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -269,7 +277,7 @@ public class SensorsDataAutoTrackHelper {
 
             properties.put("$element_type", "TabHost");
             properties.put("$element_content", tabName);
-            SensorsDataAPI.getInstance().track("$AppClick", properties);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_CLICK__EVENT_NAME, properties);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -297,6 +305,7 @@ public class SensorsDataAutoTrackHelper {
             Activity activity = SensorsDataUtils.getActivityFromContext(context);
             if (activity != null) {
                 properties.put("$activity", activity.getClass().getCanonicalName());
+                properties.put("$activity_title", SensorsDataManager.getActivityTitle(activity));
             }
 
             if (childPosition != -1) {
@@ -329,7 +338,7 @@ public class SensorsDataAutoTrackHelper {
                 properties.put("$element_content", viewText);
             }
 
-            SensorsDataAPI.getInstance().track("$AppClick", properties);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_CLICK__EVENT_NAME, properties);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -357,6 +366,7 @@ public class SensorsDataAutoTrackHelper {
 
             if (activity != null) {
                 properties.put("$activity", activity.getClass().getCanonicalName());
+                properties.put("$activity_title", SensorsDataManager.getActivityTitle(activity));
             }
             properties.put("$element_position", String.valueOf(position));
 
@@ -394,7 +404,7 @@ public class SensorsDataAutoTrackHelper {
                     properties.put("$element_content", viewText);
                 }
             }
-            SensorsDataAPI.getInstance().track("$AppClick", properties);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_CLICK__EVENT_NAME, properties);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -428,14 +438,14 @@ public class SensorsDataAutoTrackHelper {
             Activity activity = SensorsDataUtils.getActivityFromView(view);
             if (activity != null) {
                 jsonObject.put("$activity", activity.getClass().getCanonicalName());
+                jsonObject.put("$activity_title", SensorsDataManager.getActivityTitle(activity));
             }
-            SensorsDataAPI.getInstance().track("$AppClick", jsonObject);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_CLICK__EVENT_NAME, jsonObject);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return true;
     }
-
 
 
     //防止多次点击事件

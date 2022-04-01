@@ -19,12 +19,9 @@ public class App extends Application {
         super.onCreate();
         SensorsDataAPI.init(this);
         SensorsDataAPI.getInstance().setOnUserAgreementListener(() -> true);
-        SensorsDataAPI.getInstance().setOnUploadSensorsDataListener(new OnUploadSensorsDataListener() {
-            @Override
-            public void onUploadSensors(String data) {
-                if (BuildConfig.DEBUG) {
-                    Log.e("TAG", data);
-                }
+        SensorsDataAPI.getInstance().setOnUploadSensorsDataListener((state, data) -> {
+            if (BuildConfig.DEBUG) {
+                Log.e("TAG", data);
             }
         });
     }

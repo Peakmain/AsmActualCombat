@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -20,6 +19,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.peakmain.sdk.SensorsDataAPI;
+import com.peakmain.sdk.constants.SensorsDataConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,7 +71,7 @@ public class SensorsDataManager {
      * @param activity Activity
      * @return String 当前页面 title
      */
-    private static String getActivityTitle(Activity activity) {
+    public static String getActivityTitle(Activity activity) {
         String activityTitle = null;
 
         if (activity == null) {
@@ -111,7 +111,7 @@ public class SensorsDataManager {
             JSONObject properties = new JSONObject();
             properties.put("$activity", activity.getClass().getCanonicalName());
             properties.put("title", getActivityTitle(activity));
-            SensorsDataAPI.getInstance().track("$AppViewScreen", properties);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_SCREEN__EVENT_NAME, properties);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -127,7 +127,7 @@ public class SensorsDataManager {
             JSONObject properties = new JSONObject();
             properties.put("$activity", activity.getClass().getCanonicalName());
             properties.put("$title", getActivityTitle(activity));
-            SensorsDataAPI.getInstance().track("$AppStart", properties);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_START_EVENT_NAME, properties);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,7 +143,7 @@ public class SensorsDataManager {
             JSONObject properties = new JSONObject();
             properties.put("$activity", activity.getClass().getCanonicalName());
             properties.put("$title", getActivityTitle(activity));
-            SensorsDataAPI.getInstance().track("$AppEnd", properties);
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_END__EVENT_NAME, properties);
             mHelper.saveAppEndState(true);
             mCurrentActivity = null;
         } catch (Exception e) {
