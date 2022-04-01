@@ -1,7 +1,10 @@
 package com.peakmain.asmactualcombat;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
+
+import androidx.multidex.MultiDex;
 
 import com.peakmain.sdk.BuildConfig;
 import com.peakmain.sdk.SensorsDataAPI;
@@ -15,6 +18,12 @@ import com.peakmain.sdk.utils.SensorsDataUtils;
  * describe：
  */
 public class App extends Application {
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

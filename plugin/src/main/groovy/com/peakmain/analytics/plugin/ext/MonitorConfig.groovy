@@ -1,4 +1,7 @@
 package com.peakmain.analytics.plugin.ext
+
+import com.peakmain.analytics.plugin.entity.MethodCalledBean
+
 /**
  * author ：Peakmain
  * createTime：2022/3/29
@@ -15,7 +18,7 @@ class MonitorConfig {
      */
     public boolean isIncremental = false
     public ArrayList<String> whiteList = []
-
+    public  ArrayList<MethodCalledBean> mTelephoneMethodCells = new ArrayList<>()
     void convertConfig() {
 
     }

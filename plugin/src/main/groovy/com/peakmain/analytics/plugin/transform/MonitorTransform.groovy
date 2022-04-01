@@ -137,7 +137,7 @@ class MonitorTransform extends Transform {
         println("[MonitorTransform]: 此次编译共耗时:${System.currentTimeMillis() - startTime}毫秒")
     }
 
-    static void handleDirectoryInput(DirectoryInput directoryInput, TransformOutputProvider outputProvider) {
+    void handleDirectoryInput(DirectoryInput directoryInput, TransformOutputProvider outputProvider) {
         if (directoryInput.file.isDirectory()) {
             directoryInput.file.eachFileRecurse { File file ->
                 String name = file.name
@@ -147,7 +147,7 @@ class MonitorTransform extends Transform {
                     // 用来写
                     ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
                     //todo 改这里就可以了
-                    ClassVisitor classVisitor = new PeakmainVisitor(classWriter)
+                    ClassVisitor classVisitor = new PeakmainVisitor(classWriter, monitorConfig)
                     // 下面还可以包多层
                     classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
                     // 重新覆盖写入文件
@@ -165,7 +165,7 @@ class MonitorTransform extends Transform {
         FileUtils.copyDirectory(directoryInput.file, dest)
     }
 
-    static void handleJarInput(JarInput jarInput, TransformOutputProvider outputProvider) {
+    void handleJarInput(JarInput jarInput, TransformOutputProvider outputProvider) {
         if (jarInput.file.absolutePath.endsWith(".jar")) {
             // 重名名输出文件,因为可能同名,会覆盖
             def jarName = jarInput.name
@@ -193,7 +193,7 @@ class MonitorTransform extends Transform {
                     ClassReader classReader = new ClassReader(IOUtils.toByteArray(inputStream))
                     ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
                     //todo 改这里就可以了
-                    ClassVisitor classVisitor = new PeakmainVisitor(classWriter)
+                    ClassVisitor classVisitor = new PeakmainVisitor(classWriter, monitorConfig)
                     // 下面还可以包多层
                     classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
                     byte[] code = classWriter.toByteArray()
