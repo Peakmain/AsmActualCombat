@@ -18,7 +18,16 @@ class MonitorConfig {
      */
     public boolean isIncremental = false
     public ArrayList<String> whiteList = []
-    public  ArrayList<MethodCalledBean> mTelephoneMethodCells = new ArrayList<>()
+    public static final int METHOD_STATE_NORMAL = 1
+    public static final int METHOD_STATE_CLEAR = 2
+    public static final int METHOD_STATE_REPLACE = 3
+    /**
+     * 是否禁用设备id
+     */
+    public boolean disableDeviceId = true
+    public boolean replaceDeviceId = false
+
+
     void convertConfig() {
 
     }

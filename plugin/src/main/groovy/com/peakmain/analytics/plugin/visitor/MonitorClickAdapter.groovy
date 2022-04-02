@@ -1,6 +1,6 @@
 package com.peakmain.analytics.plugin.visitor
 
-import com.peakmain.analytics.plugin.entity.PeakmainHookConfig
+import com.peakmain.analytics.plugin.ext.PeakmainHookConfig
 import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import org.objectweb.asm.AnnotationVisitor

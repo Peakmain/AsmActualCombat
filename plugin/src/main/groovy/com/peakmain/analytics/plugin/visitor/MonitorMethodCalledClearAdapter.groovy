@@ -1,8 +1,8 @@
 package com.peakmain.analytics.plugin.visitor
 
 import com.peakmain.analytics.plugin.entity.MethodCalledBean
-import com.peakmain.analytics.plugin.ext.MonitorConfig
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
+import jdk.internal.org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
@@ -13,9 +13,9 @@ import java.util.concurrent.ConcurrentHashMap
  * author ：Peakmain
  * createTime：2022/4/1
  * mail:2726449200@qq.com
- * describe：
+ * describe：方法被调用，然后清空被调用的方法
  */
-class MonitorMethodCalledAdapter extends MonitorDefalutMethodAdapter {
+class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
     private String mMethodOwner = "android/telephony/TelephonyManager"
     private String mMethodName = "getDeviceId"
     private String mMethodDesc = "()Ljava/lang/String;"
@@ -26,14 +26,14 @@ class MonitorMethodCalledAdapter extends MonitorDefalutMethodAdapter {
     ConcurrentHashMap<String, MethodCalledBean> methodCalledBeans = new ConcurrentHashMap<>()
 
     /**
-     * Constructs a new {@link MonitorMethodCalledAdapter}.
+     * Constructs a new {@link MonitorMethodCalledClearAdapter}.
      *
      * @param mv
      * @param access the method's access flags (see {@link Opcodes}).
      * @param name the method's name.
      * @param desc
      */
-    MonitorMethodCalledAdapter(MethodVisitor mv, int access, String name, String desc, String className, ConcurrentHashMap<String, MethodCalledBean> methodCalledBeans) {
+    MonitorMethodCalledClearAdapter(MethodVisitor mv, int access, String name, String desc, String className, ConcurrentHashMap<String, MethodCalledBean> methodCalledBeans) {
         super(mv, access, name, desc)
         mClassName = className
         mAccess = access

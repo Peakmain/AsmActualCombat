@@ -1,6 +1,6 @@
-package com.peakmain.analytics.plugin.entity
+package com.peakmain.analytics.plugin.ext
 
-
+import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
 import org.objectweb.asm.Opcodes
 
 class PeakmainHookConfig {

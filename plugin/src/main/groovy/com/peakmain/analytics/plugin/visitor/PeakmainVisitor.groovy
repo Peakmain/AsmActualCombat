@@ -59,7 +59,11 @@ class PeakmainVisitor extends ClassVisitor {
         methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces)
         methodVisitor = new MonitorMethodTimeAdapter(methodVisitor, access, name, descriptor, mClassName, classVisitor)
         methodVisitor = new MonitorPrintParametersReturnValueAdapter(methodVisitor, access, name, descriptor, mClassName, classVisitor)
-        methodVisitor = new MonitorMethodCalledAdapter(methodVisitor, access, name, descriptor, mClassName, methodCalledBeans)
+        if (mMonitorConfig.disableDeviceId)
+            methodVisitor = new MonitorMethodCalledClearAdapter(methodVisitor, access, name, descriptor, mClassName, methodCalledBeans)
+        else if(mMonitorConfig.replaceDeviceId){
+            methodVisitor=new MonitorMethodCalledReplaceAdapter(methodVisitor,access,name,descriptor,classVisitor)
+        }
         return methodVisitor
     }
 
