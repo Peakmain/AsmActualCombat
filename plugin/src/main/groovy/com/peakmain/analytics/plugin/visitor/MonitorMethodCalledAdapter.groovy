@@ -23,7 +23,7 @@ class MonitorMethodCalledAdapter extends MonitorDefalutMethodAdapter {
     private String mClassName
 
     private int mAccess
-    private  ConcurrentHashMap<String,MethodCalledBean> methodCalledBeans = new ConcurrentHashMap<>()
+    ConcurrentHashMap<String, MethodCalledBean> methodCalledBeans = new ConcurrentHashMap<>()
 
     /**
      * Constructs a new {@link MonitorMethodCalledAdapter}.
@@ -33,27 +33,23 @@ class MonitorMethodCalledAdapter extends MonitorDefalutMethodAdapter {
      * @param name the method's name.
      * @param desc
      */
-    MonitorMethodCalledAdapter(MethodVisitor mv, int access, String name, String desc, String className, MonitorConfig config) {
+    MonitorMethodCalledAdapter(MethodVisitor mv, int access, String name, String desc, String className, ConcurrentHashMap<String, MethodCalledBean> methodCalledBeans) {
         super(mv, access, name, desc)
         mClassName = className
         mAccess = access
+        this.methodCalledBeans=methodCalledBeans
     }
 
     @Override
     void visitMethodInsn(int opcodeAndSource, String owner, String name, String descriptor, boolean isInterface) {
         if (mMethodOwner == owner && name == mMethodName && (descriptor == mMethodDesc || mMethodDesc1 == descriptor)) {
-            methodCalledBeans.put(mClassName+mMethodName+descriptor,new MethodCalledBean(mClassName, mAccess, name, descriptor))
+            methodCalledBeans.put(mClassName + mMethodName + descriptor, new MethodCalledBean(mClassName, mAccess, name, descriptor))
+            clearMethodBody(mv,mClassName,access,name,descriptor)
+            return
         }
         super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface);
     }
 
-    @Override
-    void visitEnd() {
-        for (Map.Entry<Integer, Integer> entry : methodCalledBeans.entrySet()) {
-            println("Key = " + entry.getKey() + ", Value = " + entry.getValue().toString())
-        }
-        super.visitEnd()
-    }
 
     static void clearMethodBody(MethodVisitor mv, String className, int access, String name, String descriptor) {
         Type type = Type.getType(descriptor)

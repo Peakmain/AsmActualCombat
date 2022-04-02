@@ -7,10 +7,10 @@ package com.peakmain.analytics.plugin.entity;
  * describe：
  */
 class MethodCalledBean {
-    private String className;
-    private int access;
-    private String name;
-    private String descriptor;
+   String className;
+   int access;
+   String name;
+   String descriptor;
 
     MethodCalledBean(String mClassName, int access, String name, String descriptor) {
         this.className = mClassName;
@@ -20,7 +20,7 @@ class MethodCalledBean {
     }
 
     @Override
-    public String toString() {
+    String toString() {
         return "MethodCalledBean{" +
                 "className='" + className + '\'' +
                 ", access=" + access +
