@@ -2,6 +2,8 @@ package com.peakmain.sdk.utils;
 
 import android.util.Log;
 
+import androidx.annotation.Keep;
+
 import com.peakmain.sdk.BuildConfig;
 import com.peakmain.sdk.SensorsDataAPI;
 
@@ -20,14 +22,16 @@ public class LogManager {
     private static final String TAG = SensorsDataAPI.class.getCanonicalName();
     private static final DateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    @Keep
     public static void e(String value) {
-        if(!BuildConfig.DEBUG)
+        if (!BuildConfig.DEBUG)
             return;
         Log.e(TAG, value);
     }
 
+    @Keep
     public static void d(String value) {
-        if(!BuildConfig.DEBUG)
+        if (!BuildConfig.DEBUG)
             return;
         Log.d(TAG, value);
     }
@@ -61,7 +65,7 @@ public class LogManager {
     }
 
     public static void println(double value) {
-        d(value + "");
+        e(value + "");
     }
 
     public static void println(Object value) {
@@ -79,6 +83,6 @@ public class LogManager {
     }
 
     public static void printlnStr(String value) {
-        d(value);
+        e(value);
     }
 }

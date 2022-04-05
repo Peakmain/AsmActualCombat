@@ -64,6 +64,7 @@ class PeakmainVisitor extends ClassVisitor {
         else if(mMonitorConfig.replaceDeviceId){
             methodVisitor=new MonitorMethodCalledReplaceAdapter(methodVisitor,access,name,descriptor,classVisitor)
         }
+        methodVisitor=new MonitorMethodStackMapFrameAdapter(mClassName,access,name,descriptor,methodVisitor)
         return methodVisitor
     }
 

@@ -60,4 +60,14 @@ public class TestActivity extends AppCompatActivity {
         }
         return "peakmain";
     }
+
+    @LogMessage(isLogTime = true, isLogParametersReturnValue = true,isLogMethodStackMapFrame = true)
+    public String testLogMethodStackMapFrame(int a) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "peakmain";
+    }
 }

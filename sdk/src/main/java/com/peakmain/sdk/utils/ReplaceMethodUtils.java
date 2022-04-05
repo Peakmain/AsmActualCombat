@@ -1,5 +1,7 @@
 package com.peakmain.sdk.utils;
 
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
 /**
@@ -25,4 +27,15 @@ public class ReplaceMethodUtils {
     public static String getImei(TelephonyManager manager, int slotIndex) {
         return "";
     }
+
+    public static String getMacAddress(WifiInfo wifiInfo) {
+        return "";
+    }
+    public static String getSSID(WifiInfo wifiInfo) {
+        return "";
+    }
+    public static WifiInfo getConnectionInfo(WifiManager wifiManager){
+        return null;
+    }
+
 }

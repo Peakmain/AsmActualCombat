@@ -24,4 +24,9 @@ public @interface LogMessage {
      * 是否打印方法的参数和返回值
      */
     boolean isLogParametersReturnValue() default false;
+
+    /**
+     * 是否打印Method stack Map Frame
+     */
+    boolean isLogMethodStackMapFrame() default false;
 }
