@@ -1,4 +1,4 @@
-package com.peakmain.analytics.plugin.visitor
+package com.peakmain.analytics.plugin.visitor.base
 
 import org.objectweb.asm.*
 import org.objectweb.asm.commons.AdviceAdapter

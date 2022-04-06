@@ -57,14 +57,14 @@ class PeakmainVisitor extends ClassVisitor {
     MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions)
         methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces)
-        methodVisitor = new MonitorMethodTimeAdapter(methodVisitor, access, name, descriptor, mClassName, classVisitor)
         methodVisitor = new MonitorPrintParametersReturnValueAdapter(methodVisitor, access, name, descriptor, mClassName, classVisitor)
         if (mMonitorConfig.disableDeviceId)
             methodVisitor = new MonitorMethodCalledClearAdapter(methodVisitor, access, name, descriptor, mClassName, methodCalledBeans)
-        else if(mMonitorConfig.replaceDeviceId){
-            methodVisitor=new MonitorMethodCalledReplaceAdapter(methodVisitor,access,name,descriptor,classVisitor)
+        else if (mMonitorConfig.replaceDeviceId) {
+            methodVisitor = new MonitorMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor)
         }
-        methodVisitor=new MonitorMethodStackMapFrameAdapter(mClassName,access,name,descriptor,methodVisitor)
+        if (!mMonitorConfig.disableStackMapFrame)
+            methodVisitor = new MonitorMethodStackMapFrameAdapter(mClassName, access, name, descriptor, methodVisitor)
         return methodVisitor
     }
 

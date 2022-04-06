@@ -1,4 +1,4 @@
-package com.peakmain.analytics.plugin.visitor
+package com.peakmain.analytics.plugin.visitor.base
 
 import org.objectweb.asm.Handle
 import org.objectweb.asm.Label

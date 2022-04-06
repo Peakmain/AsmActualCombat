@@ -3,7 +3,6 @@ package com.peakmain.analytics.plugin.visitor
 import com.peakmain.analytics.plugin.utils.MethodFieldUtils
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import com.peakmain.analytics.plugin.utils.StringBuilderUtils
-import com.sun.org.apache.xpath.internal.compiler.OpCodes
 import org.objectweb.asm.*
 import org.objectweb.asm.commons.AnalyzerAdapter
 

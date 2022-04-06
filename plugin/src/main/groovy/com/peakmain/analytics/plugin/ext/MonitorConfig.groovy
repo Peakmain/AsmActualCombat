@@ -26,7 +26,10 @@ class MonitorConfig {
      */
     public boolean disableDeviceId = true
     public boolean replaceDeviceId = false
-
+    /**
+     * 是否禁用开启堆栈分析，默认是禁用
+     */
+    public boolean disableStackMapFrame = true
 
     void convertConfig() {
 

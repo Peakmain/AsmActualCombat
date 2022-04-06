@@ -2,6 +2,7 @@ package com.peakmain.analytics.plugin.visitor
 
 import com.peakmain.analytics.plugin.utils.MethodFieldUtils
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
+import com.peakmain.analytics.plugin.visitor.base.MonitorDefalutMethodAdapter
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.FieldVisitor
