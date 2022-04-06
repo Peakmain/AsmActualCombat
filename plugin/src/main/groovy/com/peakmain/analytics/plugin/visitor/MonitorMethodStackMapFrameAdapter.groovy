@@ -2,11 +2,9 @@ package com.peakmain.analytics.plugin.visitor
 
 import com.peakmain.analytics.plugin.utils.MethodFieldUtils
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
-import org.objectweb.asm.AnnotationVisitor
-import org.objectweb.asm.Handle
-import org.objectweb.asm.Label
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
+import com.peakmain.analytics.plugin.utils.StringBuilderUtils
+import com.sun.org.apache.xpath.internal.compiler.OpCodes
+import org.objectweb.asm.*
 import org.objectweb.asm.commons.AnalyzerAdapter
 
 /**
@@ -32,7 +30,17 @@ class MonitorMethodStackMapFrameAdapter extends AnalyzerAdapter {
     void visitCode() {
         super.visitCode()
         if (isLogMethodStackMapFrame) {
-            println("Frame的方法：" + methodName + methodDesc)
+            boolean isStatic = OpcodesUtils.isStatic(methodAccess)
+            int slotIndex = isStatic ? 0 : 1
+            Type methodType = Type.getType(methodDesc)
+            Type[] argumentsTypes = methodType.getArgumentTypes()
+            for (Type type : argumentsTypes) {
+                slotIndex += type.size
+            }
+            StringBuilderUtils.appendLdcString(mv, "Frame的方法：" + methodName + methodDesc)
+            mv.visitVarInsn(Opcodes.ASTORE, slotIndex)
+            mv.visitVarInsn(Opcodes.ALOAD, slotIndex)
+            mv.visitMethodInsn(OpcodesUtils.INVOKESTATIC, MethodFieldUtils.LOG_MANAGER, "printlnStr", "(Ljava/lang/String;)V", false)
         }
         printStackMapFrame()
     }
@@ -143,6 +151,12 @@ class MonitorMethodStackMapFrameAdapter extends AnalyzerAdapter {
         String locals_str = locals == null ? "[]" : list2Str(locals)
         String stack_str = stack == null ? "[]" : list2Str(stack)
         String line = String.format("%s %s", locals_str, stack_str)
+        int slotIndex = OpcodesUtils.isStatic(methodAccess) ? 0 : 1
+        slotIndex += locals == null ? 0 : locals.size()
+        StringBuilderUtils.appendLdcString(mv, "Frame打印：" + line)
+        mv.visitVarInsn(Opcodes.ASTORE, slotIndex)
+        mv.visitVarInsn(Opcodes.ALOAD, slotIndex)
+        mv.visitMethodInsn(OpcodesUtils.INVOKESTATIC, MethodFieldUtils.LOG_MANAGER, "printlnStr", "(Ljava/lang/String;)V", false)
         println("Frame打印:" + line)
     }
 
