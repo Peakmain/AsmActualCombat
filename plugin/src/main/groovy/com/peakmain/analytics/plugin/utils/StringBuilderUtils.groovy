@@ -2,6 +2,7 @@ package com.peakmain.analytics.plugin.utils
 
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
+
 /**
  * author ：Peakmain
  * createTime：2022/4/6
@@ -9,7 +10,13 @@ import org.objectweb.asm.Opcodes
  * describe：StringBuilder的工具类
  */
 class StringBuilderUtils {
-    static void appendLdcString(MethodVisitor mv, String value) {
+    private MethodVisitor mv
+
+    StringBuilderUtils(MethodVisitor methodVisitor) {
+        this.mv = methodVisitor
+    }
+
+    void appendLdcString(String value) {
         mv.visitTypeInsn(Opcodes.NEW, "java/lang/StringBuilder")
         mv.visitInsn(Opcodes.DUP)
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);

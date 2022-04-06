@@ -17,12 +17,14 @@ class MonitorMethodStackMapFrameAdapter extends AnalyzerAdapter {
     private String methodDesc
     private int methodAccess
     private boolean isLogMethodStackMapFrame = false
+    private StringBuilderUtils mStringBuilderUtils
 
     MonitorMethodStackMapFrameAdapter(String owner, int access, String name, String descriptor, MethodVisitor methodVisitor) {
         super(Opcodes.ASM9, owner, access, name, descriptor, methodVisitor)
         this.methodName = name
         this.methodDesc = descriptor
         this.methodAccess = access
+        mStringBuilderUtils = new StringBuilderUtils(methodVisitor)
     }
 
     @Override
@@ -36,7 +38,7 @@ class MonitorMethodStackMapFrameAdapter extends AnalyzerAdapter {
             for (Type type : argumentsTypes) {
                 slotIndex += type.size
             }
-            StringBuilderUtils.appendLdcString(mv, "Frame的方法：" + methodName + methodDesc)
+            mStringBuilderUtils.appendLdcString("Frame的方法：" + methodName + methodDesc)
             mv.visitVarInsn(Opcodes.ASTORE, slotIndex)
             mv.visitVarInsn(Opcodes.ALOAD, slotIndex)
             mv.visitMethodInsn(OpcodesUtils.INVOKESTATIC, MethodFieldUtils.LOG_MANAGER, "printlnStr", "(Ljava/lang/String;)V", false)
@@ -152,7 +154,7 @@ class MonitorMethodStackMapFrameAdapter extends AnalyzerAdapter {
         String line = String.format("%s %s", locals_str, stack_str)
         int slotIndex = OpcodesUtils.isStatic(methodAccess) ? 0 : 1
         slotIndex += locals == null ? 0 : locals.size()
-        StringBuilderUtils.appendLdcString(mv, "Frame打印：" + line)
+        mStringBuilderUtils.appendLdcString("Frame打印：" + line)
         mv.visitVarInsn(Opcodes.ASTORE, slotIndex)
         mv.visitVarInsn(Opcodes.ALOAD, slotIndex)
         mv.visitMethodInsn(OpcodesUtils.INVOKESTATIC, MethodFieldUtils.LOG_MANAGER, "printlnStr", "(Ljava/lang/String;)V", false)
