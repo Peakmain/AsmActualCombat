@@ -30,6 +30,10 @@ public class ReplaceMethodUtils {
         return "";
     }
 
+    public String getMeid(TelephonyManager manager) {
+        return "";
+    }
+
     /**
      * 获取Imei
      */

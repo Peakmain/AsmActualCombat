@@ -29,9 +29,16 @@ public class Utils {
         return tac;
     }
 
+    public static String getMeid(Context context) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return manager.getMeid();
+        }
+        return "getMeid";
+    }
+
     /**
      * Android  6.0 之前（不包括6.0）
-     *
      */
     public static String getMacDefault(Context context) {
         String mac = "未获取到设备Mac地址";

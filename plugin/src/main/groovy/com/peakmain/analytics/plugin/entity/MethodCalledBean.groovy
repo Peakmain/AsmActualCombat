@@ -17,7 +17,6 @@ class MethodCalledBean {
         this.name = name
         this.descriptor = descriptor
     }
-
     @Override
     String toString() {
         return "MethodCalledBean{" +
