@@ -1,9 +1,6 @@
 package com.peakmain.analytics.plugin.ext
 
-import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
-import org.objectweb.asm.ClassVisitor
-import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
+import com.peakmain.analytics.plugin.entity.MethodCalledBean
 
 /**
  * author ：Peakmain
@@ -12,39 +9,17 @@ import org.objectweb.asm.Opcodes
  * describe：
  */
 class MonitorHookMethodConfig {
-    static void createGetIMEI(ClassVisitor classVisitor, PeakmainMethodCell methodCell) {
-        MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, methodCell.name, methodCell.desc, null, null)
-        mv.visitCode()
-        mv.visitLdcInsn("")
-        mv.visitInsn(Opcodes.ARETURN)
-        mv.visitMaxs(1, 1)
-        mv.visitEnd()
+    public final static HashMap<String, MethodCalledBean> methodCalledBeans = new HashMap<>()
+    static {
+        String[] device_desc = ["()Ljava/lang/String;", "(I)Ljava/lang/String;"]
+        MethodCalledBean deviceIds = new MethodCalledBean(
+                "android/telephony/TelephonyManager",
+                "getDeviceId",device_desc)
+        for (String desc : deviceIds.getDescriptor()) {
+            println(deviceIds.className + deviceIds.getName()+desc)
+            methodCalledBeans.put(deviceIds.className + deviceIds.getName() + desc, deviceIds)
+        }
+
     }
 
-    static void createGetAndroidID(ClassVisitor classVisitor, PeakmainMethodCell methodCell) {
-        def mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, methodCell.name, methodCell.desc, null, null)
-        mv.visitCode()
-        mv.visitLdcInsn("")
-        mv.visitInsn(Opcodes.ARETURN)
-        mv.visitMaxs(1, 1)
-        mv.visitEnd()
-    }
-
-    static void createGetDeviceID(ClassVisitor classVisitor, PeakmainMethodCell methodCell) {
-        def mv = classVisitor.visitMethod(Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC, methodCell.name, methodCell.desc, null, null)
-        mv.visitCode()
-        mv.visitLdcInsn("")
-        mv.visitInsn(Opcodes.ARETURN)
-        mv.visitMaxs(1, 1)
-        mv.visitEnd()
-    }
-
-    static void createGetMacAddress(ClassVisitor classVisitor, PeakmainMethodCell methodCell) {
-        def mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, methodCell.name, methodCell.desc, null, null)
-        mv.visitCode()
-        mv.visitLdcInsn("")
-        mv.visitInsn(Opcodes.ARETURN)
-        mv.visitMaxs(1, 1)
-        mv.visitEnd()
-    }
 }

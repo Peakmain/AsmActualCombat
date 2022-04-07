@@ -23,7 +23,6 @@ class PeakmainVisitor extends ClassVisitor {
     private String mClassName
     private MonitorConfig mMonitorConfig
 
-    private ConcurrentHashMap<String, MethodCalledBean> methodCalledBeans = new ConcurrentHashMap<>()
 
     PeakmainVisitor(ClassVisitor classVisitor, MonitorConfig config) {
         super(Opcodes.ASM9, classVisitor)
@@ -59,7 +58,7 @@ class PeakmainVisitor extends ClassVisitor {
         methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces)
         methodVisitor = new MonitorPrintParametersReturnValueAdapter(methodVisitor, access, name, descriptor, mClassName, classVisitor)
         if (mMonitorConfig.disableDeviceId)
-            methodVisitor = new MonitorMethodCalledClearAdapter(methodVisitor, access, name, descriptor, mClassName, methodCalledBeans)
+            methodVisitor = new MonitorMethodCalledClearAdapter(methodVisitor, access, name, descriptor, mClassName)
         else if (mMonitorConfig.replaceDeviceId) {
             methodVisitor = new MonitorMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor)
         }

@@ -1,4 +1,4 @@
-package com.peakmain.analytics.plugin.entity;
+package com.peakmain.analytics.plugin.entity
 
 /**
  * author ：Peakmain
@@ -7,16 +7,15 @@ package com.peakmain.analytics.plugin.entity;
  * describe：
  */
 class MethodCalledBean {
-   String className;
-   int access;
-   String name;
-   String descriptor;
+    String className
+    private int access
+    String name
+    String[] descriptor
 
-    MethodCalledBean(String mClassName, int access, String name, String descriptor) {
-        this.className = mClassName;
-        this.access = access;
-        this.name = name;
-        this.descriptor = descriptor;
+    MethodCalledBean(String mClassName, String name, String[] descriptor) {
+        this.className = mClassName
+        this.name = name
+        this.descriptor = descriptor
     }
 
     @Override
@@ -26,6 +25,6 @@ class MethodCalledBean {
                 ", access=" + access +
                 ", name='" + name + '\'' +
                 ", descriptor='" + descriptor + '\'' +
-                '}';
+                '}'
     }
 }

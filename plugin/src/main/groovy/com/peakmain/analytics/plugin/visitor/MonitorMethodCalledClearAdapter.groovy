@@ -1,6 +1,7 @@
 package com.peakmain.analytics.plugin.visitor
 
 import com.peakmain.analytics.plugin.entity.MethodCalledBean
+import com.peakmain.analytics.plugin.ext.MonitorHookMethodConfig
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import com.peakmain.analytics.plugin.visitor.base.MonitorDefalutMethodAdapter
 import org.objectweb.asm.MethodVisitor
@@ -16,14 +17,13 @@ import java.util.concurrent.ConcurrentHashMap
  * describe：方法被调用，然后清空被调用的方法
  */
 class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
-    private String mMethodOwner = "android/telephony/TelephonyManager"
-    private String mMethodName = "getDeviceId"
-    private String mMethodDesc = "()Ljava/lang/String;"
-    private String mMethodDesc1 = "(I)Ljava/lang/String;"
+    /*   private String mMethodOwner = "android/telephony/TelephonyManager"
+       private String mMethodName = "getDeviceId"
+       private String mMethodDesc = "()Ljava/lang/String;"
+       private String mMethodDesc1 = "(I)Ljava/lang/String;"*/
     private String mClassName
 
     private int mAccess
-    ConcurrentHashMap<String, MethodCalledBean> methodCalledBeans = new ConcurrentHashMap<>()
 
     /**
      * Constructs a new {@link MonitorMethodCalledClearAdapter}.
@@ -33,18 +33,17 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
      * @param name the method's name.
      * @param desc
      */
-    MonitorMethodCalledClearAdapter(MethodVisitor mv, int access, String name, String desc, String className, ConcurrentHashMap<String, MethodCalledBean> methodCalledBeans) {
+    MonitorMethodCalledClearAdapter(MethodVisitor mv, int access, String name, String desc, String className) {
         super(mv, access, name, desc)
         mClassName = className
         mAccess = access
-        this.methodCalledBeans=methodCalledBeans
     }
 
     @Override
     void visitMethodInsn(int opcodeAndSource, String owner, String name, String descriptor, boolean isInterface) {
-        if (mMethodOwner == owner && name == mMethodName && (descriptor == mMethodDesc || mMethodDesc1 == descriptor)) {
-            methodCalledBeans.put(mClassName + mMethodName + descriptor, new MethodCalledBean(mClassName, mAccess, name, descriptor))
-            clearMethodBody(mv,mClassName,access,name,descriptor)
+        HashMap<String, MethodCalledBean> methodCalledBeans = MonitorHookMethodConfig.methodCalledBeans
+        if (methodCalledBeans.containsKey(owner + name + descriptor)) {
+            clearMethodBody(mv, mClassName, access, name, descriptor)
             return
         }
         super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface);
@@ -66,6 +65,9 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
         } else if (returnType.getSort() >= Type.BOOLEAN && returnType.getSort() <= Type.DOUBLE) {
             mv.visitInsn(returnType.getOpcode(ICONST_1))
             mv.visitInsn(returnType.getOpcode(IRETURN))
+        } else if (returnType.getInternalName()== "java/lang/String"){
+            mv.visitLdcInsn("")
+            mv.visitInsn(ARETURN)
         } else {
             mv.visitInsn(ACONST_NULL)
             mv.visitInsn(ARETURN)

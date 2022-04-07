@@ -29,6 +29,7 @@
         <activity android:name=".activity.ExpandableListViewTestActivity" />
         <activity android:name=".activity.AdapterViewTestActivity" />
         <activity android:name=".activity.ClickDealActivity" />
+        <activity android:name=".activity.TestActivity" />
     </application>
 
 </manifest>

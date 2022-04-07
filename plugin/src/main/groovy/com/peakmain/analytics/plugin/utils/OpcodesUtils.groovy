@@ -26,12 +26,22 @@ class OpcodesUtils implements Opcodes {
     static boolean isAbstract(int access) {
         return (access & ACC_ABSTRACT) != 0
     }
-
+    /**
+     * 是否是接口
+     */
     static boolean isInterface(int access) {
         return (access & ACC_INTERFACE) != 0
+    }
+    /**
+     * 是否是枚举类型
+     */
+    static boolean isEnum(int access) {
+        return (access & ACC_ENUM) != 0
+
     }
 
     static boolean isInitMethod(String name) {
         return name == "<init>"
     }
+
 }

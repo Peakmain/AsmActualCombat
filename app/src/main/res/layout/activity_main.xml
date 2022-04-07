@@ -20,7 +20,12 @@
                 android:layout_height="wrap_content"
                 android:text="goto点击事件页面"
                 android:textAllCaps="false" />
-
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_click1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="goto注解页面"
+                android:textAllCaps="false" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
