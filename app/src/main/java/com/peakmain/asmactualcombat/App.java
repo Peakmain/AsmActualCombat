@@ -12,6 +12,8 @@ import com.peakmain.sdk.constants.SensorsDataConstants;
 import com.peakmain.sdk.interfaces.OnUploadSensorsDataListener;
 import com.peakmain.sdk.utils.SensorsDataUtils;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * author ：Peakmain
  * createTime：2021/6/15
@@ -27,6 +29,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         SensorsDataAPI.init(this);
         SensorsDataAPI.getInstance().setOnUserAgreementListener(() -> true);
         SensorsDataAPI.getInstance().setOnUploadSensorsDataListener((state, data) -> {

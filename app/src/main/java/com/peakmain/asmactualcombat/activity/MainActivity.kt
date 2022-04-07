@@ -1,10 +1,12 @@
 package com.peakmain.asmactualcombat.activity
 
 import android.content.Intent
+import cn.jiguang.w.c
 import com.peakmain.basiclibrary.base.activity.BaseActivity
 import com.peakmain.asmactualcombat.viewmodel.ClickDealViewModel
 import com.peakmain.asmactualcombat.R
 import com.peakmain.asmactualcombat.databinding.ActivityMainBinding
+import com.peakmain.ui.utils.ToastUtils
 
 /**
  * author ：Peakmain
@@ -17,10 +19,11 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) :
 
     override fun initView() {
         mBinding.buttonClick.setOnClickListener {
-            startActivity(Intent(this,ClickDealActivity::class.java))
+            startActivity(Intent(this, ClickDealActivity::class.java))
         }
         mBinding.buttonClick1.setOnClickListener {
-            startActivity(Intent(this,TestActivity::class.java))
+            //startActivity(Intent(this,TestActivity::class.java))
+            ToastUtils.showLong(c.a(this))
         }
     }
 

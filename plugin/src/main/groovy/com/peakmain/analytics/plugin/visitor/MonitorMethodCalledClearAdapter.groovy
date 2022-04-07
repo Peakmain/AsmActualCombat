@@ -17,10 +17,6 @@ import java.util.concurrent.ConcurrentHashMap
  * describe：方法被调用，然后清空被调用的方法
  */
 class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
-    /*   private String mMethodOwner = "android/telephony/TelephonyManager"
-       private String mMethodName = "getDeviceId"
-       private String mMethodDesc = "()Ljava/lang/String;"
-       private String mMethodDesc1 = "(I)Ljava/lang/String;"*/
     private String mClassName
 
     private int mAccess
@@ -43,6 +39,7 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
     void visitMethodInsn(int opcodeAndSource, String owner, String name, String descriptor, boolean isInterface) {
         HashMap<String, MethodCalledBean> methodCalledBeans = MonitorHookMethodConfig.methodCalledBeans
         if (methodCalledBeans.containsKey(owner + name + descriptor)) {
+            println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
             clearMethodBody(mv, mClassName, access, name, descriptor)
             return
         }
@@ -65,7 +62,7 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
         } else if (returnType.getSort() >= Type.BOOLEAN && returnType.getSort() <= Type.DOUBLE) {
             mv.visitInsn(returnType.getOpcode(ICONST_1))
             mv.visitInsn(returnType.getOpcode(IRETURN))
-        } else if (returnType.getInternalName()== "java/lang/String"){
+        } else if (returnType.getInternalName() == "java/lang/String") {
             mv.visitLdcInsn("")
             mv.visitInsn(ARETURN)
         } else {

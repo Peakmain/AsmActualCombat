@@ -7,7 +7,7 @@ android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.peakmain.asmactualcombat"
+        applicationId applicationId
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
@@ -20,6 +20,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME   : applicationId ,
+                    JPUSH_APPKEY    : jpushKey as String,
+                    JPUSH_CHANNEL   : "developer-default",
+            ]
         }
     }
     compileOptions {
@@ -47,6 +54,7 @@ dependencies {
     implementation 'com.github.Peakmain:BasicLibrary:1.0.4'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor "com.android.databinding:compiler:3.1.4"
+    implementation (rootProject.ext.dependencies.jpush)
 }
 monitorPlugin {
     whiteList = [
