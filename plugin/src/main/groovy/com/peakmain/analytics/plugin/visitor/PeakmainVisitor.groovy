@@ -3,6 +3,7 @@ package com.peakmain.analytics.plugin.visitor
 import com.peakmain.analytics.plugin.entity.MethodCalledBean
 import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
 import com.peakmain.analytics.plugin.ext.MonitorConfig
+import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
@@ -24,7 +25,7 @@ class PeakmainVisitor extends ClassVisitor {
     private MonitorConfig mMonitorConfig
 
     PeakmainVisitor(ClassVisitor classVisitor, MonitorConfig config) {
-        super(Opcodes.ASM9, classVisitor)
+        super(OpcodesUtils.ASM_VERSION, classVisitor)
         this.classVisitor = classVisitor
         this.mMonitorConfig = config
 

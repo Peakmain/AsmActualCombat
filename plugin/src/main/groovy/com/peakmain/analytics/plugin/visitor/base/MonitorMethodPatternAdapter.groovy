@@ -1,5 +1,6 @@
 package com.peakmain.analytics.plugin.visitor.base
 
+import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import org.objectweb.asm.Handle
 import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
@@ -16,7 +17,7 @@ abstract class MonitorMethodPatternAdapter extends AdviceAdapter{
     protected final static int METHOD_NOTHING_STATE= 0
     protected int state
     MonitorMethodPatternAdapter(MethodVisitor mv, int access, String name, String desc) {
-        super(Opcodes.ASM9, mv, access, name, desc)
+        super(OpcodesUtils.ASM_VERSION, mv, access, name, desc)
     }
     @Override
      void visitInsn(int opcode) {

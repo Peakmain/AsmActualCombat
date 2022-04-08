@@ -20,7 +20,7 @@ class MonitorMethodStackMapFrameAdapter extends AnalyzerAdapter {
     private StringBuilderUtils mStringBuilderUtils
 
     MonitorMethodStackMapFrameAdapter(String owner, int access, String name, String descriptor, MethodVisitor methodVisitor) {
-        super(Opcodes.ASM9, owner, access, name, descriptor, methodVisitor)
+        super(OpcodesUtils.ASM_VERSION, owner, access, name, descriptor, methodVisitor)
         this.methodName = name
         this.methodDesc = descriptor
         this.methodAccess = access
@@ -133,7 +133,7 @@ class MonitorMethodStackMapFrameAdapter extends AnalyzerAdapter {
     @Override
     AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
         if (descriptor == "Lcom/peakmain/sdk/annotation/LogMessage;") {
-            return new AnnotationVisitor(Opcodes.ASM9) {
+            return new AnnotationVisitor(OpcodesUtils.ASM_VERSION) {
                 @Override
                 void visit(String name, Object value) {
                     super.visit(name, value)

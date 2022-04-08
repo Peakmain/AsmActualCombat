@@ -143,7 +143,7 @@ class MonitorPrintParametersReturnValueAdapter extends MonitorDefalutMethodAdapt
     @Override
     AnnotationVisitor visitAnnotation(String descriptor, boolean b) {
         if (descriptor == "Lcom/peakmain/sdk/annotation/LogMessage;") {
-            return new AnnotationVisitor(Opcodes.ASM9) {
+            return new AnnotationVisitor(OpcodesUtils.ASM_VERSION) {
                 @Override
                 void visit(String name, Object value) {
                     super.visit(name, value)

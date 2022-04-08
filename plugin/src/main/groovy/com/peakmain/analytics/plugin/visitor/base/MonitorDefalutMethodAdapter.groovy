@@ -1,5 +1,6 @@
 package com.peakmain.analytics.plugin.visitor.base
 
+import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import org.objectweb.asm.*
 import org.objectweb.asm.commons.AdviceAdapter
 
@@ -22,7 +23,7 @@ class MonitorDefalutMethodAdapter extends AdviceAdapter {
      * @param descriptor the method's descriptor (see {@link Type Type}).
      */
     MonitorDefalutMethodAdapter(MethodVisitor mv, int access, String name, String desc) {
-        super(Opcodes.ASM9, mv, access, name, desc)
+        super(OpcodesUtils.ASM_VERSION, mv, access, name, desc)
     }
     /**
      * 表示 ASM 开始扫描这个方法
