@@ -7,23 +7,14 @@ package com.peakmain.analytics.plugin.entity
  * describe：
  */
 class MethodCalledBean {
-    String className
-    private int access
-    String name
-    String[] descriptor
+    String methodOwner
+    String methodName
+    String[] methodDescriptor
 
-    MethodCalledBean(String mClassName, String name, String[] descriptor) {
-        this.className = mClassName
-        this.name = name
-        this.descriptor = descriptor
+    MethodCalledBean(String methodOwner, String methodName, String[] methodDescriptor) {
+        this.methodOwner = methodOwner
+        this.methodName = methodName
+        this.methodDescriptor = methodDescriptor
     }
-    @Override
-    String toString() {
-        return "MethodCalledBean{" +
-                "className='" + className + '\'' +
-                ", access=" + access +
-                ", name='" + name + '\'' +
-                ", descriptor='" + descriptor + '\'' +
-                '}'
-    }
+
 }

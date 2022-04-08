@@ -1,14 +1,13 @@
 package com.peakmain.analytics.plugin.visitor
 
 import com.peakmain.analytics.plugin.entity.MethodCalledBean
+import com.peakmain.analytics.plugin.ext.MonitorConfig
 import com.peakmain.analytics.plugin.ext.MonitorHookMethodConfig
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import com.peakmain.analytics.plugin.visitor.base.MonitorDefalutMethodAdapter
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
-
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * author ：Peakmain
@@ -20,7 +19,7 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
     private String mClassName
 
     private int mAccess
-
+    private MonitorConfig monitorConfig
     /**
      * Constructs a new {@link MonitorMethodCalledClearAdapter}.
      *
@@ -29,16 +28,17 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
      * @param name the method's name.
      * @param desc
      */
-    MonitorMethodCalledClearAdapter(MethodVisitor mv, int access, String name, String desc, String className) {
+    MonitorMethodCalledClearAdapter(MethodVisitor mv, int access, String name, String desc, String className, MonitorConfig monitorConfig) {
         super(mv, access, name, desc)
         mClassName = className
         mAccess = access
+        this.monitorConfig = monitorConfig
     }
 
     @Override
     void visitMethodInsn(int opcodeAndSource, String owner, String name, String descriptor, boolean isInterface) {
         HashMap<String, MethodCalledBean> methodCalledBeans = MonitorHookMethodConfig.methodCalledBeans
-        if (methodCalledBeans.containsKey(owner + name + descriptor)) {
+        if (!monitorConfig.exceptSet.contains(mClassName) && methodCalledBeans.containsKey(owner + name + descriptor)) {
             println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
             clearMethodBody(mv, mClassName, access, name, descriptor)
             return

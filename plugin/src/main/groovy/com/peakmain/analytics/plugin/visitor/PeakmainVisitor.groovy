@@ -23,11 +23,11 @@ class PeakmainVisitor extends ClassVisitor {
     private String mClassName
     private MonitorConfig mMonitorConfig
 
-
     PeakmainVisitor(ClassVisitor classVisitor, MonitorConfig config) {
         super(Opcodes.ASM9, classVisitor)
         this.classVisitor = classVisitor
         this.mMonitorConfig = config
+
     }
     /**
      * @param version 类版本
@@ -58,7 +58,7 @@ class PeakmainVisitor extends ClassVisitor {
         methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces)
         methodVisitor = new MonitorPrintParametersReturnValueAdapter(methodVisitor, access, name, descriptor, mClassName, classVisitor)
         if (mMonitorConfig.disableDeviceId)
-            methodVisitor = new MonitorMethodCalledClearAdapter(methodVisitor, access, name, descriptor, mClassName)
+            methodVisitor = new MonitorMethodCalledClearAdapter(methodVisitor, access, name, descriptor, mClassName,mMonitorConfig)
         else if (mMonitorConfig.replaceDeviceId) {
             methodVisitor = new MonitorMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor)
         }

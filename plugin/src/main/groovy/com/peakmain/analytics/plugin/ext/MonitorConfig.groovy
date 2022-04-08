@@ -21,18 +21,27 @@ class MonitorConfig {
     public static final int METHOD_STATE_NORMAL = 1
     public static final int METHOD_STATE_CLEAR = 2
     public static final int METHOD_STATE_REPLACE = 3
+
+    private final HashSet<String> special = [
+            'com.peakmain.sdk.utils.SensorsDataUtils',
+            'androidx.core.app.NotificationManagerCompat',
+            'android.support.v4.app.NotificationManagerCompat']
     /**
      * 是否禁用设备id
      */
     public boolean disableDeviceId = true
     public boolean replaceDeviceId = false
+    HashSet<String> exceptSet = new HashSet<>()
     /**
      * 是否禁用开启堆栈分析，默认是禁用
      */
     public boolean disableStackMapFrame = true
 
     void convertConfig() {
-
+        for (String value : special) {
+            value = value.replace(".", "/")
+            exceptSet.add(value)
+        }
     }
 
     void reset() {
