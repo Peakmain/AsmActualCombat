@@ -15,10 +15,17 @@ class MonitorHookMethodConfig {
         /**
          * 获取设备id
          */
+        HashMap<String, String> deviceIdMap = new HashMap<>()
+        deviceIdMap.put(MethodFieldUtils.EMPTY_STRING_DESC, MethodFieldUtils.NEW_EMPTY_STRING_DESC)
+        deviceIdMap.put(MethodFieldUtils.INT_STRING_DESC, MethodFieldUtils.NEW_INT_STRING_DESC)
         MethodCalledBean deviceIds = new MethodCalledBean(
                 MethodFieldUtils.TELEPHONY_MANAGER_CLASS,
                 MethodFieldUtils.GET_DEVICE_ID_METHOD_NAME,
-                MethodFieldUtils.EMPTY_INT_RETURN_STRING_DESC)
+                MethodFieldUtils.EMPTY_INT_RETURN_STRING_DESC,
+                MethodFieldUtils.NEW_METHOD_OWNER,
+                MethodFieldUtils.GET_DEVICE_ID_METHOD_NAME,
+                MethodFieldUtils.STATIC_OPCODE,
+                deviceIdMap)
         addMethodCalledBean(deviceIds)
         /**
          *  获取getMeid

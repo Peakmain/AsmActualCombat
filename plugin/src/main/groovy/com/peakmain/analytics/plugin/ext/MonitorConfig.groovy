@@ -42,6 +42,9 @@ class MonitorConfig {
             value = value.replace(".", "/")
             exceptSet.add(value)
         }
+        for(int i=0;i<whiteList.size();i++){
+            whiteList.set(i,whiteList.get(i).replace(".", "/"))
+        }
     }
 
     void reset() {

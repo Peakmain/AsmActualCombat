@@ -38,7 +38,7 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
     @Override
     void visitMethodInsn(int opcodeAndSource, String owner, String name, String descriptor, boolean isInterface) {
         HashMap<String, MethodCalledBean> methodCalledBeans = MonitorHookMethodConfig.methodCalledBeans
-        if (!monitorConfig.exceptSet.contains(mClassName) && methodCalledBeans.containsKey(owner + name + descriptor)) {
+        if (!monitorConfig.whiteList.contains(mClassName) && !monitorConfig.exceptSet.contains(mClassName) && methodCalledBeans.containsKey(owner + name + descriptor)) {
             println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
             clearMethodBody(mv, mClassName, access, name, descriptor)
             return

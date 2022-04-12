@@ -63,7 +63,7 @@ monitorPlugin {
             "io.github.peakmain",
             "com.peakmain.plugin"
     ]
-    disableDeviceId = true
-    replaceDeviceId = false
+    disableDeviceId = false
+    replaceDeviceId = true
     disableStackMapFrame = false
 }

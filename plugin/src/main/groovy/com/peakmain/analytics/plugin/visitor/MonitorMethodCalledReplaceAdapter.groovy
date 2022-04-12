@@ -1,8 +1,12 @@
 package com.peakmain.analytics.plugin.visitor
 
+import com.peakmain.analytics.plugin.entity.MethodCalledBean
+import com.peakmain.analytics.plugin.ext.MonitorHookMethodConfig
 import com.peakmain.analytics.plugin.visitor.base.MonitorDefalutMethodAdapter
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
+
+import javax.swing.plaf.TextUI
 
 /**
  * author ：Peakmain
@@ -11,19 +15,8 @@ import org.objectweb.asm.MethodVisitor
  * describe：
  */
 class MonitorMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
-    private String mMethodOwner = "android/telephony/TelephonyManager"
-    private String mMethodName = "getDeviceId"
-    private String mMethodDesc = "()Ljava/lang/String;"
-    private String mMethodDesc1 = "(I)Ljava/lang/String;"
-
-    private final int newOpcode = INVOKESTATIC
-    private final String newOwner = "com/peakmain/sdk/utils/ReplaceMethodUtils"
-    private final String newMethodName = "getDeviceId"
     private int mAccess
     private ClassVisitor classVisitor
-    private String newMethodDesc = "(Landroid/telephony/TelephonyManager;)Ljava/lang/String;"
-    private String newMethodDesc1 = "(Landroid/telephony/TelephonyManager;I)Ljava/lang/String;"
-
     /**
      * Constructs a new {@link AdviceAdapter}.
      *
@@ -39,13 +32,14 @@ class MonitorMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
 
     @Override
     void visitMethodInsn(int opcodeAndSource, String owner, String name, String descriptor, boolean isInterface) {
-        if (mMethodOwner == owner && name == mMethodName) {
-            if(descriptor == mMethodDesc){
-                super.visitMethodInsn(newOpcode,newOwner,newMethodName,newMethodDesc,false)
-            }else if(mMethodDesc1 == descriptor){
-                super.visitMethodInsn(newOpcode,newOwner,newMethodName,newMethodDesc1,false)
-            }
-
+        HashMap<String, MethodCalledBean> methodReplaceBeans = MonitorHookMethodConfig.methodCalledBeans
+        String desc = owner + name + descriptor
+        if (methodReplaceBeans.containsKey(desc)) {
+            MethodCalledBean bean = methodReplaceBeans.get(desc)
+            if (bean.newMethodOwner != null)
+                super.visitMethodInsn(bean.newOpcode, bean.newMethodOwner, bean.newMethodName, bean.newMethodDescriptor.get(descriptor), false)
+            else
+                super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
         } else {
             super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
         }
