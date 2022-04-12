@@ -22,17 +22,20 @@ class MethodFieldUtils {
     static String GET_IP_ADDRESS_METHOD_NAME = "getIpAddress"
     static String GET_STRING_METHOD_NAME = "getString"
     //desc
-    static final String EMPTY_STRING_DESC="()Ljava/lang/String;"
-    static final String NEW_EMPTY_STRING_DESC = "(Landroid/telephony/TelephonyManager;)Ljava/lang/String;"
-    static final String INT_STRING_DESC="(I)Ljava/lang/String;"
-    static final String NEW_INT_STRING_DESC="(Landroid/telephony/TelephonyManager;I)Ljava/lang/String;"
+    static final String EMPTY_STRING_DESC = "()Ljava/lang/String;"
+    static final String EMPTY_STRING_WIFI_INFO_DESC = "(Landroid/net/wifi/WifiInfo;)Ljava/lang/String;"
+    static final String NEW_EMPTY_STRING_TELEPHONY_DESC = "(Landroid/telephony/TelephonyManager;)Ljava/lang/String;"
+    static final String INT_STRING_DESC = "(I)Ljava/lang/String;"
+    static final String NEW_INT_STRING_TELEPHONY_DESC = "(Landroid/telephony/TelephonyManager;I)Ljava/lang/String;"
     static String[] EMPTY_INT_RETURN_STRING_DESC = [EMPTY_STRING_DESC, INT_STRING_DESC]
-    static final String EMPTY_WIFI_INFO_DESC="()Landroid/net/wifi/WifiInfo;"
+    static final String EMPTY_WIFI_INFO_DESC = "()Landroid/net/wifi/WifiInfo;"
+    static final String EMPTY_WIFI_INFO_WIFI_INFO_DESC = "(Landroid/net/wifi/WifiInfo;)Landroid/net/wifi/WifiInfo;"
     static String[] EMPTY_RETURN_WIFI_INFO_DESC = [EMPTY_WIFI_INFO_DESC]
     static String[] EMPTY_RETURN_STRING_DESC = [EMPTY_STRING_DESC]
-    static final String EMPTY_INT_DESC="()I"
+    static final String EMPTY_INT_DESC = "()I"
+    static final String EMPTY_INT_WIFI_INFO_DESC = "(Landroid/net/wifi/WifiInfo;)I"
     static String[] EMPTY_RETURN_INT_DESC = [EMPTY_INT_DESC]
-    static final String CONTENTRESOLVER_STRING_DESC ="(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;"
+    static final String CONTENTRESOLVER_STRING_DESC = "(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;"
     static String[] CONTENTRESOLVER_STRING_RETURN_STRING_DESC = [CONTENTRESOLVER_STRING_DESC]
 
 

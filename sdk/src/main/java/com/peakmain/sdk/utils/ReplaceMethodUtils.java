@@ -1,12 +1,15 @@
 package com.peakmain.sdk.utils;
 
+import android.content.ContentResolver;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.provider.Settings;
 import android.telephony.SubscriptionInfo;
 import android.telephony.TelephonyManager;
 
+import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +29,16 @@ public class ReplaceMethodUtils {
         return "";
     }
 
-    public String getImei(TelephonyManager manager) {
+
+    public static String getMeid(TelephonyManager manager) {
         return "";
     }
 
-    public String getMeid(TelephonyManager manager) {
+    public static String getMeid(TelephonyManager manager, int slotIndex) {
+        return "";
+    }
+
+    public static String getImei(TelephonyManager manager) {
         return "";
     }
 
@@ -52,7 +60,7 @@ public class ReplaceMethodUtils {
         return "";
     }
 
-    public String getSimSerialNumber(TelephonyManager manager, int subId) {
+    public static String getSimSerialNumber(TelephonyManager manager, int subId) {
         return "";
     }
 
@@ -72,12 +80,20 @@ public class ReplaceMethodUtils {
         return "";
     }
 
-    public String getIccId(SubscriptionInfo subscriptionInfo) {
+    public static String getIccId(SubscriptionInfo subscriptionInfo) {
         return "";
     }
 
-    public List<PackageInfo> getInstalledPackages(PackageManager manager) {
+    public static List<PackageInfo> getInstalledPackages(PackageManager manager) {
         return new ArrayList<>();
+    }
+
+    public static int getIpAddress(WifiInfo wifiInfo) {
+        return -1;
+    }
+
+    public static String getString(ContentResolver resolver, String name) {
+        return "";
     }
 
 }
