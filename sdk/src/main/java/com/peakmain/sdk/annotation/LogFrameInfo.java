@@ -7,22 +7,12 @@ import java.lang.annotation.Target;
 
 /**
  * author ：Peakmain
- * createTime：2021/6/16
- * describe：
+ * createTime：2022/4/13
+ * mail:2726449200@qq.com
+ * describe:打印Method stack Map Frame
  */
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LogMessage {
-    /**
-     * 是否打印方法耗时时间
-     */
-    boolean isLogTime() default false;
-
-    /**
-     *
-     * 是否打印方法的参数和返回值
-     */
-    boolean isLogParametersReturnValue() default false;
-
+public @interface LogFrameInfo {
 }

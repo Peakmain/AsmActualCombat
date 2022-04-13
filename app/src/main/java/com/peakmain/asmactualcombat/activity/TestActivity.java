@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.peakmain.asmactualcombat.R;
+import com.peakmain.sdk.annotation.LogFrameInfo;
 import com.peakmain.sdk.annotation.LogMessage;
 
 /**
@@ -61,7 +62,7 @@ public class TestActivity extends AppCompatActivity {
         return "peakmain";
     }
 
-    @LogMessage(isLogMethodStackMapFrame = true)
+    @LogFrameInfo
     public String testLogMethodStackMapFrame(int a) {
         try {
             Thread.sleep(1000);

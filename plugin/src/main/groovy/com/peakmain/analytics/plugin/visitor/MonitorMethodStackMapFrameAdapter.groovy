@@ -30,7 +30,7 @@ class MonitorMethodStackMapFrameAdapter extends AnalyzerAdapter {
     @Override
     void visitCode() {
         super.visitCode()
-        if (isLogMethodStackMapFrame) {
+        if (isLogMethodStackMapFrame&&!OpcodesUtils.isNative(methodAccess) && !OpcodesUtils.isAbstract(methodAccess) && !OpcodesUtils.isInitMethod(methodName)) {
             boolean isStatic = OpcodesUtils.isStatic(methodAccess)
             int slotIndex = isStatic ? 0 : 1
             Type methodType = Type.getType(methodDesc)
@@ -132,16 +132,8 @@ class MonitorMethodStackMapFrameAdapter extends AnalyzerAdapter {
 
     @Override
     AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        if (descriptor == "Lcom/peakmain/sdk/annotation/LogMessage;") {
-            return new AnnotationVisitor(OpcodesUtils.ASM_VERSION) {
-                @Override
-                void visit(String name, Object value) {
-                    super.visit(name, value)
-                    if (name == "isLogMethodStackMapFrame") {
-                        isLogMethodStackMapFrame = (Boolean) value
-                    }
-                }
-            }
+        if (descriptor == "Lcom/peakmain/sdk/annotation/LogFrameInfo;") {
+            isLogMethodStackMapFrame = true
         }
         return super.visitAnnotation(descriptor, visible)
     }
