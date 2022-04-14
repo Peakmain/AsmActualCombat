@@ -21,11 +21,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug{
+        debug {
             manifestPlaceholders = [
-                    JPUSH_PKGNAME   : applicationId ,
-                    JPUSH_APPKEY    : jpushKey as String,
-                    JPUSH_CHANNEL   : "developer-default",
+                    JPUSH_PKGNAME: applicationId,
+                    JPUSH_APPKEY : jpushKey as String,
+                    JPUSH_CHANNEL: "developer-default",
             ]
         }
     }
@@ -54,7 +54,7 @@ dependencies {
     implementation 'com.github.Peakmain:BasicLibrary:1.0.4'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor "com.android.databinding:compiler:3.1.4"
-    implementation (rootProject.ext.dependencies.jpush)
+    implementation(rootProject.ext.dependencies.jpush)
 }
 monitorPlugin {
     whiteList = [
@@ -63,7 +63,6 @@ monitorPlugin {
             "io.github.peakmain",
             "com.peakmain.plugin"
     ]
-    disableDeviceId = false
-    replaceDeviceId = true
+    methodStatus = 1
     disableStackMapFrame = false
 }

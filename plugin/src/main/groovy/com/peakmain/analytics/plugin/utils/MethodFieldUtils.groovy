@@ -3,6 +3,21 @@ package com.peakmain.analytics.plugin.utils
 import org.objectweb.asm.Opcodes
 
 class MethodFieldUtils {
+    enum StatusEnum {
+        METHOD_STATE_NORMAL(1),
+        METHOD_STATE_CLEAR(2),
+        METHOD_STATE_REPLACE(3)
+        private int value
+
+        StatusEnum(int value) {
+            this.value = value
+        }
+
+        int getValue() {
+            return value
+        }
+    }
+
     public static final String LOG_MANAGER = "com/peakmain/sdk/utils/LogManager"
     public static final String NEW_METHOD_OWNER = "com/peakmain/sdk/utils/ReplaceMethodUtils"
     public static final int STATIC_OPCODE = Opcodes.INVOKESTATIC

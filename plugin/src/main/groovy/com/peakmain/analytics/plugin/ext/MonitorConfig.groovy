@@ -1,6 +1,6 @@
 package com.peakmain.analytics.plugin.ext
 
-import com.peakmain.analytics.plugin.entity.MethodCalledBean
+import com.peakmain.analytics.plugin.utils.MethodFieldUtils
 
 /**
  * author ：Peakmain
@@ -8,7 +8,9 @@ import com.peakmain.analytics.plugin.entity.MethodCalledBean
  * mail:2726449200@qq.com
  * describe：
  */
+
 class MonitorConfig {
+
     /**
      * 是否禁用多线程构建
      */
@@ -18,19 +20,18 @@ class MonitorConfig {
      */
     public boolean isIncremental = false
     public ArrayList<String> whiteList = []
-    public static final int METHOD_STATE_NORMAL = 1
-    public static final int METHOD_STATE_CLEAR = 2
-    public static final int METHOD_STATE_REPLACE = 3
-
+    /**
+     * 隐私方法方法的状态
+     * @params 1 代表清空方法体
+     * @params 2 代表替换方法体
+     * @params 其他都代表 正常情况
+     */
+    public int methodStatus = 0
+    private MethodFieldUtils.StatusEnum statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL
     private final HashSet<String> special = [
             'com.peakmain.sdk.utils.SensorsDataUtils',
             'androidx.core.app.NotificationManagerCompat',
             'android.support.v4.app.NotificationManagerCompat']
-    /**
-     * 是否禁用设备id
-     */
-    public boolean disableDeviceId = true
-    public boolean replaceDeviceId = false
     HashSet<String> exceptSet = new HashSet<>()
     /**
      * 是否禁用开启堆栈分析，默认是禁用
@@ -42,9 +43,20 @@ class MonitorConfig {
             value = value.replace(".", "/")
             exceptSet.add(value)
         }
-        for(int i=0;i<whiteList.size();i++){
-            whiteList.set(i,whiteList.get(i).replace(".", "/"))
+        for (int i = 0; i < whiteList.size(); i++) {
+            whiteList.set(i, whiteList.get(i).replace(".", "/"))
         }
+        if (methodStatus == 1) {
+            statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_CLEAR
+        } else if (methodStatus == 2) {
+            statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE
+        } else {
+            statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL
+        }
+    }
+
+    MethodFieldUtils.StatusEnum getStatusEnum() {
+        return statusEnum
     }
 
     void reset() {

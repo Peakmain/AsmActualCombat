@@ -1,15 +1,13 @@
 package com.peakmain.analytics.plugin.visitor
 
-import com.peakmain.analytics.plugin.entity.MethodCalledBean
+
 import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
 import com.peakmain.analytics.plugin.ext.MonitorConfig
+import com.peakmain.analytics.plugin.utils.MethodFieldUtils
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
-
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * author ：Peakmain
@@ -58,9 +56,9 @@ class PeakmainVisitor extends ClassVisitor {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions)
         methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces)
         methodVisitor = new MonitorPrintParametersReturnValueAdapter(methodVisitor, access, name, descriptor, mClassName, classVisitor)
-        if (mMonitorConfig.disableDeviceId)
-            methodVisitor = new MonitorMethodCalledClearAdapter(methodVisitor, access, name, descriptor, mClassName,mMonitorConfig)
-        else if (mMonitorConfig.replaceDeviceId) {
+        if (mMonitorConfig.getStatusEnum() == MethodFieldUtils.StatusEnum.METHOD_STATE_CLEAR)
+            methodVisitor = new MonitorMethodCalledClearAdapter(methodVisitor, access, name, descriptor, mClassName, mMonitorConfig)
+        else if (mMonitorConfig.getStatusEnum() == MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE) {
             methodVisitor = new MonitorMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor)
         }
         if (!mMonitorConfig.disableStackMapFrame)
