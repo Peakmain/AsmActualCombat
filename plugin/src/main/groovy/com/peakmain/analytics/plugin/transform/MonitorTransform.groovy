@@ -95,7 +95,7 @@ class MonitorTransform extends Transform {
      * @param outputProvider 输出路径
      */
     void _transform(Context context, Collection<TransformInput> inputs, TransformOutputProvider outputProvider) throws IOException, TransformException, InterruptedException {
-        println(monitorConfig.toString())
+        //println(monitorConfig.toString())
         long startTime = System.currentTimeMillis()
         if (!incremental) {
             //不是增量更新删除所有的outputProvider

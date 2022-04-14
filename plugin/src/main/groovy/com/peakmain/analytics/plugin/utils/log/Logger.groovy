@@ -20,8 +20,8 @@ package com.peakmain.analytics.plugin.utils.log
  *                    '.:::::'                    ':'````..
  */
 class Logger {
-    private static final String VERSION = "0.0.1"
-    private static boolean debug = true
+    private static final String VERSION = "1.0.1"
+    private static boolean debug = false
 
     static void printPluginStart() {
         println()

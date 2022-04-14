@@ -36,10 +36,7 @@ class MonitorMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
         String desc = owner + name + descriptor
         if (methodReplaceBeans.containsKey(desc)) {
             MethodCalledBean bean = methodReplaceBeans.get(desc)
-            if (bean.newMethodOwner != null)
-                super.visitMethodInsn(bean.newOpcode, bean.newMethodOwner, bean.newMethodName, bean.newMethodDescriptor.get(descriptor), false)
-            else
-                super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
+            super.visitMethodInsn(bean.newOpcode, bean.newMethodOwner, bean.newMethodName, bean.newMethodDescriptor.get(descriptor), false)
         } else {
             super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
         }
