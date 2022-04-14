@@ -9,13 +9,8 @@ ASM实战——埋点
 Add it in your root build.gradle at the end of repositories:
 ```
 buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-  }
   dependencies {
-    classpath "io.github.peakmain:plugin:1.0.0"
+    classpath "io.github.peakmain:plugin:1.0.1"
   }
 }
 
@@ -35,7 +30,7 @@ Add it in your root build.gradle at the end of repositories:
 - Step 2. Add the dependency
 ```
 	dependencies {
-	       implementation 'com.github.Peakmain:AsmActualCombat:0.1.10'
+	       implementation 'com.github.Peakmain:AsmActualCombat:1.0.0'
 	}
 ```
 #### 使用文档
