@@ -14,11 +14,9 @@ import org.gradle.api.Project
  * describe：
  */
 class PeakmainPlugin implements Plugin<Project> {
-    private final String pluginName = "monitorPlugin"
-
     @Override
     void apply(Project project) {
-        MonitorConfig extension = project.extensions.create(pluginName, MonitorConfig)
+        MonitorConfig extension = project.extensions.create('monitorPlugin', MonitorConfig)
         boolean disablePlugin = false
         Properties properties = new Properties()
         //gradle.properties是否存在

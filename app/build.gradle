@@ -1,9 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    //id 'com.peakmain.plugin'
+    id 'com.peakmain.plugin'
 }
-apply plugin: "com.peakmain.plugin"
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
@@ -57,7 +56,7 @@ dependencies {
     annotationProcessor "com.android.databinding:compiler:3.1.4"
     implementation(rootProject.ext.dependencies.jpush)
 }
-/*monitorPlugin {
+monitorPlugin {
     whiteList = [
             "com.peakmain.test",
             "com.peakmain.haha",
@@ -66,4 +65,4 @@ dependencies {
     ]
     methodStatus = 1
     disableStackMapFrame = false
-}*/
+}

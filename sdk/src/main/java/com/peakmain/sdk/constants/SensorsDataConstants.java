@@ -26,4 +26,14 @@ public class SensorsDataConstants {
     @Retention(RetentionPolicy.SOURCE)
     public @interface STATE{}
 
+    public static final int GET_DEVICE_ID = 1;
+    public static final int GET_MEID = 2;
+    public static final int GET_IMEI = 3;
+    public static final int GET_SUBSCRIBER_ID = 4;
+    public static final int GET_SIM_SERIAL_NUMBER = 5;
+    public static final int GET_MAC_ADDRESS = 6;
+    public static final int GET_SSID = 7;
+    public static final int GET_CONNECTION_INFO = 8;
+    public static final int GET_BSSID = 9;
+
 }
