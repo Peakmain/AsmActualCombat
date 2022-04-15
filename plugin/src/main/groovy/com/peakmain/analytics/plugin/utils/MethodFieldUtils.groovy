@@ -46,7 +46,7 @@ class MethodFieldUtils {
     static final String NEW_INT_STRING_TELEPHONY_DESC = "(Landroid/telephony/TelephonyManager;I)Ljava/lang/String;"
     static String[] EMPTY_INT_RETURN_STRING_DESC = [EMPTY_STRING_DESC, INT_STRING_DESC]
     static final String EMPTY_WIFI_INFO_DESC = "()Landroid/net/wifi/WifiInfo;"
-    static final String EMPTY_WIFI_INFO_WIFI_INFO_DESC = "(Landroid/net/wifi/WifiInfo;)Landroid/net/wifi/WifiInfo;"
+    static final String EMPTY_WIFI_INFO_WIFI_INFO_DESC = "(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo;"
     static String[] EMPTY_RETURN_WIFI_INFO_DESC = [EMPTY_WIFI_INFO_DESC]
     static String[] EMPTY_RETURN_STRING_DESC = [EMPTY_STRING_DESC]
     static final String EMPTY_INT_DESC = "()I"

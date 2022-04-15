@@ -6,6 +6,7 @@ import com.peakmain.basiclibrary.base.activity.BaseActivity
 import com.peakmain.asmactualcombat.viewmodel.ClickDealViewModel
 import com.peakmain.asmactualcombat.R
 import com.peakmain.asmactualcombat.databinding.ActivityMainBinding
+import com.peakmain.asmactualcombat.utils.Utils
 import com.peakmain.ui.utils.ToastUtils
 
 /**
@@ -23,7 +24,7 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) :
         }
         mBinding.buttonClick1.setOnClickListener {
             //startActivity(Intent(this,TestActivity::class.java))
-            ToastUtils.showLong(c.a(this))
+            ToastUtils.showLong(Utils.getAndroidId(this))
         }
     }
 

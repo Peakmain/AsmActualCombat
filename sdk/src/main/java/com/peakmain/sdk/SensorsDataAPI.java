@@ -9,9 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.peakmain.sdk.constants.SensorsDataConstants;
+import com.peakmain.sdk.interfaces.OnReplaceMethodListener;
 import com.peakmain.sdk.interfaces.OnUploadSensorsDataListener;
 import com.peakmain.sdk.manager.SensorsDataManager;
 import com.peakmain.sdk.manager.SensorsDatabaseHelper;
+import com.peakmain.sdk.utils.ReplaceMethodUtils;
 import com.peakmain.sdk.utils.SensorsDataUtils;
 
 import org.json.JSONObject;
@@ -52,6 +54,14 @@ public class SensorsDataAPI {
          * 是否同意用户协议接口
          */
         boolean onUserAgreement();
+    }
+
+    /**
+     * 设置方法替换接口
+     * @param onReplaceMethodListener onReplaceMethodListener
+     */
+    public void setOnReplaceMethodListener(OnReplaceMethodListener onReplaceMethodListener) {
+        ReplaceMethodUtils.getInstance().setOnReplaceMethodListener(onReplaceMethodListener);
     }
 
     public void setOnUserAgreementListener(@Nullable OnUserAgreementListener l) {

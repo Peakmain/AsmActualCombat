@@ -51,10 +51,12 @@ public class Utils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+/*
         if (info == null) return mac;
         mac = info.getMacAddress();
 
         if (!TextUtils.isEmpty(mac)) mac = mac.toUpperCase(Locale.ENGLISH);
+*/
 
         return mac;
     }

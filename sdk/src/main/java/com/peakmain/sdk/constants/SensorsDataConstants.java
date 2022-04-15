@@ -33,7 +33,15 @@ public class SensorsDataConstants {
     public static final int GET_SIM_SERIAL_NUMBER = 5;
     public static final int GET_MAC_ADDRESS = 6;
     public static final int GET_SSID = 7;
-    public static final int GET_CONNECTION_INFO = 8;
-    public static final int GET_BSSID = 9;
+    public static final int GET_BSSID = 8;
+    public static final int GET_IP_ADDRESS = 9;
+
+    @IntDef({GET_DEVICE_ID,GET_MEID,GET_IMEI,GET_SUBSCRIBER_ID,GET_SIM_SERIAL_NUMBER})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface TELEPHONY_STATE{}
+
+    @IntDef({GET_MAC_ADDRESS,GET_SSID,GET_BSSID,GET_IP_ADDRESS})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface WIFI_STATE{}
 
 }

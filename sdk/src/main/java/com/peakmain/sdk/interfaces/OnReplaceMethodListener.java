@@ -1,7 +1,16 @@
 package com.peakmain.sdk.interfaces;
 
 import android.content.ContentResolver;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.telephony.SubscriptionInfo;
 import android.telephony.TelephonyManager;
+
+import com.peakmain.sdk.constants.SensorsDataConstants;
+
+import java.util.List;
 
 /**
  * author ：Peakmain
@@ -10,10 +19,16 @@ import android.telephony.TelephonyManager;
  * describe：替换方法监听事件
  */
 public interface OnReplaceMethodListener {
-    String onReplaceMethodListener(TelephonyManager manager);
+    String onReplaceMethodListener(@SensorsDataConstants.TELEPHONY_STATE int telephoneState, TelephonyManager manager, int slotIndex);
 
-    String onReplaceMethodListener(TelephonyManager manager, int slotIndex);
+    String onReplaceMethodListener(@SensorsDataConstants.WIFI_STATE int wifiInfoState, WifiInfo wifiInfo);
 
-    String getString(ContentResolver resolver, String name);
+    WifiInfo onReplaceMethodListener(WifiManager wifiManager);
+
+    String onReplaceMethodListener(SubscriptionInfo subscriptionInfo);
+
+    List<PackageInfo> onReplaceMethodListener(PackageManager manager);
+
+    String onReplaceMethodListener(ContentResolver resolver, String name);
 
 }

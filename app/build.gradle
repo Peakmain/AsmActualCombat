@@ -63,6 +63,6 @@ monitorPlugin {
             "io.github.peakmain",
             "com.peakmain.plugin"
     ]
-    methodStatus = 1
+    methodStatus = 2
     disableStackMapFrame = false
 }
