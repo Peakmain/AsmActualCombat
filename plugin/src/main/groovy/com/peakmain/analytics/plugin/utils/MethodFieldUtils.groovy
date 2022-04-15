@@ -3,6 +3,7 @@ package com.peakmain.analytics.plugin.utils
 import org.objectweb.asm.Opcodes
 
 class MethodFieldUtils {
+    public static final String PLUGIN_VERSION = "1.0.6"
     enum StatusEnum {
         METHOD_STATE_NORMAL(1),
         METHOD_STATE_CLEAR(2),
@@ -17,6 +18,7 @@ class MethodFieldUtils {
             return value
         }
     }
+
 
     public static final String LOG_MANAGER = "com/peakmain/sdk/utils/LogManager"
     public static final String NEW_METHOD_OWNER = "com/peakmain/sdk/utils/ReplaceMethodUtils"
