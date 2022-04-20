@@ -1,6 +1,7 @@
 package com.peakmain.analytics.plugin.visitor
 
 import com.peakmain.analytics.plugin.entity.MethodCalledBean
+import com.peakmain.analytics.plugin.ext.MonitorConfig
 import com.peakmain.analytics.plugin.ext.MonitorHookMethodConfig
 import com.peakmain.analytics.plugin.visitor.base.MonitorDefalutMethodAdapter
 import org.objectweb.asm.ClassVisitor
@@ -17,6 +18,8 @@ import javax.swing.plaf.TextUI
 class MonitorMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
     private int mAccess
     private ClassVisitor classVisitor
+    private String mClassName
+    private MonitorConfig monitorConfig
     /**
      * Constructs a new {@link AdviceAdapter}.
      *
@@ -24,17 +27,19 @@ class MonitorMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
      * @param name the method's name.
      * @param desc
      */
-    MonitorMethodCalledReplaceAdapter(MethodVisitor mv, int access, String name, String desc, ClassVisitor classVisitor) {
+    MonitorMethodCalledReplaceAdapter(MethodVisitor mv, int access, String name, String desc, ClassVisitor classVisitor, String className, MonitorConfig monitorConfig) {
         super(mv, access, name, desc)
         mAccess = access
         this.classVisitor = classVisitor
+        mClassName = className
+        this.monitorConfig = monitorConfig
     }
 
     @Override
     void visitMethodInsn(int opcodeAndSource, String owner, String name, String descriptor, boolean isInterface) {
         HashMap<String, MethodCalledBean> methodReplaceBeans = MonitorHookMethodConfig.methodCalledBeans
         String desc = owner + name + descriptor
-        if (methodReplaceBeans.containsKey(desc)) {
+        if (!monitorConfig.whiteList.contains(mClassName) && !monitorConfig.exceptSet.contains(mClassName)&&methodReplaceBeans.containsKey(desc)) {
             MethodCalledBean bean = methodReplaceBeans.get(desc)
             super.visitMethodInsn(bean.newOpcode, bean.newMethodOwner, bean.newMethodName, bean.newMethodDescriptor.get(descriptor), false)
         } else {

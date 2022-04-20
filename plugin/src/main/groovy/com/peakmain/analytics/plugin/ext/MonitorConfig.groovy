@@ -46,9 +46,10 @@ class MonitorConfig {
         for (int i = 0; i < whiteList.size(); i++) {
             whiteList.set(i, whiteList.get(i).replace(".", "/"))
         }
-        if (methodStatus == 1) {
+        println(methodStatus)
+        if (methodStatus == MethodFieldUtils.StatusEnum.METHOD_STATE_CLEAR.value) {
             statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_CLEAR
-        } else if (methodStatus == 2) {
+        } else if (methodStatus ==  MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE.value) {
             statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE
         } else {
             statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL

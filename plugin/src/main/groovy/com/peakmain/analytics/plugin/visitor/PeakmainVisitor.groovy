@@ -59,7 +59,7 @@ class PeakmainVisitor extends ClassVisitor {
         if (mMonitorConfig.getStatusEnum() == MethodFieldUtils.StatusEnum.METHOD_STATE_CLEAR)
             methodVisitor = new MonitorMethodCalledClearAdapter(methodVisitor, access, name, descriptor, mClassName, mMonitorConfig)
         else if (mMonitorConfig.getStatusEnum() == MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE) {
-            methodVisitor = new MonitorMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor)
+            methodVisitor = new MonitorMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor,mClassName,mMonitorConfig)
         }
         if (!mMonitorConfig.disableStackMapFrame)
             methodVisitor = new MonitorMethodStackMapFrameAdapter(mClassName, access, name, descriptor, methodVisitor)

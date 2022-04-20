@@ -58,11 +58,9 @@ dependencies {
 }
 monitorPlugin {
     whiteList = [
-            "com.peakmain.test",
-            "com.peakmain.haha",
-            "io.github.peakmain",
+            "com.peakmain.asmactualcombat.utils.TestUtils",
             "com.peakmain.plugin"
     ]
-    methodStatus = 2
+    methodStatus = 3
     disableStackMapFrame = false
 }
