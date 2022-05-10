@@ -1,5 +1,6 @@
 # AsmActualCombat
-**使用文档链接：**https://github.com/Peakmain/AsmActualCombat/wiki
+**使用文档链接:https://github.com/Peakmain/AsmActualCombat/wiki**
+
 #### How To
 **ASM插件依赖**
 Add it in your root build.gradle at the end of repositories:
