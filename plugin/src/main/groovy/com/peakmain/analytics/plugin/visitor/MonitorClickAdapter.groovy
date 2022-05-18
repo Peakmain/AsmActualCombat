@@ -5,6 +5,7 @@ import com.peakmain.analytics.plugin.ext.PeakmainHookConfig
 import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import com.peakmain.analytics.plugin.visitor.base.MonitorDefalutMethodAdapter
+import org.apache.http.util.TextUtils
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.Handle
 import org.objectweb.asm.Label
@@ -134,7 +135,7 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
                 methodVisitor.visitLabel(label2)
                 Object[] obj = new Object[1]
                 obj[0] = INTEGER
-                if (mClassName.contains(mMonitorConfig.interceptPackageName)) {
+                if (mClassName.contains(mMonitorConfig.interceptPackageName) && !TextUtils.isEmpty(mMonitorConfig.interceptPackageName)) {
                     methodVisitor.visitFrame(F_APPEND, 1, obj, 0, null)
                 }
 

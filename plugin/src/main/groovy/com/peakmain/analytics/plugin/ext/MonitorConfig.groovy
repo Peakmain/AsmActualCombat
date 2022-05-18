@@ -23,8 +23,8 @@ class MonitorConfig {
     public ArrayList<String> whiteList = []
     /**
      * 隐私方法方法的状态
-     * @params 0 代表正常
-     * @params 其他都代表 替换
+     * @params 1 代表替换方法体
+     * @params 其他都
      */
     public int methodStatus = 0
     private MethodFieldUtils.StatusEnum statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL
