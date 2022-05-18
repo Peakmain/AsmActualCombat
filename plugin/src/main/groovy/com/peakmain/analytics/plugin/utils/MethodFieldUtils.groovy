@@ -17,7 +17,7 @@ class MethodFieldUtils {
             return value
         }
     }
-
+   public static final String PACKAGE_NAME_PREXC="com.atour"
 
     public static final String LOG_MANAGER = "com/peakmain/sdk/utils/LogManager"
     public static final String NEW_METHOD_OWNER = "com/peakmain/sdk/utils/ReplaceMethodUtils"

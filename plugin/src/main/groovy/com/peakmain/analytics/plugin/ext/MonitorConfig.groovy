@@ -24,7 +24,7 @@ class MonitorConfig {
     /**
      * 隐私方法方法的状态
      * @params 1 代表替换方法体
-     * @params 其他都
+     * @params 其他都表示正常
      */
     public int methodStatus = 0
     private MethodFieldUtils.StatusEnum statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL
@@ -40,7 +40,7 @@ class MonitorConfig {
     /**
      * 拦截点击的包名前缀
      */
-    public String interceptPackageName = ""
+    public String interceptPackageName = MethodFieldUtils.PACKAGE_NAME_PREXC
 
     void convertConfig() {
         for (String value : special) {
