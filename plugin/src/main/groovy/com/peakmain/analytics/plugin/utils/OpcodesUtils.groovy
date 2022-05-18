@@ -3,7 +3,7 @@ package com.peakmain.analytics.plugin.utils
 import org.objectweb.asm.Opcodes
 
 class OpcodesUtils implements Opcodes {
-    public static final int ASM_VERSION = Opcodes.ASM7
+    public static final int ASM_VERSION = Opcodes.ASM9
     static boolean isSynthetic(int access) {
         return (access & ACC_SYNTHETIC) != 0
     }

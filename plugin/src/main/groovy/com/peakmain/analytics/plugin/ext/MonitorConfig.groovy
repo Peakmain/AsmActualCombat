@@ -34,9 +34,10 @@ class MonitorConfig {
             'android.support.v4.app.NotificationManagerCompat']
     HashSet<String> exceptSet = new HashSet<>()
     /**
-     * 是否禁用开启堆栈分析，默认是禁用
+     * 是否禁用开启堆栈分析，默认是禁用com.atour.atourlife
      */
     public boolean disableStackMapFrame = true
+    public String interceptPackageName = "com/atour"
 
     void convertConfig() {
         for (String value : special) {
@@ -49,7 +50,7 @@ class MonitorConfig {
         println(methodStatus)
         if (methodStatus == MethodFieldUtils.StatusEnum.METHOD_STATE_CLEAR.value) {
             statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_CLEAR
-        } else if (methodStatus ==  MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE.value) {
+        } else if (methodStatus == MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE.value) {
             statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE
         } else {
             statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL

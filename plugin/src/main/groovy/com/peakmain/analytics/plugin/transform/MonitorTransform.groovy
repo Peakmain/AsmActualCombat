@@ -1,29 +1,17 @@
 package com.peakmain.analytics.plugin.transform
 
-import com.android.build.api.transform.Context
-import com.android.build.api.transform.DirectoryInput
-import com.android.build.api.transform.Format
-import com.android.build.api.transform.JarInput
-import com.android.build.api.transform.QualifiedContent
-import com.android.build.api.transform.Transform
-import com.android.build.api.transform.TransformException
-import com.android.build.api.transform.TransformInput
-import com.android.build.api.transform.TransformInvocation
-import com.android.build.api.transform.TransformOutputProvider
+import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.android.ide.common.internal.WaitableExecutor
 import com.peakmain.analytics.plugin.ext.MonitorConfig
-import com.peakmain.analytics.plugin.utils.log.Logger
 import com.peakmain.analytics.plugin.visitor.PeakmainVisitor
-import org.objectweb.asm.ClassVisitor
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
-import org.objectweb.asm.ClassReader
-import org.objectweb.asm.ClassWriter
 import org.gradle.api.Project
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.ClassWriter
 
-import java.util.concurrent.Callable
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
@@ -32,7 +20,6 @@ import java.util.zip.ZipEntry
 class MonitorTransform extends Transform {
     private static Project project
     private MonitorConfig monitorConfig
-    private WaitableExecutor waitableExecutor
 
     MonitorTransform(Project project) {
         this.project = project
@@ -40,9 +27,6 @@ class MonitorTransform extends Transform {
 
     void setMonitorConfig(MonitorConfig monitorConfig) {
         this.monitorConfig = monitorConfig
-        if (!monitorConfig.disableMultiThreadBuild) {
-            waitableExecutor = WaitableExecutor.useGlobalSharedThreadPool()
-        }
     }
 
     @Override
@@ -105,35 +89,12 @@ class MonitorTransform extends Transform {
         inputs.each { TransformInput input ->
             //遍历目录
             input.directoryInputs.each { DirectoryInput directoryInput ->
-                if (waitableExecutor) {
-                    waitableExecutor.execute(new Callable<Object>() {
-                        @Override
-                        Object call() throws Exception {
-                            handleDirectoryInput(directoryInput, outputProvider)
-                            return null
-                        }
-                    })
-                } else {
-                    handleDirectoryInput(directoryInput, outputProvider)
-                }
+                handleDirectoryInput(directoryInput, outputProvider)
             }
             // 遍历jar 第三方引入的 class
             input.jarInputs.each { JarInput jarInput ->
-                if (waitableExecutor) {
-                    waitableExecutor.execute(new Callable<Object>() {
-                        @Override
-                        Object call() throws Exception {
-                            handleJarInput(jarInput, outputProvider)
-                            return null
-                        }
-                    })
-                } else {
-                    handleJarInput(jarInput, outputProvider)
-                }
+                handleJarInput(jarInput, outputProvider)
             }
-        }
-        if (waitableExecutor) {
-            waitableExecutor.waitForTasksWithQuickFail(true)
         }
         println("[MonitorTransform]: 此次编译共耗时:${System.currentTimeMillis() - startTime}毫秒")
     }

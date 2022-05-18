@@ -1,5 +1,6 @@
 package com.peakmain.analytics.plugin.visitor
 
+import com.peakmain.analytics.plugin.ext.MonitorConfig
 import com.peakmain.analytics.plugin.ext.PeakmainHookConfig
 import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
@@ -24,6 +25,8 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
     boolean isSensorsDataTrackViewOnClickAnnotation = false
     private String descriptor
     private String[] mInterfaces
+    private MonitorConfig mMonitorConfig
+    private String mClassName
     /**
      * Constructs a new {@link MonitorDefalutMethodAdapter}.
      *
@@ -31,13 +34,15 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
      * @param name the method's name.
      * @param desc
      */
-    MonitorClickAdapter(MethodVisitor mv, int access, String name, String desc, HashMap<String, PeakmainMethodCell> map, String[] interfaces) {
+    MonitorClickAdapter(MethodVisitor mv, int access, String name, String desc, HashMap<String, PeakmainMethodCell> map, String[] interfaces, MonitorConfig monitorConfig, String className) {
         super(mv, access, name, desc)
         mMethodCells = map
         nameDesc = name + desc
         methodVisitor = mv
         descriptor = desc
         mInterfaces = interfaces
+        mMonitorConfig = monitorConfig
+        mClassName = className
     }
 
     @Override
@@ -58,7 +63,6 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
             mMethodCells.put(it.name + it.desc, peakmainMethodCell)
         }
     }
-
 
 
     @Override
@@ -130,7 +134,9 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
                 methodVisitor.visitLabel(label2)
                 Object[] obj = new Object[1]
                 obj[0] = INTEGER
-                methodVisitor.visitFrame(F_APPEND, 1, obj, 0, null)
+                if (mClassName.contains(mMonitorConfig.interceptPackageName)) {
+                    methodVisitor.visitFrame(F_APPEND, 1, obj, 0, null)
+                }
 
             } else if (mInterfaces.contains('android/content/DialogInterface$OnClickListener') && nameDesc == 'onClick(Landroid/content/DialogInterface;I)V') {
                 methodVisitor.visitVarInsn(ALOAD, 1)
