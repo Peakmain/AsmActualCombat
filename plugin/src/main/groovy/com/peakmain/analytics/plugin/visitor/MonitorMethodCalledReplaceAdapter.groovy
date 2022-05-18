@@ -40,7 +40,7 @@ class MonitorMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
         HashMap<String, MethodCalledBean> methodReplaceBeans = MonitorHookMethodConfig.methodCalledBeans
         String desc = owner + name + descriptor
         if (!monitorConfig.whiteList.contains(mClassName) && !monitorConfig.exceptSet.contains(mClassName)&&methodReplaceBeans.containsKey(desc)) {
-            println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
+            //println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
             MethodCalledBean bean = methodReplaceBeans.get(desc)
             super.visitMethodInsn(bean.newOpcode, bean.newMethodOwner, bean.newMethodName, bean.newMethodDescriptor.get(descriptor), false)
         } else {

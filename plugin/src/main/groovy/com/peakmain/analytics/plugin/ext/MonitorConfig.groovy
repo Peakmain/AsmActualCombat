@@ -1,6 +1,7 @@
 package com.peakmain.analytics.plugin.ext
 
 import com.peakmain.analytics.plugin.utils.MethodFieldUtils
+import org.apache.http.util.TextUtils
 
 /**
  * author ：Peakmain
@@ -36,7 +37,10 @@ class MonitorConfig {
      * 是否禁用开启堆栈分析，默认是禁用
      */
     public boolean disableStackMapFrame = true
-    public String interceptPackageName = "com/atour"
+    /**
+     * 拦截点击的包名前缀
+     */
+    public String interceptPackageName = ""
 
     void convertConfig() {
         for (String value : special) {
@@ -51,6 +55,9 @@ class MonitorConfig {
             statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE
         } else {
             statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL
+        }
+        if (!TextUtils.isEmpty(interceptPackageName)) {
+            interceptPackageName = interceptPackageName.replace(".", ",")
         }
     }
 

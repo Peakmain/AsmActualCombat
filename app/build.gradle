@@ -63,4 +63,5 @@ monitorPlugin {
     ]
     methodStatus = 2
     disableStackMapFrame = false
+    interceptPackageName = "com.peakmain"
 }
