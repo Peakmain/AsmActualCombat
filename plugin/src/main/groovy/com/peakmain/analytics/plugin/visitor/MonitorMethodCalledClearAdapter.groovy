@@ -20,6 +20,7 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
 
     private int mAccess
     private MonitorConfig monitorConfig
+    private String mDesc
     /**
      * Constructs a new {@link MonitorMethodCalledClearAdapter}.
      *
@@ -32,6 +33,7 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
         super(mv, access, name, desc)
         mClassName = className
         mAccess = access
+        mDesc = desc
         this.monitorConfig = monitorConfig
     }
 
@@ -39,16 +41,18 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
     void visitMethodInsn(int opcodeAndSource, String owner, String name, String descriptor, boolean isInterface) {
         HashMap<String, MethodCalledBean> methodCalledBeans = MonitorHookMethodConfig.methodCalledBeans
         if (!monitorConfig.whiteList.contains(mClassName) && !monitorConfig.exceptSet.contains(mClassName) && methodCalledBeans.containsKey(owner + name + descriptor)) {
-            //println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
-            clearMethodBody(mv, mClassName, access, name, descriptor)
+            println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
+            clearMethodBody(mv, mClassName, access, name, descriptor,mDesc)
             return
         }
         super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface);
     }
 
 
-    static void clearMethodBody(MethodVisitor mv, String className, int access, String name, String descriptor) {
+    static void clearMethodBody(MethodVisitor mv, String className, int access, String name, String descriptor,String methodDescriptor) {
         Type type = Type.getType(descriptor)
+        Type methodType = Type.getType(methodDescriptor)
+        Type methodReturnType = methodType.getReturnType()
         Type[] argumentsType = type.getArgumentTypes()
         Type returnType = type.getReturnType()
         int stackSize = returnType.getSize()
@@ -57,12 +61,12 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
             localSize += argType.size
         }
         mv.visitCode()
-        if (returnType.getSort() == Type.VOID) {
+        if (methodReturnType.getSort() == Type.VOID) {
             mv.visitInsn(RETURN)
-        } else if (returnType.getSort() >= Type.BOOLEAN && returnType.getSort() <= Type.DOUBLE) {
-            mv.visitInsn(returnType.getOpcode(ICONST_1))
-            mv.visitInsn(returnType.getOpcode(IRETURN))
-        } else if (returnType.getInternalName() == "java/lang/String") {
+        } else if (methodReturnType.getSort() >= Type.BOOLEAN && methodReturnType.getSort() <= Type.DOUBLE) {
+            mv.visitInsn(methodReturnType.getOpcode(ICONST_1))
+            mv.visitInsn(methodReturnType.getOpcode(IRETURN))
+        } else if (methodReturnType.getInternalName() == "java/lang/String") {
             mv.visitLdcInsn("")
             mv.visitInsn(ARETURN)
         } else {

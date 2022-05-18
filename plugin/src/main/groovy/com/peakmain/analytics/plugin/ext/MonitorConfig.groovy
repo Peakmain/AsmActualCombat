@@ -22,9 +22,8 @@ class MonitorConfig {
     public ArrayList<String> whiteList = []
     /**
      * 隐私方法方法的状态
-     * @params 1 代表清空方法体
-     * @params 2 代表替换方法体
-     * @params 其他都代表 正常情况
+     * @params 0 代表正常
+     * @params 其他都代表 替换
      */
     public int methodStatus = 0
     private MethodFieldUtils.StatusEnum statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL
@@ -34,7 +33,7 @@ class MonitorConfig {
             'android.support.v4.app.NotificationManagerCompat']
     HashSet<String> exceptSet = new HashSet<>()
     /**
-     * 是否禁用开启堆栈分析，默认是禁用com.atour.atourlife
+     * 是否禁用开启堆栈分析，默认是禁用
      */
     public boolean disableStackMapFrame = true
     public String interceptPackageName = "com/atour"
@@ -47,10 +46,8 @@ class MonitorConfig {
         for (int i = 0; i < whiteList.size(); i++) {
             whiteList.set(i, whiteList.get(i).replace(".", "/"))
         }
-        println(methodStatus)
-        if (methodStatus == MethodFieldUtils.StatusEnum.METHOD_STATE_CLEAR.value) {
-            statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_CLEAR
-        } else if (methodStatus == MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE.value) {
+        println("当前方法的Status:" + methodStatus)
+        if (methodStatus == MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE.value) {
             statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE
         } else {
             statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL

@@ -5,9 +5,8 @@ import org.objectweb.asm.Opcodes
 class MethodFieldUtils {
     public static final String PLUGIN_VERSION = "1.0.8"
     enum StatusEnum {
-        METHOD_STATE_NORMAL(1),
-        METHOD_STATE_CLEAR(2),
-        METHOD_STATE_REPLACE(3)
+        METHOD_STATE_NORMAL(0),
+        METHOD_STATE_REPLACE(1)
         private int value
 
         StatusEnum(int value) {

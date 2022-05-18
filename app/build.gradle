@@ -61,6 +61,6 @@ monitorPlugin {
             "com.peakmain.asmactualcombat.utils.TestUtils",
             "com.peakmain.plugin"
     ]
-    methodStatus = 3
+    methodStatus = 2
     disableStackMapFrame = false
 }

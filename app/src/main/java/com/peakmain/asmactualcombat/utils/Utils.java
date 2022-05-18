@@ -1,12 +1,16 @@
 package com.peakmain.asmactualcombat.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.peakmain.ui.utils.LogUtils;
 
 import java.util.Locale;
 
@@ -17,6 +21,14 @@ import java.util.Locale;
  * describe：
  */
 public class Utils {
+    Context mContext;
+    WifiManager mWifiManager;
+
+    public Utils(Context context, WifiManager wifiManager) {
+        this.mContext = context;
+        this.mWifiManager = wifiManager;
+    }
+
     public static String getDeviceId(Context context) {
         String tac = "";
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -60,6 +72,53 @@ public class Utils {
 
         return mac;
     }
+
+    public final WifiInfo getConnectionInfo() {
+        try {
+            try {
+                return mWifiManager.getConnectionInfo();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Throwable var1) {
+        }
+
+        return null;
+    }
+
+    public final WifiInfo getConnectionInfo1() {
+        try {
+            try {
+                if (mWifiManager.getConnectionInfo() != null) {
+                    LogUtils.e("not null");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Throwable var1) {
+        }
+
+        return null;
+    }
+
+    public final boolean a(ConnectivityManager var1) {
+        WifiManager var2;
+        if ((var2 = this.mWifiManager) == null) {
+            return false;
+        } else {
+            boolean var3 = false;
+
+            try {
+                if (var2.getConnectionInfo()!=null) {
+                    var3 = true;
+                }
+            } catch (Throwable var4) {
+            }
+
+            return var3;
+        }
+    }
+
 
     public static String getAndroidId(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
