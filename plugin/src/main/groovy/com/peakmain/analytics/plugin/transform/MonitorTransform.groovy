@@ -2,24 +2,19 @@ package com.peakmain.analytics.plugin.transform
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.ide.common.internal.WaitableExecutor
 import com.peakmain.analytics.plugin.ext.MonitorConfig
-import com.peakmain.analytics.plugin.visitor.PeakmainVisitor
+import groovy.io.FileType
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
-import org.apache.commons.io.IOUtils
 import org.gradle.api.Project
-import org.objectweb.asm.ClassReader
-import org.objectweb.asm.ClassVisitor
-import org.objectweb.asm.ClassWriter
 
-import java.util.jar.JarEntry
-import java.util.jar.JarFile
-import java.util.jar.JarOutputStream
-import java.util.zip.ZipEntry
+import java.util.concurrent.Callable
 
 class MonitorTransform extends Transform {
     private static Project project
     private MonitorConfig monitorConfig
+    private WaitableExecutor waitableExecutor
 
     MonitorTransform(Project project) {
         this.project = project
@@ -27,6 +22,9 @@ class MonitorTransform extends Transform {
 
     void setMonitorConfig(MonitorConfig monitorConfig) {
         this.monitorConfig = monitorConfig
+        if (!monitorConfig.disableMultiThreadBuild) {
+            waitableExecutor = WaitableExecutor.useGlobalSharedThreadPool()
+        }
     }
 
     @Override
@@ -89,95 +87,85 @@ class MonitorTransform extends Transform {
         inputs.each { TransformInput input ->
             //遍历目录
             input.directoryInputs.each { DirectoryInput directoryInput ->
-                handleDirectoryInput(directoryInput, outputProvider)
+                if (waitableExecutor) {
+                    waitableExecutor.execute(new Callable<Object>() {
+                        @Override
+                        Object call() throws Exception {
+                            handleDirectoryInput(context, directoryInput, outputProvider,monitorConfig)
+                            return null
+                        }
+                    })
+                } else {
+                    handleDirectoryInput(context, directoryInput, outputProvider,monitorConfig)
+                }
             }
             // 遍历jar 第三方引入的 class
             input.jarInputs.each { JarInput jarInput ->
-                handleJarInput(jarInput, outputProvider)
+                if (waitableExecutor) {
+                    waitableExecutor.execute(new Callable<Object>() {
+                        @Override
+                        Object call() throws Exception {
+                            handleJarInput(context,jarInput, outputProvider,monitorConfig)
+                            return null
+                        }
+                    })
+                } else {
+                    handleJarInput(context,jarInput, outputProvider,monitorConfig)
+                }
             }
+        }
+        if (waitableExecutor) {
+            waitableExecutor.waitForTasksWithQuickFail(true)
         }
         println("[MonitorTransform]: 此次编译共耗时:${System.currentTimeMillis() - startTime}毫秒")
     }
 
-    void handleDirectoryInput(DirectoryInput directoryInput, TransformOutputProvider outputProvider) {
-        if (directoryInput.file.isDirectory()) {
-            directoryInput.file.eachFileRecurse { File file ->
-                String name = file.name
-                if (filterClass(name)) {
-                    // 用来读 class 信息
-                    ClassReader classReader = new ClassReader(file.bytes)
-                    // 用来写
-                    ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
-                    //todo 改这里就可以了
-                    ClassVisitor classVisitor = new PeakmainVisitor(classWriter, monitorConfig)
-                    // 下面还可以包多层
-                    classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
-                    // 重新覆盖写入文件
-                    byte[] code = classWriter.toByteArray()
-                    FileOutputStream fos = new FileOutputStream(
-                            file.parentFile.absolutePath + File.separator + name)
-                    fos.write(code)
-                    fos.close()
-                }
-            }
-        }
-        // 把修改好的数据，写入到 output
-        def dest = outputProvider.getContentLocation(directoryInput.name, directoryInput.contentTypes,
-                directoryInput.scopes, Format.DIRECTORY)
-        FileUtils.copyDirectory(directoryInput.file, dest)
-    }
+    void handleDirectoryInput(Context context, DirectoryInput directoryInput, TransformOutputProvider outputProvider,MonitorConfig monitorConfig) {
 
-    void handleJarInput(JarInput jarInput, TransformOutputProvider outputProvider) {
-        if (jarInput.file.absolutePath.endsWith(".jar")) {
-            // 重名名输出文件,因为可能同名,会覆盖
-            def jarName = jarInput.name
-            def md5Name = DigestUtils.md5Hex(jarInput.file.getAbsolutePath())
-            if (jarName.endsWith(".jar")) {
-                jarName = jarName.substring(0, jarName.length() - 4)
+        File dest = outputProvider.getContentLocation(directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
+        File dir = directoryInput.file
+        if (dir) {
+            HashMap<String, File> modifyMap = new HashMap<>()
+            dir.traverse(type: FileType.FILES, nameFilter: ~/.*\.class/) {
+                File classFile ->
+                    if (MonitorAnalyticsTransform.isShouldModify(classFile.name)) {
+                        File modified = MonitorAnalyticsTransform.modifyClassFile(dir, classFile, context.getTemporaryDir(),monitorConfig)
+                        if (modified != null) {
+                            String ke = classFile.absolutePath.replace(dir.absolutePath, "")
+                            modifyMap.put(ke, modified)
+                        }
+                    }
             }
-            JarFile jarFile = new JarFile(jarInput.file)
-            Enumeration enumeration = jarFile.entries()
-            File tmpFile = new File(jarInput.file.getParent() + File.separator + "classes_temp.jar")
-            if (tmpFile.exists()) {
-                tmpFile.delete()
+            FileUtils.copyDirectory(directoryInput.file, dest)
+            modifyMap.entrySet().each {
+                Map.Entry<String, File> en ->
+                    File target = new File(dest.absolutePath + en.getKey())
+                    if (target.exists()) {
+                        target.delete()
+                    }
+                    FileUtils.copyFile(en.getValue(), target)
+                    en.getValue().delete()
             }
-            JarOutputStream jarOutputStream = new JarOutputStream(new FileOutputStream(tmpFile))
-            //用于保存
-            while (enumeration.hasMoreElements()) {
-                JarEntry jarEntry = (JarEntry) enumeration.nextElement()
-                String entryName = jarEntry.getName()
-                ZipEntry zipEntry = new ZipEntry(entryName)
-                InputStream inputStream = jarFile.getInputStream(jarEntry)
-                //插桩class
-                if (filterClass(entryName)) {
-                    //class文件处理
-                    jarOutputStream.putNextEntry(zipEntry)
-                    ClassReader classReader = new ClassReader(IOUtils.toByteArray(inputStream))
-                    ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
-                    //todo 改这里就可以了
-                    ClassVisitor classVisitor = new PeakmainVisitor(classWriter, monitorConfig)
-                    // 下面还可以包多层
-                    classReader.accept(classVisitor, ClassReader.EXPAND_FRAMES)
-                    byte[] code = classWriter.toByteArray()
-                    jarOutputStream.write(code)
-                } else {
-                    jarOutputStream.putNextEntry(zipEntry)
-                    jarOutputStream.write(IOUtils.toByteArray(inputStream))
-                }
-                jarOutputStream.closeEntry()
-            }
-            //结束
-            jarOutputStream.close()
-            jarFile.close()
-            def dest = outputProvider.getContentLocation(jarName + md5Name,
-                    jarInput.contentTypes, jarInput.scopes, Format.JAR)
-            FileUtils.copyFile(tmpFile, dest)
-            tmpFile.delete()
         }
     }
 
-    static boolean filterClass(String className) {
-        return (className.endsWith(".class") && !className.startsWith("R\$")
-                && "R.class" != className && "BuildConfig.class" != className)
+    void handleJarInput(Context context,JarInput jarInput, TransformOutputProvider outputProvider,MonitorConfig monitorConfig) {
+        String destName = jarInput.file.name
+
+        /**截取文件路径的 md5 值重命名输出文件,因为可能同名,会覆盖*/
+        def hexName = DigestUtils.md5Hex(jarInput.file.absolutePath).substring(0, 8)
+        /** 获取 jar 名字*/
+        if (destName.endsWith(".jar")) {
+            destName = destName.substring(0, destName.length() - 4)
+        }
+
+        /** 获得输出文件*/
+        File dest = outputProvider.getContentLocation(destName + "_" + hexName, jarInput.contentTypes, jarInput.scopes, Format.JAR)
+        def modifiedJar = MonitorAnalyticsTransform.modifyJar(jarInput.file, context.getTemporaryDir(), true,monitorConfig)
+        if (modifiedJar == null) {
+            modifiedJar = jarInput.file
+        }
+        FileUtils.copyFile(modifiedJar, dest)
     }
+
 }

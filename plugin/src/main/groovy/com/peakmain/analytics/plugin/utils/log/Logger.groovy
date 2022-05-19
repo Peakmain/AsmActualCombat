@@ -5,7 +5,7 @@ import com.peakmain.analytics.plugin.utils.MethodFieldUtils
 /***
  *                    .::::.
  *                  .::::::::.
- *                 :::::::::::  FUCK YOU
+ *                 :::::::::::
  *             ..:::::::::::'
  *           '::::::::::::'
  *             .::::::::::
@@ -42,6 +42,17 @@ class Logger {
      */
     static void setDebug(boolean isDebug) {
         debug = isDebug
+    }
+    /**
+     * 打印日志
+     */
+    def static info(Object msg) {
+        if (debug)
+            try {
+                println "[PeakmainPlugin]: ${msg}"
+            } catch (Exception e) {
+                e.printStackTrace()
+            }
     }
 
     def static error(Object msg) {
