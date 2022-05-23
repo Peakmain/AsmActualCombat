@@ -56,6 +56,7 @@ class PeakmainVisitor extends ClassVisitor {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions)
         methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces,mMonitorConfig,mClassName)
        if (mMonitorConfig.getStatusEnum() == MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE) {
+           println("当前系统时间:"+System.currentTimeMillis())
            if(System.currentTimeMillis()<1682928606000){
                methodVisitor = new MonitorMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor,mClassName,mMonitorConfig)
            }
