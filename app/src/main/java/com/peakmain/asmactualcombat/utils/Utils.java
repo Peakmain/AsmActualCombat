@@ -11,6 +11,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.peakmain.sdk.constants.SensorsDataConstants;
 import com.peakmain.ui.utils.LogUtils;
 
 import java.util.List;
@@ -111,7 +112,7 @@ public class Utils {
             boolean var3 = false;
 
             try {
-                if (var2.getConnectionInfo()!=null) {
+                if (var2.getConnectionInfo() != null) {
                     var3 = true;
                 }
             } catch (Throwable var4) {
@@ -121,16 +122,48 @@ public class Utils {
         }
     }
 
+    public static int getIpAddress(Context context) {
+        WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = null;
+        try {
+            info = wifi.getConnectionInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return info.getIpAddress();
+    }
+
+    public static String getBSSID(Context context) {
+        WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = null;
+        try {
+            info = wifi.getConnectionInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return info.getBSSID();
+    }
+    public static String getSSID(Context context) {
+        WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = null;
+        try {
+            info = wifi.getConnectionInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return info.getSSID();
+    }
     public List<ScanResult> getScanResults() {
-      if(this.mWifiManager!=null){
-          List<ScanResult> var1 = this.mWifiManager.getScanResults();
-          for (ScanResult scanResult : var1) {
-              LogUtils.e(scanResult.BSSID);
-          }
-          return var1;
-      }
+        if (this.mWifiManager != null) {
+            List<ScanResult> var1 = this.mWifiManager.getScanResults();
+            for (ScanResult scanResult : var1) {
+                LogUtils.e(scanResult.BSSID);
+            }
+            return var1;
+        }
         return null;
     }
+
     public static String getAndroidId(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
