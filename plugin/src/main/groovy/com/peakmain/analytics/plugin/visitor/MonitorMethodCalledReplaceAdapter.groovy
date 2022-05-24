@@ -46,7 +46,7 @@ class MonitorMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
                 mClassName.contains('libcore/util/Jauns') ||
                 mClassName.contains("com/alipay") ||
                 mClassName.contains("com/amap") ||
-                mClassName.contains("com/loc"))) {
+                mClassName.contains("com/loc")|| mClassName.contains("cn/sharesdk"))) {
             println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
             MethodCalledBean bean = methodReplaceBeans.get(desc)
             super.visitMethodInsn(bean.newOpcode, bean.newMethodOwner, bean.newMethodName, bean.newMethodDescriptor.get(descriptor), false)

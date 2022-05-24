@@ -103,6 +103,19 @@ class MonitorHookMethodConfig {
                 androidIdMap
         )
         addMethodCalledBean(androidId)
+        
+        HashMap<String, String> scanResultMap = new HashMap<>()
+        scanResultMap.put(MethodFieldUtils.EMPTY_LIST_DESC, MethodFieldUtils.NEW_EMPTY_LIST_DESC)
+        MethodCalledBean scanResults = new MethodCalledBean(
+                MethodFieldUtils.WIFI_MANAGER_CLASS,
+                MethodFieldUtils.GET_SCAN_RESULTS_METHOD_NAME,
+                MethodFieldUtils.EMPTY_RETURN_LIST,
+                MethodFieldUtils.NEW_METHOD_OWNER,
+                MethodFieldUtils.GET_SCAN_RESULTS_METHOD_NAME,
+                MethodFieldUtils.STATIC_OPCODE,
+                scanResultMap
+        )
+        addMethodCalledBean(scanResults)
     }
 
     static void addMethodCalledBean(MethodCalledBean methodCalledBean) {
