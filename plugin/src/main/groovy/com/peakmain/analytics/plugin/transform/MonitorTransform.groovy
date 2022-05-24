@@ -4,6 +4,7 @@ import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.ide.common.internal.WaitableExecutor
 import com.peakmain.analytics.plugin.ext.MonitorConfig
+import com.peakmain.analytics.plugin.utils.log.Logger
 import groovy.io.FileType
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
@@ -68,7 +69,7 @@ class MonitorTransform extends Transform {
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         super.transform(transformInvocation)
-        _transform(transformInvocation.context, transformInvocation.inputs, transformInvocation.outputProvider)
+        _transform(transformInvocation.context, transformInvocation.inputs, transformInvocation.outputProvider, transformInvocation.isIncremental())
     }
     /**
      *
@@ -76,10 +77,12 @@ class MonitorTransform extends Transform {
      * @param inputs 有两种类型，一种是目录，一种是 jar 包，要分开遍历
      * @param outputProvider 输出路径
      */
-    void _transform(Context context, Collection<TransformInput> inputs, TransformOutputProvider outputProvider) throws IOException, TransformException, InterruptedException {
+    void _transform(Context context, Collection<TransformInput> inputs,
+                    TransformOutputProvider outputProvider, boolean isIncremental)
+            throws IOException, TransformException, InterruptedException {
         println(monitorConfig.toString())
         long startTime = System.currentTimeMillis()
-        if (!incremental) {
+        if (!isIncremental) {
             //不是增量更新删除所有的outputProvider
             outputProvider.deleteAll()
         }
@@ -91,12 +94,12 @@ class MonitorTransform extends Transform {
                     waitableExecutor.execute(new Callable<Object>() {
                         @Override
                         Object call() throws Exception {
-                            handleDirectoryInput(context, directoryInput, outputProvider,monitorConfig)
+                            handleDirectoryInput(context, directoryInput, outputProvider, monitorConfig,isIncremental)
                             return null
                         }
                     })
                 } else {
-                    handleDirectoryInput(context, directoryInput, outputProvider,monitorConfig)
+                    handleDirectoryInput(context, directoryInput, outputProvider, monitorConfig,isIncremental)
                 }
             }
             // 遍历jar 第三方引入的 class
@@ -105,12 +108,12 @@ class MonitorTransform extends Transform {
                     waitableExecutor.execute(new Callable<Object>() {
                         @Override
                         Object call() throws Exception {
-                            handleJarInput(context,jarInput, outputProvider,monitorConfig)
+                            handleJarInput(context, jarInput, outputProvider, monitorConfig,isIncremental)
                             return null
                         }
                     })
                 } else {
-                    handleJarInput(context,jarInput, outputProvider,monitorConfig)
+                    handleJarInput(context, jarInput, outputProvider, monitorConfig,isIncremental)
                 }
             }
         }
@@ -120,36 +123,97 @@ class MonitorTransform extends Transform {
         println("[MonitorTransform]: 此次编译共耗时:${System.currentTimeMillis() - startTime}毫秒")
     }
 
-    void handleDirectoryInput(Context context, DirectoryInput directoryInput, TransformOutputProvider outputProvider,MonitorConfig monitorConfig) {
-
-        File dest = outputProvider.getContentLocation(directoryInput.name, directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
+    void handleDirectoryInput(Context context, DirectoryInput directoryInput, TransformOutputProvider outputProvider, MonitorConfig monitorConfig,boolean isIncremental) {
         File dir = directoryInput.file
-        if (dir) {
-            HashMap<String, File> modifyMap = new HashMap<>()
-            dir.traverse(type: FileType.FILES, nameFilter: ~/.*\.class/) {
-                File classFile ->
-                    if (MonitorAnalyticsTransform.isShouldModify(classFile.name)) {
-                        File modified = MonitorAnalyticsTransform.modifyClassFile(dir, classFile, context.getTemporaryDir(),monitorConfig)
-                        if (modified != null) {
-                            String ke = classFile.absolutePath.replace(dir.absolutePath, "")
-                            modifyMap.put(ke, modified)
+        File dest = outputProvider.getContentLocation(directoryInput.getName(),
+                directoryInput.getContentTypes(), directoryInput.getScopes(),
+                Format.DIRECTORY)
+        FileUtils.forceMkdir(dest)
+        String srcDirPath = dir.absolutePath
+        String destDirPath = dest.absolutePath
+        if (isIncremental) {
+            Map<File, Status> fileStatusMap = directoryInput.getChangedFiles()
+            for (Map.Entry<File, Status> changedFile : fileStatusMap.entrySet()) {
+                Status status = changedFile.getValue()
+                File inputFile = changedFile.getKey()
+                String destFilePath = inputFile.absolutePath.replace(srcDirPath, destDirPath)
+                File destFile = new File(destFilePath)
+                switch (status) {
+                    case Status.NOTCHANGED:
+                        break
+                    case Status.REMOVED:
+                        Logger.info("目录 status = $status:$inputFile.absolutePath")
+                        if (destFile.exists()) {
+                            //noinspection ResultOfMethodCallIgnored
+                            destFile.delete()
                         }
-                    }
+                        break
+                    case Status.ADDED:
+                    case Status.CHANGED:
+                        Logger.info("目录 status = $status:$inputFile.absolutePath")
+                        File modified = MonitorAnalyticsTransform.modifyClassFile(dir, inputFile, context.getTemporaryDir(),monitorConfig)
+                        if (destFile.exists()) {
+                            destFile.delete()
+                        }
+                        if (modified != null) {
+                            FileUtils.copyFile(modified, destFile)
+                            modified.delete()
+                        } else {
+                            FileUtils.copyFile(inputFile, destFile)
+                        }
+                        break
+                    default:
+                        break
+                }
             }
-            FileUtils.copyDirectory(directoryInput.file, dest)
-            modifyMap.entrySet().each {
-                Map.Entry<String, File> en ->
-                    File target = new File(dest.absolutePath + en.getKey())
-                    if (target.exists()) {
-                        target.delete()
-                    }
-                    FileUtils.copyFile(en.getValue(), target)
-                    en.getValue().delete()
+        }else {
+            FileUtils.copyDirectory(dir, dest)
+            dir.traverse(type: FileType.FILES, nameFilter: ~/.*\.class/) {
+                File inputFile ->
+                    forEachDir(dir, inputFile, context, srcDirPath, destDirPath)
             }
         }
-    }
 
-    void handleJarInput(Context context,JarInput jarInput, TransformOutputProvider outputProvider,MonitorConfig monitorConfig) {
+    }
+    void forEachDir(File dir, File inputFile, Context context, String srcDirPath, String destDirPath) {
+        File modified = MonitorAnalyticsTransform.modifyClassFile(dir, inputFile, context.getTemporaryDir(),monitorConfig)
+        if (modified != null) {
+            File target = new File(inputFile.absolutePath.replace(srcDirPath, destDirPath))
+            if (target.exists()) {
+                target.delete()
+            }
+            FileUtils.copyFile(modified, target)
+            modified.delete()
+        }
+    }
+    void handleJarInput(Context context, JarInput jarInput, TransformOutputProvider outputProvider, MonitorConfig monitorConfig,boolean isIncremental) {
+        //获得输出文件
+        File destFile = outputProvider.getContentLocation(jarInput.name, jarInput.contentTypes, jarInput.scopes, Format.JAR)
+        if (isIncremental) {
+            Status status = jarInput.getStatus()
+            switch (status) {
+                case Status.NOTCHANGED:
+                    break
+                case Status.ADDED:
+                case Status.CHANGED:
+                    Logger.info("jar status = $status:$destFile.absolutePath")
+                    transformJar(context,jarInput, outputProvider, monitorConfig)
+                    break
+                case Status.REMOVED:
+                    Logger.info("jar status = $status:$destFile.absolutePath")
+                    if (destFile.exists()) {
+                        FileUtils.forceDelete(destFile)
+                    }
+                    break
+                default:
+                    break
+            }
+        } else {
+            transformJar(context,jarInput, outputProvider, monitorConfig)
+        }
+
+    }
+    void transformJar(Context context,JarInput jarInput,TransformOutputProvider outputProvider,MonitorConfig monitorConfig1) {
         String destName = jarInput.file.name
 
         /**截取文件路径的 md5 值重命名输出文件,因为可能同名,会覆盖*/
@@ -161,7 +225,7 @@ class MonitorTransform extends Transform {
 
         /** 获得输出文件*/
         File dest = outputProvider.getContentLocation(destName + "_" + hexName, jarInput.contentTypes, jarInput.scopes, Format.JAR)
-        def modifiedJar = MonitorAnalyticsTransform.modifyJar(jarInput.file, context.getTemporaryDir(), true,monitorConfig)
+        def modifiedJar = MonitorAnalyticsTransform.modifyJar(jarInput.file, context.getTemporaryDir(), true, monitorConfig)
         if (modifiedJar == null) {
             modifiedJar = jarInput.file
         }

@@ -3,6 +3,7 @@ package com.peakmain.sdk.interfaces;
 import android.content.ContentResolver;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.SubscriptionInfo;
@@ -21,9 +22,10 @@ import java.util.List;
 public interface OnReplaceMethodListener {
     String onReplaceMethodListener(@SensorsDataConstants.TELEPHONY_STATE int telephoneState, TelephonyManager manager, int slotIndex);
 
-    String onReplaceMethodListener(@SensorsDataConstants.WIFI_STATE int wifiInfoState, WifiInfo wifiInfo);
 
     WifiInfo onReplaceMethodListener(WifiManager wifiManager);
+
+    List<ScanResult> onReplaceWifiManagerMethodListener(WifiManager wifiManager);
 
     String onReplaceMethodListener(SubscriptionInfo subscriptionInfo);
 

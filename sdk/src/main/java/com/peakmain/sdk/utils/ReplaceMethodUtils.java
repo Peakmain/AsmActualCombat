@@ -8,7 +8,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 
 import com.peakmain.sdk.constants.SensorsDataConstants;
 import com.peakmain.sdk.interfaces.OnReplaceMethodListener;
@@ -120,37 +119,7 @@ public class ReplaceMethodUtils {
         return "";
     }
 
-    public static String getMacAddress(WifiInfo wifiInfo) {
-        if (getInstance().mOnReplaceMethodListener != null) {
-            return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(SensorsDataConstants.GET_MAC_ADDRESS, wifiInfo);
-        }
-        return "";
-    }
 
-    public static String getSSID(WifiInfo wifiInfo) {
-        if (getInstance().mOnReplaceMethodListener != null) {
-            return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(
-                    SensorsDataConstants.GET_SSID, wifiInfo);
-        }
-        return "";
-    }
-
-    public static String getBSSID(WifiInfo wifiInfo) {
-        if (getInstance().mOnReplaceMethodListener != null) {
-            return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(
-                    SensorsDataConstants.GET_BSSID, wifiInfo);
-        }
-        return "";
-    }
-
-    public static int getIpAddress(WifiInfo wifiInfo) {
-        if (getInstance().mOnReplaceMethodListener != null) {
-            String ipAddressStr = getInstance().mOnReplaceMethodListener.onReplaceMethodListener(
-                    SensorsDataConstants.GET_SSID, wifiInfo);
-            return !TextUtils.isEmpty(ipAddressStr) ? Integer.parseInt(ipAddressStr) : -1;
-        }
-        return -1;
-    }
 
     public static WifiInfo getConnectionInfo(WifiManager wifiManager) {
         if (getInstance().mOnReplaceMethodListener != null) {
@@ -183,7 +152,9 @@ public class ReplaceMethodUtils {
     }
 
     public static List<ScanResult> getScanResults(WifiManager wifiManager) {
-
+        if (getInstance().mOnReplaceMethodListener != null) {
+            return getInstance().mOnReplaceMethodListener.onReplaceWifiManagerMethodListener(wifiManager);
+        }
 
         return new ArrayList<>();
     }

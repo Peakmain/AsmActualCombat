@@ -51,25 +51,27 @@ class MonitorAnalyticsTransform {
      * 过滤不需要修改的class
      */
     protected static boolean isShouldModify(String className) {
+        boolean isShouldModify = false
         if (!isAndroidGenerated(className)) {
             for (pkgName in special) {
                 if (className.startsWith(pkgName)) {
                     return true
                 }
             }
-        } else {
+            isShouldModify = true
             if (!isLeanback(className)) {
                 for (pkgName in exclude) {
                     if (className.startsWith(pkgName)) {
-                        return false
+                        isShouldModify = false
+                        break
                     }
                 }
             }
         }
-        return true
+        return isShouldModify
     }
 
-   private static boolean isLeanback(String className) {
+    private static boolean isLeanback(String className) {
         return className.startsWith("android.support.v17.leanback") || className.startsWith("androidx.leanback")
     }
 
@@ -81,12 +83,12 @@ class MonitorAnalyticsTransform {
                 className.contains('BuildConfig.class')
     }
 
-    static File modifyClassFile(File dir, File classFile, File tempDir,MonitorConfig monitorConfig) {
+    static File modifyClassFile(File dir, File classFile, File tempDir, MonitorConfig monitorConfig) {
         File modified = null
         try {
             String className = path2ClassName(classFile.absolutePath.replace(dir.absolutePath + File.separator, ""))
             byte[] sourceClassBytes = IOUtils.toByteArray(new FileInputStream(classFile))
-            byte[] modifiedClassBytes = modifyClass(sourceClassBytes,monitorConfig)
+            byte[] modifiedClassBytes = modifyClass(sourceClassBytes, monitorConfig)
             if (modifiedClassBytes) {
                 modified = new File(tempDir, className.replace('.', '') + '.class')
                 if (modified.exists()) {
@@ -102,15 +104,15 @@ class MonitorAnalyticsTransform {
         return modified
     }
 
-    private static byte[] modifyClass(byte[] srcClass,MonitorConfig monitorConfig) throws IOException {
+    private static byte[] modifyClass(byte[] srcClass, MonitorConfig monitorConfig) throws IOException {
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS)
-        PeakmainVisitor classVisitor = new PeakmainVisitor(classWriter,monitorConfig)
+        PeakmainVisitor classVisitor = new PeakmainVisitor(classWriter, monitorConfig)
         ClassReader cr = new ClassReader(srcClass)
         cr.accept(classVisitor, ClassReader.SKIP_FRAMES)
         return classWriter.toByteArray()
     }
 
-    static File modifyJar(File jarFile, File tempDir, boolean nameHex,MonitorConfig monitorConfig) {
+    static File modifyJar(File jarFile, File tempDir, boolean nameHex, MonitorConfig monitorConfig) {
         /**
          * 读取原 jar
          */
@@ -128,7 +130,7 @@ class MonitorAnalyticsTransform {
         Enumeration enumeration = file.entries()
         while (enumeration.hasMoreElements()) {
             JarEntry jarEntry = (JarEntry) enumeration.nextElement()
-            InputStream inputStream = null
+            InputStream inputStream
             try {
                 inputStream = file.getInputStream(jarEntry)
             } catch (Exception e) {
@@ -147,7 +149,7 @@ class MonitorAnalyticsTransform {
                 if (entryName.endsWith(".class")) {
                     className = entryName.replace(Matcher.quoteReplacement(File.separator), ".").replace(".class", "")
                     if (isShouldModify(className)) {
-                        modifiedClassBytes = modifyClass(sourceClassBytes,monitorConfig)
+                        modifiedClassBytes = modifyClass(sourceClassBytes, monitorConfig)
                     }
                 }
                 if (modifiedClassBytes == null) {
@@ -161,6 +163,7 @@ class MonitorAnalyticsTransform {
         file.close()
         return outputJar
     }
+
     static String path2ClassName(String pathName) {
         pathName.replace(File.separator, ".").replace(".class", "")
     }

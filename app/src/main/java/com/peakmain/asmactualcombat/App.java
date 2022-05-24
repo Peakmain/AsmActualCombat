@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.SubscriptionInfo;
@@ -87,29 +88,14 @@ public class App extends Application {
             }
 
             @Override
-            public String onReplaceMethodListener(int wifiInfoState, WifiInfo wifiInfo) {
-                switch (wifiInfoState) {
-                    case SensorsDataConstants.GET_MAC_ADDRESS:
-                        LogUtils.e("替换GET_MAC_ADDRESS");
-                        break;
-                    case SensorsDataConstants.GET_SSID:
-                        LogUtils.e("替换GET_SSID");
-                        break;
-                    case SensorsDataConstants.GET_BSSID:
-                        LogUtils.e("替换GET_SSIDGET_BSSID");
-                        break;
-                    case SensorsDataConstants.GET_IP_ADDRESS:
-                        LogUtils.e("替换GET_IP_ADDRESS");
-                        break;
-                    default:
-                        break;
-                }
-                return "";
+            public WifiInfo onReplaceMethodListener(WifiManager wifiManager) {
+                LogUtils.e("替换WifiManager");
+                return null;
             }
 
             @Override
-            public WifiInfo onReplaceMethodListener(WifiManager wifiManager) {
-                LogUtils.e("替换WifiManager");
+            public List<ScanResult> onReplaceWifiManagerMethodListener(WifiManager wifiManager) {
+                LogUtils.e("替换onReplaceWifiManagerMethodListener");
                 return null;
             }
 

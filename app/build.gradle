@@ -58,7 +58,7 @@ dependencies {
 }
 monitorPlugin {
     whiteList = [
-            //"com.peakmain.asmactualcombat.utils.TestUtils",
+            "com.peakmain.asmactualcombat.utils.TestUtils",
             "com.peakmain.plugin"
     ]
     methodStatus = 1
