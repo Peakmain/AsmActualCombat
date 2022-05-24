@@ -2,6 +2,7 @@ package com.peakmain.asmactualcombat.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.util.Log;
 
 import com.peakmain.ui.utils.LogUtils;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -119,7 +121,16 @@ public class Utils {
         }
     }
 
-
+    public List<ScanResult> getScanResults() {
+      if(this.mWifiManager!=null){
+          List<ScanResult> var1 = this.mWifiManager.getScanResults();
+          for (ScanResult scanResult : var1) {
+              LogUtils.e(scanResult.BSSID);
+          }
+          return var1;
+      }
+        return null;
+    }
     public static String getAndroidId(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }

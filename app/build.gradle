@@ -58,10 +58,10 @@ dependencies {
 }
 monitorPlugin {
     whiteList = [
-            "com.peakmain.asmactualcombat.utils.TestUtils",
+            //"com.peakmain.asmactualcombat.utils.TestUtils",
             "com.peakmain.plugin"
     ]
-    methodStatus = 2
+    methodStatus = 1
     disableStackMapFrame = false
     interceptPackageName = "com.peakmain"
 }

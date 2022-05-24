@@ -3,9 +3,9 @@ package com.peakmain.sdk.utils;
 import android.content.ContentResolver;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.provider.Settings;
 import android.telephony.SubscriptionInfo;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -13,7 +13,6 @@ import android.text.TextUtils;
 import com.peakmain.sdk.constants.SensorsDataConstants;
 import com.peakmain.sdk.interfaces.OnReplaceMethodListener;
 
-import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,4 +182,9 @@ public class ReplaceMethodUtils {
         return "";
     }
 
+    public static List<ScanResult> getScanResults(WifiManager wifiManager) {
+
+
+        return new ArrayList<>();
+    }
 }

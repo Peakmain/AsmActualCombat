@@ -47,7 +47,7 @@ class MonitorHookMethodConfig {
          * 获取connectionInfo
          */
         HashMap<String, String> connectionInfoMap = new HashMap<>()
-        connectionInfoMap.put(MethodFieldUtils.EMPTY_WIFI_INFO_DESC, MethodFieldUtils.EMPTY_WIFI_INFO_WIFI_INFO_DESC)
+        connectionInfoMap.put(MethodFieldUtils.EMPTY_WIFI_INFO_DESC, MethodFieldUtils.NEW_WIFI_INFO_WIFI_INFO_DESC)
         MethodCalledBean connectionInfo = new MethodCalledBean(
                 MethodFieldUtils.WIFI_MANAGER_CLASS,
                 MethodFieldUtils.GET_CONNECTION_INFO_METHOD_NAME,
@@ -62,7 +62,7 @@ class MonitorHookMethodConfig {
          * 获取Mac
          */
         HashMap<String, String> macAddressMap = new HashMap<>()
-        macAddressMap.put(MethodFieldUtils.EMPTY_STRING_DESC, MethodFieldUtils.EMPTY_STRING_WIFI_INFO_DESC)
+        macAddressMap.put(MethodFieldUtils.EMPTY_STRING_DESC, MethodFieldUtils.NEW_STRING_WIFI_INFO_DESC)
         MethodCalledBean macAddress = new MethodCalledBean(
                 MethodFieldUtils.WIFI_INFO_CLASS,
                 MethodFieldUtils.GET_MAC_ADDRESS_METHOD_NAME,
@@ -77,7 +77,7 @@ class MonitorHookMethodConfig {
          * IP地址
          */
         HashMap<String, String> ipAddressMap = new HashMap<>()
-        ipAddressMap.put(MethodFieldUtils.EMPTY_INT_DESC, MethodFieldUtils.EMPTY_INT_WIFI_INFO_DESC)
+        ipAddressMap.put(MethodFieldUtils.EMPTY_INT_DESC, MethodFieldUtils.NEW_INT_WIFI_INFO_DESC)
         MethodCalledBean ipAddress = new MethodCalledBean(
                 MethodFieldUtils.WIFI_INFO_CLASS,
                 MethodFieldUtils.GET_IP_ADDRESS_METHOD_NAME,
@@ -103,6 +103,19 @@ class MonitorHookMethodConfig {
                 androidIdMap
         )
         addMethodCalledBean(androidId)
+
+        HashMap<String, String> scanResultMap = new HashMap<>()
+        scanResultMap.put(MethodFieldUtils.EMPTY_LIST_DESC, MethodFieldUtils.NEW_EMPTY_LIST_DESC)
+        MethodCalledBean scanResults = new MethodCalledBean(
+                MethodFieldUtils.WIFI_MANAGER_CLASS,
+                MethodFieldUtils.GET_SCAN_RESULTS_METHOD_NAME,
+                MethodFieldUtils.EMPTY_RETURN_LIST,
+                MethodFieldUtils.NEW_METHOD_OWNER,
+                MethodFieldUtils.GET_SCAN_RESULTS_METHOD_NAME,
+                MethodFieldUtils.STATIC_OPCODE,
+                scanResultMap
+        )
+        addMethodCalledBean(scanResults)
     }
 
     static void addMethodCalledBean(MethodCalledBean methodCalledBean) {
