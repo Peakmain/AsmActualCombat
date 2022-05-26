@@ -102,7 +102,13 @@ public class ReplaceMethodUtils {
         }
         return "";
     }
-
+    public static String getSubscriberId(TelephonyManager manager,int slotIndex) {
+        if (getInstance().mOnReplaceMethodListener != null) {
+            return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(
+                    SensorsDataConstants.GET_SUBSCRIBER_ID, manager, slotIndex);
+        }
+        return "";
+    }
     public static String getSimSerialNumber(TelephonyManager manager) {
         if (getInstance().mOnReplaceMethodListener != null) {
             return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(

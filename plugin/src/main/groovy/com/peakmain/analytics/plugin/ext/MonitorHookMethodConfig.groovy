@@ -116,6 +116,56 @@ class MonitorHookMethodConfig {
                 scanResultMap
         )
         addMethodCalledBean(scanResults)
+
+        /**
+         * 获取Imei
+         */
+        HashMap<String, String> imeiMap = new HashMap<>()
+        imeiMap.put(MethodFieldUtils.EMPTY_STRING_DESC, MethodFieldUtils.NEW_EMPTY_STRING_TELEPHONY_DESC)
+        imeiMap.put(MethodFieldUtils.INT_STRING_DESC, MethodFieldUtils.NEW_INT_STRING_TELEPHONY_DESC)
+        MethodCalledBean imeiBean = new MethodCalledBean(
+                MethodFieldUtils.TELEPHONY_MANAGER_CLASS,
+                MethodFieldUtils.GET_IMEI_METHOD_NAME,
+                MethodFieldUtils.EMPTY_INT_RETURN_STRING_DESC,
+                MethodFieldUtils.NEW_METHOD_OWNER,
+                MethodFieldUtils.GET_IMEI_METHOD_NAME,
+                MethodFieldUtils.STATIC_OPCODE,
+                imeiMap
+        )
+        addMethodCalledBean(imeiBean)
+
+        /**
+         * 获取subscriberId
+         */
+        HashMap<String, String> subscriberIdMap = new HashMap<>()
+        subscriberIdMap.put(MethodFieldUtils.EMPTY_STRING_DESC, MethodFieldUtils.NEW_EMPTY_STRING_TELEPHONY_DESC)
+        subscriberIdMap.put(MethodFieldUtils.INT_STRING_DESC, MethodFieldUtils.NEW_INT_STRING_TELEPHONY_DESC)
+        MethodCalledBean subscriberId = new MethodCalledBean(
+                MethodFieldUtils.TELEPHONY_MANAGER_CLASS,
+                MethodFieldUtils.GET_SUBSCRIBER_ID_METHOD_NAME,
+                MethodFieldUtils.EMPTY_INT_RETURN_STRING_DESC,
+                MethodFieldUtils.NEW_METHOD_OWNER,
+                MethodFieldUtils.GET_SUBSCRIBER_ID_METHOD_NAME,
+                MethodFieldUtils.STATIC_OPCODE,
+                subscriberIdMap
+        )
+        addMethodCalledBean(subscriberId)
+        /**
+         * 获取simSerialNumber
+         */
+        HashMap<String, String> simSerialNumberMap = new HashMap<>()
+        simSerialNumberMap.put(MethodFieldUtils.EMPTY_STRING_DESC, MethodFieldUtils.NEW_EMPTY_STRING_TELEPHONY_DESC)
+        simSerialNumberMap.put(MethodFieldUtils.INT_STRING_DESC, MethodFieldUtils.NEW_INT_STRING_TELEPHONY_DESC)
+        MethodCalledBean simSerialNumber = new MethodCalledBean(
+                MethodFieldUtils.TELEPHONY_MANAGER_CLASS,
+                MethodFieldUtils.GET_SIM_SERIAL_NUMBER_METHOD_NAME,
+                MethodFieldUtils.EMPTY_INT_RETURN_STRING_DESC,
+                MethodFieldUtils.NEW_METHOD_OWNER,
+                MethodFieldUtils.GET_SIM_SERIAL_NUMBER_METHOD_NAME,
+                MethodFieldUtils.STATIC_OPCODE,
+                simSerialNumberMap
+        )
+        addMethodCalledBean(simSerialNumber)
     }
 
     static void addMethodCalledBean(MethodCalledBean methodCalledBean) {

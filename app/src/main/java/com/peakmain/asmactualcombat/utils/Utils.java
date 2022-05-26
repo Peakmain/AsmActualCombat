@@ -53,6 +53,30 @@ public class Utils {
         return "getMeid";
     }
 
+    public static String getSubscriberId(Context context) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return manager.getSubscriberId();
+        }
+        return "getSubscriberId";
+    }
+
+    public static String getImei(Context context) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return manager.getImei();
+        }
+        return "getImei";
+    }
+
+    public static String getSimSerialNumber(Context context) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return manager.getSimSerialNumber();
+        }
+        return "getSimSerialNumber";
+    }
+
     /**
      * Android  6.0 之前（不包括6.0）
      */
@@ -143,6 +167,7 @@ public class Utils {
         }
         return info.getBSSID();
     }
+
     public static String getSSID(Context context) {
         WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = null;
@@ -153,6 +178,7 @@ public class Utils {
         }
         return info.getSSID();
     }
+
     public List<ScanResult> getScanResults() {
         if (this.mWifiManager != null) {
             List<ScanResult> var1 = this.mWifiManager.getScanResults();
