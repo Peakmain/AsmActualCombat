@@ -38,6 +38,9 @@ class MethodFieldUtils {
     static String GET_IP_ADDRESS_METHOD_NAME = "getIpAddress"
     static String GET_STRING_METHOD_NAME = "getString"
     static String GET_SCAN_RESULTS_METHOD_NAME = "getScanResults"
+    static String GET_IMEI_METHOD_NAME = "getImei"
+    static String GET_SUBSCRIBER_ID_METHOD_NAME = "getSubscriberId"
+    static String GET_SIM_SERIAL_NUMBER_METHOD_NAME = "getSimSerialNumber"
     //desc
     static final String EMPTY_STRING_DESC = "()Ljava/lang/String;"
     static final String EMPTY_LIST_DESC = "()Ljava/util/List;"

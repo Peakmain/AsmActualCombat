@@ -50,6 +50,28 @@ public class Utils {
         return "getMeid";
     }
 
+    public static String getImei(Context context) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return manager.getImei();
+        }
+        return "getImei";
+    }
+    public static String getSubscriberId(Context context) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return manager.getSubscriberId();
+        }
+        return "getSubscriberId";
+    }
+
+    public static String getSimSerialNumber(Context context) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return manager.getSimSerialNumber();
+        }
+        return "getSimSerialNumber";
+    }
     /**
      * Android  6.0 之前（不包括6.0）
      */
@@ -109,7 +131,7 @@ public class Utils {
             boolean var3 = false;
 
             try {
-                if (var2.getConnectionInfo()!=null) {
+                if (var2.getConnectionInfo() != null) {
                     var3 = true;
                 }
             } catch (Throwable var4) {

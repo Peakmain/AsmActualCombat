@@ -42,6 +42,9 @@ public class ReplaceMethodUtils {
         private static final ReplaceMethodUtils instance = new ReplaceMethodUtils();
     }
 
+    /**
+     * 获取设备Id
+     */
     public static String getDeviceId(TelephonyManager manager) {
         if (getInstance().mOnReplaceMethodListener != null) {
             return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(
@@ -58,7 +61,9 @@ public class ReplaceMethodUtils {
         return "";
     }
 
-
+    /**
+     * 获取meid
+     */
     public static String getMeid(TelephonyManager manager) {
         if (getInstance().mOnReplaceMethodListener != null) {
             return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(
@@ -74,7 +79,9 @@ public class ReplaceMethodUtils {
         }
         return "";
     }
-
+    /**
+     * 获取Imei
+     */
     public static String getImei(TelephonyManager manager) {
         if (getInstance().mOnReplaceMethodListener != null) {
             return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(
@@ -83,9 +90,7 @@ public class ReplaceMethodUtils {
         return "";
     }
 
-    /**
-     * 获取Imei
-     */
+
     public static String getImei(TelephonyManager manager, int slotIndex) {
         if (getInstance().mOnReplaceMethodListener != null) {
             return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(
@@ -104,7 +109,17 @@ public class ReplaceMethodUtils {
         }
         return "";
     }
+    public static String getSubscriberId(TelephonyManager manager,int slotIndex) {
+        if (getInstance().mOnReplaceMethodListener != null) {
+            return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(
+                    SensorsDataConstants.GET_SUBSCRIBER_ID, manager, slotIndex);
+        }
+        return "";
+    }
 
+    /**
+     * 获取SimSerialNumber
+     */
     public static String getSimSerialNumber(TelephonyManager manager) {
         if (getInstance().mOnReplaceMethodListener != null) {
             return getInstance().mOnReplaceMethodListener.onReplaceMethodListener(
