@@ -7,7 +7,7 @@ Add it in your root build.gradle at the end of repositories:
 ```
 buildscript {
   dependencies {
-    classpath "io.github.peakmain:plugin:1.0.9"
+    classpath "io.github.peakmain:plugin:1.1.1"
   }
 }
 
