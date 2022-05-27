@@ -7,7 +7,7 @@ Add it in your root build.gradle at the end of repositories:
 ```
 buildscript {
   dependencies {
-    classpath "io.github.peakmain:plugin:1.0.8"
+    classpath "io.github.peakmain:plugin:1.0.9"
   }
 }
 
@@ -27,7 +27,7 @@ Add it in your root build.gradle at the end of repositories:
 - Step 2. Add the dependency
 ```
 	dependencies {
-	       implementation 'com.github.Peakmain:AsmActualCombat:1.0.5'
+	       implementation 'com.github.Peakmain:AsmActualCombat:1.1.1'
 	}
 ```
 
