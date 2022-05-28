@@ -6,6 +6,11 @@
 Add it in your root build.gradle at the end of repositories:
 ```
 buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
   dependencies {
     classpath "io.github.peakmain:plugin:1.1.1"
   }
@@ -42,7 +47,16 @@ Add it in your root build.gradle at the end of repositories:
 - 对调用隐私方法的方法体替换成自己的方法(支持动态替换方法)
 - 支持的方法如下
 ![image](https://user-images.githubusercontent.com/26482737/170660484-740f1399-3a28-4245-9e2b-adc4fb268633.png)
+```
+monitorPlugin {
+    whiteList = [//设置白名单
+            "com.peakmain.asmactualcombat.utils.TestUtils",
+            "com.peakmain.plugin"
+    ]
+    methodStatus = 1//1代表方法体替换，其他都是正常情况
+}
 
+```
 
 ##### 辅助功能
 - 可获取方法的耗时时间
