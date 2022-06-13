@@ -21,6 +21,7 @@ class MethodFieldUtils {
 
     public static final String LOG_MANAGER = "com/peakmain/sdk/utils/LogManager"
     public static final String NEW_METHOD_OWNER = "com/peakmain/sdk/utils/ReplaceMethodUtils"
+    public static final String NEW_METHOD_REFLEX_OWNER = "com/peakmain/sdk/utils/ReplaceReflexMethodUtils"
     public static final int STATIC_OPCODE = Opcodes.INVOKESTATIC
     /**
      * MonitorHookMethodConfig的属性

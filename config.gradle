@@ -9,5 +9,8 @@ ext {
     dependencies = [
             jpush: ['cn.jiguang.sdk:jpush:4.6.0',
                     'cn.jiguang.sdk:jcore:3.1.2',],
+            map_3d                     : 'com.amap.api:3dmap:9.2.1',
+            map_search                 : 'com.amap.api:search:9.2.0',
+            map_location               : 'com.amap.api:location:6.0.1',
     ]
 }

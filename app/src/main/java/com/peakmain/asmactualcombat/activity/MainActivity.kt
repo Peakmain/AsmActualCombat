@@ -24,7 +24,7 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) :
         }
         mBinding.buttonClick1.setOnClickListener {
             //startActivity(Intent(this,TestActivity::class.java))
-            ToastUtils.showLong(Utils.getAndroidId(this))
+            //ToastUtils.showLong(Utils.getAndroidId(this))
         }
     }
 
