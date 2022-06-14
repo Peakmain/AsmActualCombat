@@ -82,14 +82,14 @@ class MonitorMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
         } else {
             super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
         }
-       if(owner=='okhttp3/Request$Builder'){
+/*       if(owner=='okhttp3/Request$Builder'){
            if(name=="addHeader"){
                println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
            }
        }
         if(owner=="com/mob/tools/network/NetworkHelper"){
             println("调用mob网络方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
-        }
+        }*/
     }
 
 

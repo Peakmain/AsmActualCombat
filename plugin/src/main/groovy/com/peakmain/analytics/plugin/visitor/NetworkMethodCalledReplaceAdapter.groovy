@@ -3,11 +3,14 @@ package com.peakmain.analytics.plugin.visitor
 import com.peakmain.analytics.plugin.entity.MethodCalledBean
 import com.peakmain.analytics.plugin.ext.MonitorConfig
 import com.peakmain.analytics.plugin.ext.MonitorHookMethodConfig
+import com.peakmain.analytics.plugin.ext.NetworkHookMethodConfig
 import com.peakmain.analytics.plugin.utils.MethodFieldUtils
 import com.peakmain.analytics.plugin.utils.NetworkFieldUtils
+import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import com.peakmain.analytics.plugin.visitor.base.MonitorDefalutMethodAdapter
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Type
 
 /**
  * author ：Peakmain
@@ -21,6 +24,7 @@ class NetworkMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
     private String mClassName
     private MonitorConfig monitorConfig
     private String methodDesc
+    private MethodVisitor methodVisitor
     /**
      * Constructs a new {@link AdviceAdapter}.
      *
@@ -35,21 +39,21 @@ class NetworkMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
         mClassName = className
         this.monitorConfig = monitorConfig
         methodDesc = desc
+        methodVisitor = mv
     }
 
 
     @Override
     void visitMethodInsn(int opcodeAndSource, String owner, String name, String descriptor, boolean isInterface) {
+        HashMap<String, MethodCalledBean> methodReplaceBeans = NetworkHookMethodConfig.methodCalledBeans
         String desc = owner + name + descriptor
-        String qi_niu_desc = NetworkFieldUtils.OWNER_QI_NIU_HTTP_USER_AGENT + NetworkFieldUtils.NAME_QI_NIU_HTTP_USER_AGENT + NetworkFieldUtils.DESCRIPTOR_QI_NIU_HTTP_USER_AGENT
-        if (desc == qi_niu_desc) {
-            super.visitMethodInsn(MethodFieldUtils.STATIC_OPCODE
-                    , NetworkFieldUtils.OWNER_NEW_QI_NIU_HTTP_USER_AGENT,
-                    NetworkFieldUtils.NAME_QI_NIU_HTTP_USER_AGENT, NetworkFieldUtils.DESCRIPTOR_NEW_QI_NIU_HTTP_USER_AGENT, isInterface)
+        if(methodReplaceBeans.containsKey(desc)){
+            println("拦截网络请求的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
+            MethodCalledBean bean = methodReplaceBeans.get(desc)
+            super.visitMethodInsn(bean.newOpcode, bean.newMethodOwner, bean.newMethodName, bean.newMethodDescriptor.get(descriptor), false)
         }else{
             super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
         }
-
     }
 
 

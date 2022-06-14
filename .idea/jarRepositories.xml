@@ -31,5 +31,10 @@
       <option name="name" value="maven" />
       <option name="url" value="https://jitpack.io" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="MobSDK" />
+      <option name="name" value="MobSDK" />
+      <option name="url" value="https://mvn.mob.com/android" />
+    </remote-repository>
   </component>
 </project>

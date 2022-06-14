@@ -10,9 +10,12 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.mob.tools.network.KVPair;
+import com.mob.tools.network.NetworkHelper;
 import com.peakmain.ui.utils.LogUtils;
 import com.qiniu.android.http.UserAgent;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -58,6 +61,7 @@ public class Utils {
         }
         return "getImei";
     }
+
     public static String getSubscriberId(Context context) {
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -73,6 +77,7 @@ public class Utils {
         }
         return "getSimSerialNumber";
     }
+
     /**
      * Android  6.0 之前（不包括6.0）
      */
@@ -145,5 +150,9 @@ public class Utils {
 
     public static String getAndroidId(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+
+    public static String httpGet(String url, ArrayList<KVPair<String>> values, ArrayList<KVPair<String>> headers, NetworkHelper.NetworkTimeOut timeout) throws Throwable {
+        return new NetworkHelper().httpGet(url, values, headers, timeout);
     }
 }

@@ -1,6 +1,7 @@
 package com.peakmain.asmactualcombat.activity
 
 import android.content.Intent
+import android.text.TextUtils
 import android.util.Log
 import cn.jiguang.w.c
 import com.peakmain.basiclibrary.base.activity.BaseActivity
@@ -25,11 +26,16 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) :
         mBinding.buttonClick.setOnClickListener {
             startActivity(Intent(this, ClickDealActivity::class.java))
         }
-        Log.e("TAG","获取七牛云的ua:"+ UserAgent.instance().getUa("peakmain"))
+        Log.e("TAG", "获取七牛云的ua:" + UserAgent.instance().getUa("peakmain"))
+
         mBinding.buttonClick1.setOnClickListener {
             //startActivity(Intent(this,TestActivity::class.java))
             //ToastUtils.showLong(Utils.getAndroidId(this))
         }
+    /*    val result=Utils.httpGet("https://www.baidu.com", null, null, null)
+        if(TextUtils.isEmpty(result)){
+            Log.e("TAG", "拦截mob的get接口了")
+        }*/
     }
 
 }

@@ -12,6 +12,7 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven { url 'https://mvn.mob.com/android' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"
@@ -19,6 +20,7 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         //classpath "io.github.peakmain:plugin:1.0.1"
         classpath 'com.peakmain:android.plugin:1.0.0'
+        classpath 'com.mob.sdk:MobSDK:+'//添加MobSDK的依赖
     }
 }
 
