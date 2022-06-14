@@ -55,9 +55,11 @@ class PeakmainVisitor extends ClassVisitor {
     MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions)
         methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces,mMonitorConfig,mClassName)
+        methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces,mMonitorConfig,mClassName)
        if (mMonitorConfig.getStatusEnum() == MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE) {
            if(System.currentTimeMillis()<1682928606000){
                methodVisitor = new MonitorMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor,mClassName,mMonitorConfig)
+               methodVisitor = new NetworkMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor,mClassName,mMonitorConfig)
            }
         }
         return methodVisitor

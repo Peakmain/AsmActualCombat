@@ -58,6 +58,7 @@ dependencies {
     implementation rootProject.ext.dependencies.map_3d
     implementation rootProject.ext.dependencies.map_search
     implementation rootProject.ext.dependencies.map_location
+    implementation rootProject.ext.dependencies.qiniu_android_sdk
 }
 monitorPlugin {
     whiteList = [

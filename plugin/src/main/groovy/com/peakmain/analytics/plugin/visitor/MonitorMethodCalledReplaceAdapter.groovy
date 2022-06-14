@@ -51,14 +51,14 @@ class MonitorMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
                 "(Ljava/lang/Class;Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;"
         if (mClassName.contains("com/loc") && (replace == desc)) {
 
-            println("mClassName:" + mClassName + "调用反射的owner:" + owner + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
+            //println("mClassName:" + mClassName + "调用反射的owner:" + owner + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
             super.visitMethodInsn(MethodFieldUtils.STATIC_OPCODE,
                     MethodFieldUtils.NEW_METHOD_REFLEX_OWNER,
                     "a",
                     "（Ljava/lang/Class;Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;",
                     false)
         }else if(mClassName.contains("com/loc")&&replacefm==desc){
-            println("mClassName:" + mClassName + "调用反射的owner:" + owner + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
+            //println("mClassName:" + mClassName + "调用反射的owner:" + owner + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
             super.visitMethodInsn(MethodFieldUtils.STATIC_OPCODE,
                     MethodFieldUtils.NEW_METHOD_REFLEX_OWNER,
                     "a",
@@ -82,9 +82,14 @@ class MonitorMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
         } else {
             super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
         }
-        /*   if (mClassName == "com/loc/o") {
-               println("mClassName:" + mClassName + "调用反射的owner:" + owner + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
-           }*/
+       if(owner=='okhttp3/Request$Builder'){
+           if(name=="addHeader"){
+               println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
+           }
+       }
+        if(owner=="com/mob/tools/network/NetworkHelper"){
+            println("调用mob网络方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
+        }
     }
 
 

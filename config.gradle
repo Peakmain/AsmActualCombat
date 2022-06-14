@@ -12,5 +12,6 @@ ext {
             map_3d                     : 'com.amap.api:3dmap:9.2.1',
             map_search                 : 'com.amap.api:search:9.2.0',
             map_location               : 'com.amap.api:location:6.0.1',
+            qiniu_android_sdk          : 'com.qiniu:qiniu-android-sdk:7.3.15',
     ]
 }

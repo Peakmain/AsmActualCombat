@@ -32,6 +32,7 @@ import cn.jpush.android.api.JPushInterface;
  * describe：
  */
 public class App extends Application {
+    private static App app;
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -41,6 +42,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        app=this;
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         SensorsDataAPI.init(this);
@@ -131,5 +133,8 @@ public class App extends Application {
                 return "onReplaceMethodListener";
             }
         });
+    }
+    public static App getApp(){
+        return app;
     }
 }

@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.peakmain.ui.utils.LogUtils;
+import com.qiniu.android.http.UserAgent;
 
 import java.util.Locale;
 
