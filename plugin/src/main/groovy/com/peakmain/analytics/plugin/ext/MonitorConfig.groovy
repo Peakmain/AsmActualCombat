@@ -21,6 +21,8 @@ class MonitorConfig {
      */
     public boolean isIncremental = false
     public ArrayList<String> whiteList = []
+    //是否拦截网络
+    public boolean isInterceptNetworks = true
     /**
      * 隐私方法方法的状态
      * @params 1 代表替换方法体
