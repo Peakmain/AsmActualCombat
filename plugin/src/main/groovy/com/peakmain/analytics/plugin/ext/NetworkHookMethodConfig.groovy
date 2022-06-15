@@ -1,5 +1,6 @@
 package com.peakmain.analytics.plugin.ext
 
+import com.android.tools.r8.u.b.N
 import com.peakmain.analytics.plugin.entity.MethodCalledBean
 import com.peakmain.analytics.plugin.utils.MethodFieldUtils
 import com.peakmain.analytics.plugin.utils.NetworkFieldUtils
@@ -50,6 +51,21 @@ class NetworkHookMethodConfig {
                 mobRawGetMap
         )
         addMethodCalledBean(mobRawGetMethodBean)
+        /**
+         * Mob Post
+         */
+        HashMap<String, String> mobJsonPostMap = new HashMap<>()
+        mobJsonPostMap.put(NetworkFieldUtils.DESCRIPTOR_MOB_JSON_POST_HTTP,NetworkFieldUtils.DESCRIPTOR_NEW_MOB_JSON_POST_HTTP)
+        MethodCalledBean mobJsonPostMethodBean=new MethodCalledBean(
+                NetworkFieldUtils.OWNER_MOB_HTTP,
+                NetworkFieldUtils.NAME_MOB_JSON_POST_HTTP,
+                NetworkFieldUtils.MOB_JSON_POST_METHOD_DESCRIPTOR,
+                NetworkFieldUtils.DESCRIPTOR_NEW_MOB_JSON_POST_HTTP,
+                NetworkFieldUtils.NAME_MOB_JSON_POST_HTTP,
+                MethodFieldUtils.STATIC_OPCODE,
+                mobJsonPostMap
+        )
+        addMethodCalledBean(mobJsonPostMethodBean)
 
 
     }

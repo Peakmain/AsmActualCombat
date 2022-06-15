@@ -1,10 +1,12 @@
 package com.peakmain.sdk.utils.network;
 
+import com.mob.tools.network.HttpResponseCallback;
 import com.mob.tools.network.KVPair;
 import com.mob.tools.network.NetworkHelper;
 import com.mob.tools.network.RawNetworkCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * author ：Peakmain
@@ -26,6 +28,11 @@ public class Mob {
         }
         networkHelper.rawGet(url, headers, callback, timeout);
     }
-
+    public void jsonPost(NetworkHelper networkHelper,String url, HashMap<String, Object> values, ArrayList<KVPair<String>> headers, NetworkHelper.NetworkTimeOut timeout, HttpResponseCallback callback) throws Throwable {
+         if(headers!=null){
+             headers.clear();
+         }
+         networkHelper.jsonPost(url,values,headers,timeout,callback);
+    }
 
 }
