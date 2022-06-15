@@ -25,17 +25,35 @@ class NetworkHookMethodConfig {
          * Mob GET
          */
         HashMap<String, String> mobGetMap = new HashMap<>()
-        mobGetMap.put(NetworkFieldUtils.DESCRIPTOR_MOB_HTTP, NetworkFieldUtils.DESCRIPTOR_NEW_MOB_HTTP)
-        MethodCalledBean mobMethodBean = new MethodCalledBean(
+        mobGetMap.put(NetworkFieldUtils.DESCRIPTOR_MOB_GET_HTTP, NetworkFieldUtils.DESCRIPTOR_NEW_MOB_GET_HTTP)
+        MethodCalledBean mobGetMethodBean = new MethodCalledBean(
                 NetworkFieldUtils.OWNER_MOB_HTTP,
-                NetworkFieldUtils.NAME_MOB_HTTP,
+                NetworkFieldUtils.NAME_MOB_GET_HTTP,
                 NetworkFieldUtils.MOB_GET_METHOD_DESCRIPTOR,
                 NetworkFieldUtils.OWNER_NEW_MOB_HTTP,
-                NetworkFieldUtils.NAME_MOB_HTTP,
+                NetworkFieldUtils.NAME_MOB_GET_HTTP,
                 MethodFieldUtils.STATIC_OPCODE,
                 mobGetMap)
-        addMethodCalledBean(mobMethodBean)
+        addMethodCalledBean(mobGetMethodBean)
+        /**
+         * Mob RawGet
+         */
+        HashMap<String, String> mobRawGetMap = new HashMap<>()
+        mobRawGetMap.put(NetworkFieldUtils.DESCRIPTOR_MOB_RAW_GET_HTTP, NetworkFieldUtils.DESCRIPTOR_NEW_MOB_RAW_GET_HTTP)
+        MethodCalledBean mobRawGetMethodBean = new MethodCalledBean(
+                NetworkFieldUtils.OWNER_MOB_HTTP,
+                NetworkFieldUtils.NAME_MOB_RAW_GET_HTTP,
+                NetworkFieldUtils.MOB_RAW_GET_METHOD_DESCRIPTOR,
+                NetworkFieldUtils.OWNER_NEW_MOB_HTTP,
+                NetworkFieldUtils.NAME_MOB_RAW_GET_HTTP,
+                MethodFieldUtils.STATIC_OPCODE,
+                mobRawGetMap
+        )
+        addMethodCalledBean(mobRawGetMethodBean)
+
+
     }
+
     static void addMethodCalledBean(MethodCalledBean methodCalledBean) {
         for (String desc : methodCalledBean.getMethodDescriptor()) {
             methodCalledBeans.put(methodCalledBean.getMethodOwner() + methodCalledBean.getMethodName() + desc, methodCalledBean)
