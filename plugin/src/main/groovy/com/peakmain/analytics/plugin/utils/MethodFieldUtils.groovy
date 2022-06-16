@@ -61,6 +61,16 @@ class MethodFieldUtils {
     static String[] CONTENTRESOLVER_STRING_RETURN_STRING_DESC = [CONTENTRESOLVER_STRING_DESC]
     static String[] EMPTY_RETURN_LIST = [EMPTY_LIST_DESC]
 
+    //反射
+    static String CLASS_REFLEX_LOC = "com/loc"
+    static String OWNER_REFLEX_IOC_FM = "com/loc/fm"
+    static String NAME_REFLEX_IOC = "a"
+    static String DESCRIPTOR_REFLEX_IOC_FM = "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;[Ljava/lang/Class;)Ljava/lang/Object;"
+
+    static String OWNER_REFLEX_IOC_X = "com/loc/x"
+    static String DESCRIPTOR_REFLEX_IOC_X = "(Ljava/lang/Class;Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;"
+
+    public static final String NEW_METHOD_REFLEX_OWNER = "com/peakmain/sdk/utils/ReplaceReflexMethodUtils"
     //获取时间属性
     static String getTimeFieldName(String methodName) {
         return "timer_" + methodName

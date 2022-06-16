@@ -1,6 +1,6 @@
 package com.peakmain.analytics.plugin.ext
 
-import com.android.tools.r8.u.b.N
+
 import com.peakmain.analytics.plugin.entity.MethodCalledBean
 import com.peakmain.analytics.plugin.utils.MethodFieldUtils
 import com.peakmain.analytics.plugin.utils.NetworkFieldUtils
@@ -54,18 +54,37 @@ class NetworkHookMethodConfig {
         /**
          * Mob Post
          */
-        HashMap<String, String> mobJsonPostMap = new HashMap<>()
-        mobJsonPostMap.put(NetworkFieldUtils.DESCRIPTOR_MOB_JSON_POST_HTTP,NetworkFieldUtils.DESCRIPTOR_NEW_MOB_JSON_POST_HTTP)
-        MethodCalledBean mobJsonPostMethodBean=new MethodCalledBean(
+        HashMap<String, String> mobPostMap = new HashMap<>()
+        mobPostMap.put(NetworkFieldUtils.DESCRIPTOR_MOB_POST_HTTP,NetworkFieldUtils.DESCRIPTOR_NEW_MOB_POST_HTTP)
+        mobPostMap.put(NetworkFieldUtils.DESCRIPTOR_MOB_POST_HTTP1,NetworkFieldUtils.DESCRIPTOR_NEW_MOB_POST_HTTP1)
+        mobPostMap.put(NetworkFieldUtils.DESCRIPTOR_MOB_POST_HTTP2,NetworkFieldUtils.DESCRIPTOR_NEW_MOB_POST_HTTP2)
+        MethodCalledBean mobPostMethodBean=new MethodCalledBean(
                 NetworkFieldUtils.OWNER_MOB_HTTP,
-                NetworkFieldUtils.NAME_MOB_JSON_POST_HTTP,
-                NetworkFieldUtils.MOB_JSON_POST_METHOD_DESCRIPTOR,
-                NetworkFieldUtils.DESCRIPTOR_NEW_MOB_JSON_POST_HTTP,
-                NetworkFieldUtils.NAME_MOB_JSON_POST_HTTP,
+                NetworkFieldUtils.NAME_MOB_POST_HTTP,
+                NetworkFieldUtils.MOB_POST_METHOD_DESCRIPTOR,
+                NetworkFieldUtils.OWNER_NEW_MOB_HTTP,
+                NetworkFieldUtils.NAME_MOB_POST_HTTP,
                 MethodFieldUtils.STATIC_OPCODE,
-                mobJsonPostMap
+                mobPostMap
         )
-        addMethodCalledBean(mobJsonPostMethodBean)
+        addMethodCalledBean(mobPostMethodBean)
+
+
+        /**
+         * GlideUrl getHead
+         */
+/*        HashMap<String, String> glideUrlMap = new HashMap<>()
+        glideUrlMap.put(NetworkFieldUtils.DESCRIPTOR_GLIDE_URL_HTTP, NetworkFieldUtils.DESCRIPTOR_NEW_GLIDE_URL_HTTP)
+        MethodCalledBean glideMethodBean = new MethodCalledBean(
+                NetworkFieldUtils.OWNER_GLIDE_URL_HTTP,
+                NetworkFieldUtils.NAME_GLIDE_URL_HTTP,
+                NetworkFieldUtils.GLIDE_METHOD_DESCRIPTOR,
+                NetworkFieldUtils.OWNER_NEW_GLIDE_URL_HTTP,
+                NetworkFieldUtils.NAME_GLIDE_URL_HTTP,
+                MethodFieldUtils.STATIC_OPCODE,
+                glideUrlMap
+        )
+        addMethodCalledBean(glideMethodBean)*/
 
 
     }

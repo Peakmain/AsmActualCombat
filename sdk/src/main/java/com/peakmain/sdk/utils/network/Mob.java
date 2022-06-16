@@ -22,17 +22,30 @@ public class Mob {
         return networkHelper.httpGet(url, values, headers, timeout);
     }
 
-    public void rawGet(NetworkHelper networkHelper, String url, ArrayList<KVPair<String>> headers, RawNetworkCallback callback, NetworkHelper.NetworkTimeOut timeout) throws Throwable {
+    public static void rawGet(NetworkHelper networkHelper, String url, ArrayList<KVPair<String>> headers, RawNetworkCallback callback, NetworkHelper.NetworkTimeOut timeout) throws Throwable {
         if (headers != null) {
             headers.clear();
         }
         networkHelper.rawGet(url, headers, callback, timeout);
     }
-    public void jsonPost(NetworkHelper networkHelper,String url, HashMap<String, Object> values, ArrayList<KVPair<String>> headers, NetworkHelper.NetworkTimeOut timeout, HttpResponseCallback callback) throws Throwable {
-         if(headers!=null){
-             headers.clear();
-         }
-         networkHelper.jsonPost(url,values,headers,timeout,callback);
+
+    public void httpPost(NetworkHelper networkHelper, String url, ArrayList<KVPair<String>> headers, int chunkLength, HttpResponseCallback callback, NetworkHelper.NetworkTimeOut timeout) throws Throwable {
+        if (headers != null) {
+            headers.clear();
+        }
+        networkHelper.httpPost(url, headers, chunkLength, callback, timeout);
     }
 
+    public void httpPost(NetworkHelper networkHelper,String url, ArrayList<KVPair<String>> values, ArrayList<KVPair<String>> files, ArrayList<KVPair<String>> headers, int chunkLength, HttpResponseCallback callback, NetworkHelper.NetworkTimeOut timeout) throws Throwable {
+        if (headers != null) {
+            headers.clear();
+        }
+        networkHelper.httpPost(url,values,files,headers,chunkLength,callback,timeout);
+    }
+    public void httpPost(NetworkHelper networkHelper,String url, ArrayList<KVPair<String>> values, byte[] data, ArrayList<KVPair<String>> headers, int chunkLength, HttpResponseCallback callback, NetworkHelper.NetworkTimeOut timeout) throws Throwable {
+        if (headers != null) {
+            headers.clear();
+        }
+        networkHelper.httpPost(url,values,data,headers,chunkLength,callback,timeout);
+    }
 }
