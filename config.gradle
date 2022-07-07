@@ -3,8 +3,8 @@ ext {
             compileSdkVersion: 30,
             targetSdkVersion : 30,
             minSdkVersion    : 19,
-            versionCode      : 1,
-            versionName      : "1.0",
+            versionCode      : 20220707,
+            versionName      : "1.1.0",
     ]
     dependencies = [
             jpush: ['cn.jiguang.sdk:jpush:4.6.0',

@@ -12,10 +12,10 @@ import java.lang.annotation.RetentionPolicy;
  * describe：
  */
 public class SensorsDataConstants {
-    public static final String APP_START_EVENT_NAME = "$AppStart";
-    public static final String APP_END__EVENT_NAME = "$AppEnd";
-    public static final String APP_VIEW_SCREEN__EVENT_NAME = "$AppViewScreen";
-    public static final String APP_VIEW_CLICK__EVENT_NAME = "$AppClick";
+    public static final String APP_START_EVENT_NAME = "AppStart";
+    public static final String APP_END__EVENT_NAME = "AppEnd";
+    public static final String APP_VIEW_SCREEN__EVENT_NAME = "AppViewScreen";
+    public static final String APP_VIEW_CLICK__EVENT_NAME = "AppClick";
 
     public static final int APP_START_EVENT_STATE = 1;
     public static final int APP_END__EVENT_STATE = 2;
@@ -43,5 +43,13 @@ public class SensorsDataConstants {
     @IntDef({GET_MAC_ADDRESS,GET_SSID,GET_BSSID,GET_IP_ADDRESS})
     @Retention(RetentionPolicy.SOURCE)
     public @interface WIFI_STATE{}
+
+
+    public static final String ELEMENT_ID="element_id";
+    public static final String ELEMENT_TYPE="element_type";
+    public static final String ELEMENT_CONTENT="element_content";
+    public static final String ACTIVITY_NAME="activity";
+    public static final String ACTIVITY_TITLE="activity_title";
+    public static final String ELEMENT_POSITION="element_position";
 
 }

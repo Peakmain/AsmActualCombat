@@ -47,6 +47,7 @@ import java.util.Map;
 public class SensorsDataUtils {
     private static final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"
             + ".SSS", Locale.CHINA);
+    public static final String COMMAND_HARMONYOS_VERSION = "getprop hw_sc.build.platform.version";
 
     public static void mergeJSONObject(final JSONObject source, JSONObject dest)
             throws JSONException {
@@ -66,55 +67,28 @@ public class SensorsDataUtils {
 
     public static Map<String, Object> getDeviceInfo(Context context) {
         final Map<String, Object> deviceInfo = new HashMap<>();
-        {
-            deviceInfo.put("$lib", "Android");
-            deviceInfo.put("$lib_version", SensorsDataAPI.SDK_VERSION);
-            deviceInfo.put("$os", "Android");
-            deviceInfo.put("$os_version",
-                    Build.VERSION.RELEASE == null ? "UNKNOWN" : Build.VERSION.RELEASE);
-            deviceInfo
-                    .put("$manufacturer", Build.MANUFACTURER == null ? "UNKNOWN" : Build.MANUFACTURER);
-            if (TextUtils.isEmpty(Build.MODEL)) {
-                deviceInfo.put("$model", "UNKNOWN");
-            } else {
-                deviceInfo.put("$model", Build.MODEL.trim());
-            }
-
-            try {
-                final PackageManager manager = context.getPackageManager();
-                final PackageInfo packageInfo = manager.getPackageInfo(context.getPackageName(), 0);
-                deviceInfo.put("$app_version", packageInfo.versionName);
-
-                int labelRes = packageInfo.applicationInfo.labelRes;
-                deviceInfo.put("$app_name", context.getResources().getString(labelRes));
-            } catch (final Exception e) {
-                e.printStackTrace();
-            }
-
-            final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-            deviceInfo.put("$screen_height", displayMetrics.heightPixels);
-            deviceInfo.put("$screen_width", displayMetrics.widthPixels);
-
-            return Collections.unmodifiableMap(deviceInfo);
+        String osVersion = DeviceUtils.getHarmonyOSVersion();
+        deviceInfo.put("app_version", SystemUtils.getVersionName(context));
+        if (!TextUtils.isEmpty(osVersion)) {
+            deviceInfo.put("os", "HarmonyOS");
+            deviceInfo.put("os_version", osVersion);
+        } else {
+            deviceInfo.put("os", "Android");
+            deviceInfo.put("os_version", DeviceUtils.getOS());
         }
+        deviceInfo.put("platform", "Android");
+        deviceInfo.put("sdk_lib", "Android");
+        deviceInfo.put("lib_version", SensorsDataAPI.SDK_VERSION);
+        deviceInfo.put("brand", DeviceUtils.getBrand());
+        deviceInfo.put("language", SystemUtils.getSystemLanguage());
+        deviceInfo.put("model", Build.MODEL);
+        int[] size = DeviceUtils.getDeviceSize(context);
+        deviceInfo.put("screen_width", size[0]);
+        deviceInfo.put("screen_height", size[1]);
+
+        return Collections.unmodifiableMap(deviceInfo);
     }
 
-    /**
-     * 获取 Android ID
-     *
-     * @param mContext Context
-     * @return String
-     */
-    @SuppressLint("HardwareIds")
-    public static String getAndroidID(Context mContext) {
-        String androidID = "";
-        try {
-            androidID = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return androidID;
-    }
 
     /**
      * 获取 view 的 anroid:id 对应的字符串
