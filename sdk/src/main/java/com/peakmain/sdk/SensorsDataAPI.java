@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.peakmain.sdk.constants.SensorsDataConstants;
+import com.peakmain.sdk.interfaces.ISensorsDataInstance;
 import com.peakmain.sdk.interfaces.OnReplaceMethodListener;
 import com.peakmain.sdk.interfaces.OnUploadSensorsDataListener;
 import com.peakmain.sdk.manager.SensorsDataManager;
@@ -34,11 +35,10 @@ public class SensorsDataAPI {
     public static final String SDK_VERSION = "1.1.1";
     private static volatile SensorsDataAPI INSTANCE;
     private static final Object mLock = new Object();
-    private static Map<String, Object> mDeviceInfo;
-    private String mDeviceId;
     ListenerInfo mListenerInfo;
-    private @SensorsDataConstants.STATE
-    int mState = SensorsDataConstants.APP_VIEW_CLICK__EVENT_STATE;
+
+
+    private ISensorsDataInstance iSensorsDataInstance;
 
     ListenerInfo getListenerInfo() {
         if (mListenerInfo != null) {
@@ -48,7 +48,6 @@ public class SensorsDataAPI {
         return mListenerInfo;
     }
 
-
     public interface OnUserAgreementListener {
         /**
          * 是否同意用户协议接口
@@ -56,8 +55,14 @@ public class SensorsDataAPI {
         boolean onUserAgreement();
     }
 
+    @Keep
+    public void onEvent(String eventName, String eventValue) {
+        iSensorsDataInstance.onEvent(eventName, eventValue);
+    }
+
     /**
      * 设置方法替换接口
+     *
      * @param onReplaceMethodListener onReplaceMethodListener
      */
     public void setOnReplaceMethodListener(OnReplaceMethodListener onReplaceMethodListener) {
@@ -96,7 +101,7 @@ public class SensorsDataAPI {
     }
 
     private SensorsDataAPI(Application application) {
-        mDeviceInfo = SensorsDataUtils.getDeviceInfo(application.getApplicationContext());
+        iSensorsDataInstance = new SensorsDataInstance(application);
         SensorsDataManager.registerActivityLifecycleCallbacks(application);
         SensorsDataManager.registerActivityStateObserver(application);
     }
@@ -109,44 +114,7 @@ public class SensorsDataAPI {
      */
     @Keep
     public void track(@NonNull final String eventName, @Nullable JSONObject properties) {
-        try {
-
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("event", eventName);
-
-            JSONObject sendProperties = new JSONObject(mDeviceInfo);
-
-            if (properties != null) {
-                SensorsDataUtils.mergeJSONObject(properties, sendProperties);
-            }
-
-            jsonObject.put("params", sendProperties);
-            long currentTimeMillis = System.currentTimeMillis();
-            jsonObject.put("time", currentTimeMillis);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            jsonObject.put("event_date", simpleDateFormat.format(currentTimeMillis));
-            //获取到埋点之后，上传到服务器
-            OnUploadSensorsDataListener onUploadSensorsData = getListenerInfo().mOnUploadSensorsData;
-            if (onUploadSensorsData != null) {
-                switch (eventName) {
-                    case SensorsDataConstants.APP_START_EVENT_NAME:
-                        mState = SensorsDataConstants.APP_START_EVENT_STATE;
-                        break;
-                    case SensorsDataConstants.APP_END__EVENT_NAME:
-                        mState = SensorsDataConstants.APP_END__EVENT_STATE;
-                        break;
-                    case SensorsDataConstants.APP_VIEW_SCREEN__EVENT_NAME:
-                        mState = SensorsDataConstants.APP_VIEW_SCREEN__EVENT_STATE;
-                        break;
-                    default:
-                        mState = SensorsDataConstants.APP_VIEW_CLICK__EVENT_STATE;
-                        break;
-                }
-                onUploadSensorsData.onUploadSensors(mState, SensorsDataUtils.formatJson(jsonObject.toString()));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        iSensorsDataInstance.track(eventName, properties, getListenerInfo().mOnUploadSensorsData);
     }
 
 }

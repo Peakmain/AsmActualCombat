@@ -109,8 +109,8 @@ public class SensorsDataManager {
         try {
             if (activity == null) return;
             JSONObject properties = new JSONObject();
-            properties.put("$activity", activity.getClass().getCanonicalName());
-            properties.put("title", getActivityTitle(activity));
+            properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
+            properties.put(SensorsDataConstants.ACTIVITY_TITLE, getActivityTitle(activity));
             SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_SCREEN__EVENT_NAME, properties);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -125,8 +125,8 @@ public class SensorsDataManager {
                 return;
             }
             JSONObject properties = new JSONObject();
-            properties.put("$activity", activity.getClass().getCanonicalName());
-            properties.put("$title", getActivityTitle(activity));
+            properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
+            properties.put(SensorsDataConstants.ACTIVITY_TITLE, getActivityTitle(activity));
             SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_START_EVENT_NAME, properties);
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,8 +141,8 @@ public class SensorsDataManager {
                 return;
             }
             JSONObject properties = new JSONObject();
-            properties.put("$activity", activity.getClass().getCanonicalName());
-            properties.put("$title", getActivityTitle(activity));
+            properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
+            properties.put(SensorsDataConstants.ACTIVITY_TITLE, getActivityTitle(activity));
             SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_END__EVENT_NAME, properties);
             mHelper.saveAppEndState(true);
             mCurrentActivity = null;
