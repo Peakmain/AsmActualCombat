@@ -29,6 +29,8 @@ class MonitorConfig {
      * @params 其他都
      */
     public int methodStatus = 0
+    //是否开启日志
+    public boolean enableLog
     private MethodFieldUtils.StatusEnum statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL
     private final HashSet<String> special = [
             'com.peakmain.sdk.utils.SensorsDataUtils',
