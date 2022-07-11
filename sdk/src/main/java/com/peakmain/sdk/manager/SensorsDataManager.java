@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.peakmain.sdk.SensorsDataAPI;
 import com.peakmain.sdk.constants.SensorsDataConstants;
+import com.peakmain.sdk.utils.PreferencesUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +38,7 @@ public class SensorsDataManager {
     private final static int DURATION_TIME = 30 * 1000;
     private static WeakReference<Activity> mCurrentActivity;
     private static CountDownTimer mCountDownTimer;
+    private static int startActivityCount = 0;
 
     private static String getToolbarTitle(Activity activity) {
         try {
@@ -63,6 +65,23 @@ public class SensorsDataManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static JSONObject buildPageInfo(Activity activity) {
+        JSONObject jsonObject = new JSONObject();
+        if (activity == null) {
+            return jsonObject;
+        }
+        String title = getActivityTitle(activity);
+        try {
+            String activityPage = activity.getClass().getCanonicalName();
+            jsonObject.putOpt(SensorsDataConstants.ELEMENT_PATH, activityPage);
+            jsonObject.putOpt(SensorsDataConstants.PAGE_PATH, activityPage);
+            jsonObject.putOpt(SensorsDataConstants.ACTIVITY_TITLE, title);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
     /**
@@ -116,6 +135,7 @@ public class SensorsDataManager {
             e.printStackTrace();
         }
     }
+
     /**
      * Track $AppStart 事件
      */
@@ -132,6 +152,7 @@ public class SensorsDataManager {
             e.printStackTrace();
         }
     }
+
     /**
      * Track $AppEnd 事件
      */
@@ -140,9 +161,7 @@ public class SensorsDataManager {
             if (activity == null) {
                 return;
             }
-            JSONObject properties = new JSONObject();
-            properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
-            properties.put(SensorsDataConstants.ACTIVITY_TITLE, getActivityTitle(activity));
+            JSONObject properties = SensorsDataManager.buildPageInfo(activity);
             SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_END__EVENT_NAME, properties);
             mHelper.saveAppEndState(true);
             mCurrentActivity = null;
@@ -150,6 +169,7 @@ public class SensorsDataManager {
             e.printStackTrace();
         }
     }
+
     public static void registerActivityLifecycleCallbacks(Application application) {
         mHelper = new SensorsDatabaseHelper(application.getApplicationContext(), application.getPackageName());
         mCountDownTimer = new CountDownTimer(DURATION_TIME, 10 * 1000) {
@@ -169,7 +189,7 @@ public class SensorsDataManager {
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-
+                ++startActivityCount;
             }
 
             @Override
@@ -185,7 +205,6 @@ public class SensorsDataManager {
                     mHelper.saveAppEndState(false);
                     trackAppStart(activity);
                 }
-
             }
 
             @Override
@@ -216,20 +235,21 @@ public class SensorsDataManager {
             }
         });
     }
+
     /**
      * 注册 AppStart 的监听
      */
     public static void registerActivityStateObserver(Application application) {
         application.getContentResolver().registerContentObserver(mHelper.getAppStartUri(),
                 false, new ContentObserver(new Handler(Looper.getMainLooper())) {
-            @Override
-            public void onChange(boolean selfChange, @Nullable Uri uri) {
-                if(mHelper.getAppStartUri().equals(uri)){
-                    if(mCountDownTimer!=null){
-                        mCountDownTimer.cancel();
+                    @Override
+                    public void onChange(boolean selfChange, @Nullable Uri uri) {
+                        if (mHelper.getAppStartUri().equals(uri)) {
+                            if (mCountDownTimer != null) {
+                                mCountDownTimer.cancel();
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
     }
 }

@@ -12,6 +12,7 @@ import java.lang.annotation.RetentionPolicy;
  * describe：
  */
 public class SensorsDataConstants {
+    public static final String SDK_VERSION = "1.1.1";
     public static final String APP_START_EVENT_NAME = "AppStart";
     public static final String APP_END__EVENT_NAME = "AppEnd";
     public static final String APP_VIEW_SCREEN__EVENT_NAME = "AppViewScreen";
@@ -24,7 +25,8 @@ public class SensorsDataConstants {
 
     @IntDef({APP_START_EVENT_STATE, APP_VIEW_SCREEN__EVENT_STATE, APP_END__EVENT_STATE, APP_VIEW_CLICK__EVENT_STATE})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface STATE{}
+    public @interface STATE {
+    }
 
     public static final int GET_DEVICE_ID = 1;
     public static final int GET_MEID = 2;
@@ -36,20 +38,26 @@ public class SensorsDataConstants {
     public static final int GET_BSSID = 8;
     public static final int GET_IP_ADDRESS = 9;
 
-    @IntDef({GET_DEVICE_ID,GET_MEID,GET_IMEI,GET_SUBSCRIBER_ID,GET_SIM_SERIAL_NUMBER})
+    @IntDef({GET_DEVICE_ID, GET_MEID, GET_IMEI, GET_SUBSCRIBER_ID, GET_SIM_SERIAL_NUMBER})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface TELEPHONY_STATE{}
+    public @interface TELEPHONY_STATE {
+    }
 
-    @IntDef({GET_MAC_ADDRESS,GET_SSID,GET_BSSID,GET_IP_ADDRESS})
+    @IntDef({GET_MAC_ADDRESS, GET_SSID, GET_BSSID, GET_IP_ADDRESS})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface WIFI_STATE{}
+    public @interface WIFI_STATE {
+    }
 
 
-    public static final String ELEMENT_ID="element_id";
-    public static final String ELEMENT_TYPE="element_type";
-    public static final String ELEMENT_CONTENT="element_content";
-    public static final String ACTIVITY_NAME="activity";
-    public static final String ACTIVITY_TITLE="activity_title";
-    public static final String ELEMENT_POSITION="element_position";
+    public static final String ELEMENT_ID = "element_id";
+    public static final String ELEMENT_TYPE = "element_type";
+    public static final String ELEMENT_CONTENT = "element_content";
+    public static final String ACTIVITY_NAME = "activity";
+    public static final String ACTIVITY_TITLE = "activity_title";
+    public static final String ELEMENT_POSITION = "element_position";
+    public static final String ELEMENT_PATH = "element_path";
+    public static final String PAGE_PATH = "page_path";
+    public static final String REFER_PAGE_PATH = "referrer_page_path";
+
 
 }

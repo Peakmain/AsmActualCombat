@@ -85,4 +85,11 @@ public class LogManager {
     public static void printlnStr(String value) {
         e(value);
     }
+
+
+    public static void printStackTrace(Exception e) {
+        if (e != null) {
+            e.printStackTrace();
+        }
+    }
 }

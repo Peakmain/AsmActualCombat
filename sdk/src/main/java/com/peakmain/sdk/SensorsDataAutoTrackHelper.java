@@ -59,12 +59,7 @@ public class SensorsDataAutoTrackHelper {
                 activity = dialog.getOwnerActivity();
             }
 
-            JSONObject properties = new JSONObject();
-            //$screen_name & $title
-            if (activity != null) {
-                properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
-                properties.put(SensorsDataConstants.ACTIVITY_TITLE, SensorsDataManager.getActivityTitle(activity));
-            }
+            JSONObject properties = SensorsDataManager.buildPageInfo(activity);
 
             Button button = null;
             if (dialog instanceof android.app.AlertDialog) {
@@ -98,9 +93,9 @@ public class SensorsDataAutoTrackHelper {
                 return;
             }
 
-            JSONObject properties = new JSONObject();
 
             Activity activity = SensorsDataUtils.getActivityFromContext(context);
+            JSONObject properties = SensorsDataManager.buildPageInfo(activity);
 
             try {
                 String idString = context.getResources().getResourceEntryName(view.getId());
@@ -109,11 +104,6 @@ public class SensorsDataAutoTrackHelper {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-
-            if (activity != null) {
-                properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
-                properties.put(SensorsDataConstants.ACTIVITY_TITLE, SensorsDataManager.getActivityTitle(activity));
             }
 
             String viewText = null;
@@ -195,12 +185,7 @@ public class SensorsDataAutoTrackHelper {
                 activity = dialog.getOwnerActivity();
             }
 
-            JSONObject properties = new JSONObject();
-            //$screen_name & $title
-            if (activity != null) {
-                properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
-                properties.put(SensorsDataConstants.ACTIVITY_TITLE, SensorsDataManager.getActivityTitle(activity));
-            }
+            JSONObject properties = SensorsDataManager.buildPageInfo(activity);
 
             ListView listView = null;
             if (dialog instanceof android.app.AlertDialog) {
@@ -241,7 +226,8 @@ public class SensorsDataAutoTrackHelper {
             if (object instanceof Context) {
                 context = (Context) object;
             }
-            JSONObject jsonObject = new JSONObject();
+            Activity activity = SensorsDataUtils.getActivityFromContext(context);
+            JSONObject jsonObject = SensorsDataManager.buildPageInfo(activity);
             jsonObject.put(SensorsDataConstants.ELEMENT_TYPE, "menuItem");
 
             jsonObject.put(SensorsDataConstants.ELEMENT_CONTENT, menuItem.getTitle());
@@ -255,12 +241,6 @@ public class SensorsDataAutoTrackHelper {
                 }
                 if (!TextUtils.isEmpty(idString)) {
                     jsonObject.put(SensorsDataConstants.ELEMENT_ID, idString);
-                }
-
-                Activity activity = SensorsDataUtils.getActivityFromContext(context);
-                if (activity != null) {
-                    jsonObject.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
-                    jsonObject.put(SensorsDataConstants.ACTIVITY_TITLE, SensorsDataManager.getActivityTitle(activity));
                 }
             }
 
@@ -301,12 +281,8 @@ public class SensorsDataAutoTrackHelper {
                 return;
             }
 
-            JSONObject properties = new JSONObject();
             Activity activity = SensorsDataUtils.getActivityFromContext(context);
-            if (activity != null) {
-                properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
-                properties.put(SensorsDataConstants.ACTIVITY_TITLE, SensorsDataManager.getActivityTitle(activity));
-            }
+            JSONObject properties = SensorsDataManager.buildPageInfo(activity);
 
             if (childPosition != -1) {
                 properties.put(SensorsDataConstants.ELEMENT_POSITION, String.format(Locale.CHINA, "%d:%d", groupPosition, childPosition));
@@ -356,17 +332,12 @@ public class SensorsDataAutoTrackHelper {
                 return;
             }
 
-            JSONObject properties = new JSONObject();
-
             Activity activity = SensorsDataUtils.getActivityFromContext(context);
+            JSONObject properties = SensorsDataManager.buildPageInfo(activity);
+
             String idString = SensorsDataUtils.getViewId(adapterView);
             if (!TextUtils.isEmpty(idString)) {
                 properties.put(SensorsDataConstants.ELEMENT_ID, idString);
-            }
-
-            if (activity != null) {
-                properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
-                properties.put(SensorsDataConstants.ACTIVITY_TITLE, SensorsDataManager.getActivityTitle(activity));
             }
             properties.put(SensorsDataConstants.ELEMENT_POSITION, String.valueOf(position));
 
@@ -430,16 +401,11 @@ public class SensorsDataAutoTrackHelper {
             if (!isUserAgreement) {
                 return false;
             }
-            JSONObject jsonObject = new JSONObject();
+            Activity activity = SensorsDataUtils.getActivityFromView(view);
+            JSONObject jsonObject = SensorsDataManager.buildPageInfo(activity);
             jsonObject.put(SensorsDataConstants.ELEMENT_TYPE, SensorsDataUtils.getElementType(view));
             jsonObject.put(SensorsDataConstants.ELEMENT_ID, SensorsDataUtils.getViewId(view));
             jsonObject.put(SensorsDataConstants.ELEMENT_CONTENT, SensorsDataUtils.getElementContent(view));
-
-            Activity activity = SensorsDataUtils.getActivityFromView(view);
-            if (activity != null) {
-                jsonObject.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
-                jsonObject.put(SensorsDataConstants.ACTIVITY_TITLE, SensorsDataManager.getActivityTitle(activity));
-            }
             SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_CLICK__EVENT_NAME, jsonObject);
         } catch (Exception e) {
             e.printStackTrace();

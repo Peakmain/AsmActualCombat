@@ -33,4 +33,5 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'org.jetbrains:annotations:15.0'
     implementation 'com.qiniu:qiniu-android-sdk:7.3.15'
+    implementation 'androidx.preference:preference:1.1.1'
 }

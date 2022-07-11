@@ -21,6 +21,7 @@ import android.widget.ToggleButton;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.peakmain.sdk.SensorsDataAPI;
+import com.peakmain.sdk.constants.SensorsDataConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,7 +74,7 @@ public class SensorsDataUtils {
         }
         deviceInfo.put("platform", "Android");
         deviceInfo.put("sdk_lib", "Android");
-        deviceInfo.put("lib_version", SensorsDataAPI.SDK_VERSION);
+        deviceInfo.put("lib_version", SensorsDataConstants.SDK_VERSION);
         deviceInfo.put("brand", DeviceUtils.getBrand());
         deviceInfo.put("language", SystemUtils.getSystemLanguage());
         deviceInfo.put("model", Build.MODEL);

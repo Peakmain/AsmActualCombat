@@ -14,6 +14,7 @@ import com.peakmain.sdk.interfaces.OnReplaceMethodListener;
 import com.peakmain.sdk.interfaces.OnUploadSensorsDataListener;
 import com.peakmain.sdk.manager.SensorsDataManager;
 import com.peakmain.sdk.manager.SensorsDatabaseHelper;
+import com.peakmain.sdk.utils.PreferencesUtil;
 import com.peakmain.sdk.utils.ReplaceMethodUtils;
 import com.peakmain.sdk.utils.SensorsDataUtils;
 
@@ -31,8 +32,6 @@ import java.util.Map;
  */
 @Keep
 public class SensorsDataAPI {
-    private final String TAG = this.getClass().getSimpleName();
-    public static final String SDK_VERSION = "1.1.1";
     private static volatile SensorsDataAPI INSTANCE;
     private static final Object mLock = new Object();
     ListenerInfo mListenerInfo;
@@ -100,10 +99,15 @@ public class SensorsDataAPI {
         return INSTANCE;
     }
 
+
+    public void track(String eventName) {
+        track(eventName, new JSONObject());
+    }
     private SensorsDataAPI(Application application) {
         iSensorsDataInstance = new SensorsDataInstance(application);
         SensorsDataManager.registerActivityLifecycleCallbacks(application);
         SensorsDataManager.registerActivityStateObserver(application);
+        PreferencesUtil.getInstance().init(application);
     }
 
     /**

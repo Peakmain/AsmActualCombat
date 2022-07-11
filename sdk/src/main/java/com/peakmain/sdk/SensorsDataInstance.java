@@ -37,6 +37,7 @@ public class SensorsDataInstance implements ISensorsDataInstance {
 
     @Override
     public void onEvent(String eventName, String eventValue) {
+
     }
 
     @Override
