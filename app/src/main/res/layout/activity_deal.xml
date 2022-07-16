@@ -38,6 +38,14 @@
                 android:textAllCaps="false" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/kotlinOnClick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="xmlOnClick"
+                android:text="kotlin实现 OnClickListener"
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/dataBinding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,8 +96,8 @@
                 android:id="@+id/seekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp" />
 
             <fragment
                 android:id="@+id/testFragment"
@@ -106,15 +114,15 @@
                 android:id="@+id/adapterViewTest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAllCaps="false"
-                android:text="AdapterView Test"/>
+                android:text="AdapterView Test"
+                android:textAllCaps="false" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/expandableListViewTest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAllCaps="false"
-                android:text="ExpandableListView Test"/>
+                android:text="ExpandableListView Test"
+                android:textAllCaps="false" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

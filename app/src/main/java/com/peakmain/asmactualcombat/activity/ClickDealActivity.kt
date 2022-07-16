@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface.OnMultiChoiceClickListener
 import android.content.Intent
+import android.util.Log
 import android.view.*
 import android.widget.*
 import android.widget.RatingBar.OnRatingBarChangeListener
@@ -119,6 +120,11 @@ class ClickDealActivity(override val layoutId: Int = R.layout.activity_deal) :
         button.setOnClickListener { view: View? -> showToast("Lambda OnClick") }
     }
 
+    private fun initKotlinLambadaButton() {
+       mBinding.kotlinOnClick.setOnClickListener {
+           showToast("kotlin Lambda OnClick")
+       }
+    }
     /**
      * 普通 setOnClickListener
      */
@@ -182,6 +188,7 @@ class ClickDealActivity(override val layoutId: Int = R.layout.activity_deal) :
         mBinding.handlers = this
         initButton()
         initLambdaButton()
+        initKotlinLambadaButton()
         initShowDialogButton()
         initShowMultiChoiceDialogButton()
         initCheckBox()
