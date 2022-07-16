@@ -3,7 +3,7 @@ package com.peakmain.analytics.plugin.utils
 import org.objectweb.asm.Opcodes
 
 class MethodFieldUtils {
-    public static final String PLUGIN_VERSION = "1.1.1"
+    public static final String PLUGIN_VERSION = "1.1.2"
     enum StatusEnum {
         METHOD_STATE_NORMAL(0),
         METHOD_STATE_REPLACE(1)
