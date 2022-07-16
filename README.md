@@ -12,7 +12,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "io.github.peakmain:plugin:1.1.1"
+    classpath "io.github.peakmain:plugin:1.1.2"
   }
 }
 
