@@ -19,13 +19,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.peakmain.sdk.SensorsDataAPI;
+import com.peakmain.sdk.annotation.DataFragmentTitle;
 import com.peakmain.sdk.constants.SensorsDataConstants;
-import com.peakmain.sdk.utils.PreferencesUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
+import java.util.Locale;
 
 /**
  * author ：Peakmain
@@ -77,11 +79,55 @@ public class SensorsDataManager {
             String activityPage = activity.getClass().getCanonicalName();
             jsonObject.putOpt(SensorsDataConstants.ELEMENT_PATH, activityPage);
             jsonObject.putOpt(SensorsDataConstants.PAGE_PATH, activityPage);
-            jsonObject.putOpt(SensorsDataConstants.ACTIVITY_TITLE, title);
+            jsonObject.putOpt(SensorsDataConstants.PAGE_TITLE, title);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject;
+    }
+
+    public static void getScreenNameAndTitleFromFragment(JSONObject properties, Object fragment, Activity activity) {
+        try {
+            String screenName = null;
+            String title = "";
+            if (fragment.getClass().isAnnotationPresent(DataFragmentTitle.class)) {
+                DataFragmentTitle sensorsDataFragmentTitle = fragment.getClass().getAnnotation(DataFragmentTitle.class);
+                if (sensorsDataFragmentTitle != null) {
+                    title = sensorsDataFragmentTitle.title();
+                }
+            }
+            boolean isTitleNull = TextUtils.isEmpty(title);
+            if (isTitleNull) {
+                if (activity == null) {
+                    activity = getActivityFromFragment(fragment);
+                }
+                if (activity != null) {
+                    title = getActivityTitle(activity);
+                    screenName = fragment.getClass().getCanonicalName();
+                    screenName = String.format(Locale.CHINA, "%s|%s", activity.getClass().getCanonicalName(), screenName);
+                }
+            }
+            if(!TextUtils.isEmpty(title)){
+                properties.put(SensorsDataConstants.TITLE,title);
+            }
+            if (TextUtils.isEmpty(screenName)) {
+                screenName = fragment.getClass().getCanonicalName();
+            }
+            properties.put(SensorsDataConstants.PAGE_PATH, screenName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Activity getActivityFromFragment(Object fragment) {
+        Activity activity = null;
+        try {
+            Method getActivityMethod = fragment.getClass().getMethod("getActivity");
+            activity = (Activity) getActivityMethod.invoke(fragment);
+        } catch (Exception e) {
+            //ignored
+        }
+        return activity;
     }
 
     /**
@@ -129,7 +175,7 @@ public class SensorsDataManager {
             if (activity == null) return;
             JSONObject properties = new JSONObject();
             properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
-            properties.put(SensorsDataConstants.ACTIVITY_TITLE, getActivityTitle(activity));
+            properties.put(SensorsDataConstants.PAGE_TITLE, getActivityTitle(activity));
             SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_SCREEN__EVENT_NAME, properties);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -146,7 +192,7 @@ public class SensorsDataManager {
             }
             JSONObject properties = new JSONObject();
             properties.put(SensorsDataConstants.ACTIVITY_NAME, activity.getClass().getCanonicalName());
-            properties.put(SensorsDataConstants.ACTIVITY_TITLE, getActivityTitle(activity));
+            properties.put(SensorsDataConstants.PAGE_TITLE, getActivityTitle(activity));
             SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_START_EVENT_NAME, properties);
         } catch (Exception e) {
             e.printStackTrace();
@@ -252,4 +298,5 @@ public class SensorsDataManager {
                     }
                 });
     }
+
 }

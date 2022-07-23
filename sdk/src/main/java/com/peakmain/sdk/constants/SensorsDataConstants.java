@@ -53,10 +53,12 @@ public class SensorsDataConstants {
     public static final String ELEMENT_TYPE = "element_type";
     public static final String ELEMENT_CONTENT = "element_content";
     public static final String ACTIVITY_NAME = "activity";
-    public static final String ACTIVITY_TITLE = "activity_title";
+    public static final String PAGE_TITLE = "page_title";
     public static final String ELEMENT_POSITION = "element_position";
     public static final String ELEMENT_PATH = "element_path";
     public static final String PAGE_PATH = "page_path";
+    public static final String TITLE = "title";
+
     public static final String REFER_PAGE_PATH = "referrer_page_path";
 
 
