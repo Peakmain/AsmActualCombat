@@ -285,7 +285,7 @@ public class SensorsDataAutoTrackHelper {
             Activity activity = SensorsDataUtils.getActivityFromContext(context);
             JSONObject properties = SensorsDataManager.buildPageInfo(activity);
             // 获取 view 所在的 fragment
-            Object fragment = AopUtils.getFragmentFromView(expandableListView);
+            Object fragment = AopUtils.getFragmentFromView(expandableListView,activity);
             if (childPosition != -1) {
                 properties.put(SensorsDataConstants.ELEMENT_POSITION, String.format(Locale.CHINA, "%d:%d", groupPosition, childPosition));
             } else {
@@ -338,7 +338,7 @@ public class SensorsDataAutoTrackHelper {
 
             Activity activity = SensorsDataUtils.getActivityFromContext(context);
             // 获取 view 所在的 fragments
-            Object fragment = AopUtils.getFragmentFromView(adapterView);
+            Object fragment = AopUtils.getFragmentFromView(adapterView,activity);
             JSONObject properties = SensorsDataManager.buildPageInfo(activity);
 
             String idString = SensorsDataUtils.getViewId(adapterView);
