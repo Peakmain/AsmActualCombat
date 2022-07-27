@@ -76,4 +76,8 @@ public class AopUtils {
         }
         return "";
     }
+
+    public static boolean isValid(int id) {
+        return id != -1 && (id & 0xff000000) != 0 && (id & 0x00ff0000) != 0;
+    }
 }

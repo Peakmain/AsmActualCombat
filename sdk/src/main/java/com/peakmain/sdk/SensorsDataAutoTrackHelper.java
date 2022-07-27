@@ -2,10 +2,10 @@ package com.peakmain.sdk;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +27,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.peakmain.sdk.constants.SensorsDataConstants;
 import com.peakmain.sdk.manager.SensorsDataManager;
 import com.peakmain.sdk.utils.AopUtils;
+import com.peakmain.sdk.utils.LogManager;
 import com.peakmain.sdk.utils.SensorsDataUtils;
 
 import org.json.JSONObject;
@@ -86,7 +87,7 @@ public class SensorsDataAutoTrackHelper {
     @Keep
     public static void trackViewOnClick(CompoundButton view, boolean isChecked) {
         try {
-            if (!clickEnable(view)) {
+            if (SensorsDataUtils.isDoubleClick(view)) {
                 return;
             }
             Context context = view.getContext();
@@ -274,7 +275,7 @@ public class SensorsDataAutoTrackHelper {
     public static void trackExpandableListViewChildOnClick(ExpandableListView expandableListView, View view,
                                                            int groupPosition, int childPosition) {
         try {
-            if (!clickEnable(view)) {
+            if (SensorsDataUtils.isDoubleClick(view)) {
                 return;
             }
             Context context = expandableListView.getContext();
@@ -327,7 +328,7 @@ public class SensorsDataAutoTrackHelper {
 
     @Keep
     public static void trackViewOnClick(android.widget.AdapterView adapterView, View view, int position) {
-        if (!clickEnable(view)) {
+        if (SensorsDataUtils.isDoubleClick(view)) {
             return;
         }
         try {
@@ -398,7 +399,7 @@ public class SensorsDataAutoTrackHelper {
      */
     @Keep
     public static boolean trackViewOnClick(View view) {
-        if (!clickEnable(view)) {
+        if (SensorsDataUtils.isDoubleClick(view)) {
             return false;
         }
         boolean isUserAgreement = true;
@@ -427,39 +428,7 @@ public class SensorsDataAutoTrackHelper {
     }
 
 
-    //防止多次点击事件
-    private static long getLastClickTime(View view) {
-        if (view.getTag(1638288000) != null) {
-            return (long) view.getTag(1638288000);
-        } else {
-            return -1;
-        }
-    }
 
-    private static void setLastClickTime(View view, long value) {
-        view.setTag(1638288000, value);
-    }
 
-    private static long getDelayTime(View view) {
-        if (view.getTag(1638288600) != null) {
-            return (long) view.getTag(1638288600);
-        } else {
-            return -1;
-        }
-    }
 
-    private static void setDelayTime(View view, long value) {
-        view.setTag(1638288600, value);
-    }
-
-    private static boolean clickEnable(View view) {
-        setDelayTime(view, 750);
-        boolean isClickEnable = false;
-        long currentTimeMillis = System.currentTimeMillis();
-        if (currentTimeMillis - getLastClickTime(view) >= getDelayTime(view)) {
-            isClickEnable = true;
-        }
-        setLastClickTime(view, currentTimeMillis);
-        return isClickEnable;
-    }
 }

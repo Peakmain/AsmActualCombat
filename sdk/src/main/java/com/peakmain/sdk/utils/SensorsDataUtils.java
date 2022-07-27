@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.ToggleButton;
 
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.peakmain.sdk.R;
 import com.peakmain.sdk.SensorsDataAPI;
 import com.peakmain.sdk.constants.SensorsDataConstants;
 
@@ -81,7 +83,8 @@ public class SensorsDataUtils {
         int[] size = DeviceUtils.getDeviceSize(context);
         deviceInfo.put("screen_width", size[0]);
         deviceInfo.put("screen_height", size[1]);
-
+        deviceInfo.put("app_id",SystemUtils.getProcessName(context));
+        deviceInfo.put("app_name",SystemUtils.getAppName(context));
         return Collections.unmodifiableMap(deviceInfo);
     }
 
@@ -95,7 +98,7 @@ public class SensorsDataUtils {
     public static String getViewId(View view) {
         String idString = null;
         try {
-            if (view.getId() != View.NO_ID) {
+            if (AopUtils.isValid(view.getId())) {
                 idString = view.getContext().getResources().getResourceEntryName(view.getId());
             }
         } catch (Exception e) {
@@ -369,5 +372,30 @@ public class SensorsDataUtils {
             e.printStackTrace();
             return "";
         }
+    }
+
+    /**
+     * 是否是连续点击
+     * @param view view
+     * @return Boolean
+     */
+    public static boolean isDoubleClick(View view) {
+        if(view==null){
+            return true;
+        }
+        try {
+            long currentOnClickTimestamp = SystemClock.elapsedRealtime();
+            String tag = (String) view.getTag(R.id.sensors_analytics_tag_view_onclick_timestamp);
+            if (!TextUtils.isEmpty(tag)) {
+                long lastOnClickTimestamp = Long.parseLong(tag);
+                if ((currentOnClickTimestamp - lastOnClickTimestamp) < 750) {
+                    return false;
+                }
+            }
+            view.setTag(R.id.sensors_analytics_tag_view_onclick_timestamp, String.valueOf(currentOnClickTimestamp));
+        } catch (Exception e) {
+            LogManager.printStackTrace(e);
+        }
+        return true;
     }
 }

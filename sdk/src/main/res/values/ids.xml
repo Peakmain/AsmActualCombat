@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="sensors_analytics_tag_view_fragment_name" type="id" />
+    <item name="sensors_analytics_tag_view_onclick_timestamp" type="id" />
 </resources>
