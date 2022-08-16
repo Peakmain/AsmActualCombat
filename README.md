@@ -68,3 +68,8 @@ monitorPlugin {
 - 我的Github:https://github.com/peakmain
 - 我的简书:https://www.jianshu.com/u/3ff32f5aea98
 - 我的掘金:https://juejin.cn/user/175532853176152
+
+#### Donations
+如果您觉得我的开源库帮您节省了大量的开发时间，请扫描下方的二维码随意打赏，您的支持将激励我不断前进
+![微信](https://user-images.githubusercontent.com/26482737/184805287-0561a7e2-da13-4ef4-b367-c5e8672c121d.jpg)
+![支付宝](https://user-images.githubusercontent.com/26482737/184805306-f44511a7-7660-4fe1-9f07-305005576c2c.jpg)
