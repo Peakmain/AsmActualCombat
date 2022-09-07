@@ -1,8 +1,10 @@
 # AsmActualCombat
 **使用文档链接:https://github.com/Peakmain/AsmActualCombat/wiki**
 
-#### How To
-##### 旧版本添加方式
+### How To
+
+#### 旧版本添加方式
+
 **ASM插件依赖**
 Add it in your root build.gradle at the end of repositories:
 ```
@@ -36,7 +38,8 @@ Add it in your root build.gradle at the end of repositories:
 	       implementation 'com.github.Peakmain:AsmActualCombat:1.1.3'
 	}
 ```
-##### 新版本添加方式
+#### 新版本添加方式
+
 **settings.gradle**
 ```
 pluginManagement {
@@ -55,7 +58,9 @@ dependencyResolutionManagement {
     }
 }
 ```
+
 **插件依赖**
+
 根目录下的build.gradle文件
 ```
 plugins {
@@ -64,12 +69,13 @@ plugins {
 }
 ```
 **sdk版本依赖**
+
 ```
 implementation 'com.github.Peakmain:AsmActualCombat:1.1.3'
 ```
 
-#### 功能介绍
-##### ASM全埋点功能
+### 功能介绍
+#### ASM全埋点功能
 - AppStart事件：应用程序启动启动事件。
 - AppEnd事件:应用程序退出事件。
 - AppViewScreen事件:应用程序页面浏览事件
@@ -91,18 +97,18 @@ monitorPlugin {
 
 ```
 
-##### 辅助功能
+#### 辅助功能
 - 可获取方法的耗时时间
 - 打印方法的参数和返回值
 - 打印方法的Frame
 - 可动态配置是否开启插件，默认是开启
 
-#### 关于我
+### 关于我
 - 我的Github:https://github.com/peakmain
 - 我的简书:https://www.jianshu.com/u/3ff32f5aea98
 - 我的掘金:https://juejin.cn/user/175532853176152
 
-#### Donations
+### Donations
 如果您觉得我的开源库帮您节省了大量的开发时间，请扫描下方的二维码随意打赏，您的支持将激励我不断前进
 ![微信](https://user-images.githubusercontent.com/26482737/184805287-0561a7e2-da13-4ef4-b367-c5e8672c121d.jpg)
 ![支付宝](https://user-images.githubusercontent.com/26482737/184805306-f44511a7-7660-4fe1-9f07-305005576c2c.jpg)
