@@ -2,6 +2,7 @@
 **使用文档链接:https://github.com/Peakmain/AsmActualCombat/wiki**
 
 #### How To
+##### 旧版本添加方式
 **ASM插件依赖**
 Add it in your root build.gradle at the end of repositories:
 ```
@@ -32,9 +33,41 @@ Add it in your root build.gradle at the end of repositories:
 - Step 2. Add the dependency
 ```
 	dependencies {
-	       implementation 'com.github.Peakmain:AsmActualCombat:1.1.2'
+	       implementation 'com.github.Peakmain:AsmActualCombat:1.1.3'
 	}
 ```
+##### 新版本添加方式
+**settings.gradle**
+```
+pluginManagement {
+    repositories {
+        //插件依赖
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        //sdk仓库
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+**插件依赖**
+根目录下的build.gradle文件
+```
+plugins {
+    //插件依赖和版本
+    id "io.github.peakmain" version "1.1.2" apply false
+}
+```
+**sdk版本依赖**
+```
+implementation 'com.github.Peakmain:AsmActualCombat:1.1.3'
+```
+
 #### 功能介绍
 ##### ASM全埋点功能
 - AppStart事件：应用程序启动启动事件。
