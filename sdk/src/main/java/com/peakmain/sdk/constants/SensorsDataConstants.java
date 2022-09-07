@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
  * describe：
  */
 public class SensorsDataConstants {
-    public static final String SDK_VERSION = "1.1.2";
+    public static final String SDK_VERSION = "1.1.3";
     public static final String APP_START_EVENT_NAME = "AppStart";
     public static final String APP_END__EVENT_NAME = "AppEnd";
     public static final String APP_VIEW_SCREEN__EVENT_NAME = "AppViewScreen";
