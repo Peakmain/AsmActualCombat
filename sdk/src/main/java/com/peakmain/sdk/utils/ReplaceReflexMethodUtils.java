@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 public class ReplaceReflexMethodUtils {
 
     public static Method a(Class clazz, String name, Class<?>... var2)  {
-        if(name.equals("getImei")){
+        if("getImei".equals(name)){
             Log.e("TAG","getImei");
             return null;
         }
@@ -29,7 +29,7 @@ public class ReplaceReflexMethodUtils {
         return var0.length() < 2 ? "" : p.a(var0.substring(1));
     }
     public static Object a(String var0, String name, Object[] var2, Class<?>[] var3) throws Exception {
-        if(name.equals("getImei")){
+        if("getImei".equals(name)){
             Log.e("TAG","getImei");
             return null;
         }

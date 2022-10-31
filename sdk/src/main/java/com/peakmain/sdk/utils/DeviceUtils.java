@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -11,10 +12,9 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
+import android.view.WindowMetrics;
 
-import com.peakmain.sdk.BuildConfig;
-import com.peakmain.sdk.SensorsDataAPI;
-import com.peakmain.sdk.constants.SensorsDataConstants;
+import androidx.annotation.RequiresApi;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,6 +44,7 @@ public class DeviceUtils {
         }
         return "UNKNOWN";
     }
+
     public static String getBrand() {
         try {
             String brand = Build.BRAND;
@@ -60,6 +61,25 @@ public class DeviceUtils {
         return TextUtils.isEmpty(Build.MODEL) ? "UNKNOWN" : Build.MODEL.trim();
     }
 
+
+    private static Display getDisplay(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return context.getDisplay();
+        } else {
+            WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            return windowManager.getDefaultDisplay();
+        }
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private static Rect getRealSize(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowMetrics currentWindowMetrics = windowManager.getCurrentWindowMetrics();
+        return currentWindowMetrics.getBounds();
+    }
+
     /**
      * 获取屏幕的宽高信息
      *
@@ -70,26 +90,21 @@ public class DeviceUtils {
         int[] size = new int[2];
         try {
             int screenWidth, screenHeight;
-            WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            Display display = windowManager.getDefaultDisplay();
+            Display display = getDisplay(context);
             int rotation = display.getRotation();
-            Point point = new Point();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Rect bound = getRealSize(context);
+                screenHeight = bound.height();
+                screenWidth = bound.width();
+            }else{
+                Point point = new Point();
                 display.getRealSize(point);
                 screenWidth = point.x;
                 screenHeight = point.y;
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                display.getSize(point);
-                screenWidth = point.x;
-                screenHeight = point.y;
-            } else {
-                screenWidth = display.getWidth();
-                screenHeight = display.getHeight();
             }
             size[0] = getNaturalWidth(rotation, screenWidth, screenHeight);
             size[1] = getNaturalHeight(rotation, screenWidth, screenHeight);
         } catch (Exception e) {
-            //context.getResources().getDisplayMetrics()这种方式获取屏幕高度不包括底部虚拟导航栏
             if (context.getResources() != null) {
                 final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
                 size[0] = displayMetrics.widthPixels;
@@ -104,8 +119,8 @@ public class DeviceUtils {
      * 根据设备 rotation，判断屏幕方向，获取自然方向宽
      *
      * @param rotation 设备方向
-     * @param width 逻辑宽
-     * @param height 逻辑高
+     * @param width    逻辑宽
+     * @param height   逻辑高
      * @return 自然尺寸
      */
     private static int getNaturalWidth(int rotation, int width, int height) {
@@ -117,8 +132,8 @@ public class DeviceUtils {
      * 根据设备 rotation，判断屏幕方向，获取自然方向高
      *
      * @param rotation 设备方向
-     * @param width 逻辑宽
-     * @param height 逻辑高
+     * @param width    逻辑宽
+     * @param height   逻辑高
      * @return 自然尺寸
      */
     private static int getNaturalHeight(int rotation, int width, int height) {
@@ -208,7 +223,7 @@ public class DeviceUtils {
                 try {
                     ir.close();
                 } catch (IOException e) {
-                   Log.e("TAG", e.getMessage());
+                    Log.e("TAG", e.getMessage());
                 }
             }
         }
@@ -217,6 +232,7 @@ public class DeviceUtils {
 
     /**
      * 获取应用名称
+     *
      * @param context context
      */
     public static CharSequence getAppName(Context context) {

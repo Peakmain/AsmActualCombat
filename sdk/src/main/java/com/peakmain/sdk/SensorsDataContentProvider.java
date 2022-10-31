@@ -28,7 +28,7 @@ public class SensorsDataContentProvider extends ContentProvider {
 
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor mEditor;
-    private static UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private ContentResolver mContentResolver;
 
     @Override

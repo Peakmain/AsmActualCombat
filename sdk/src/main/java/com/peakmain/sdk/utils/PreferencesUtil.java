@@ -23,7 +23,6 @@ import java.io.Serializable;
 public class PreferencesUtil {
     private SharedPreferences preferences = null;
     private SharedPreferences.Editor editor = null;
-    private Object object;
     private static volatile PreferencesUtil preferencesUtil;
 
     public static PreferencesUtil getInstance() {
@@ -180,7 +179,7 @@ public class PreferencesUtil {
         ByteArrayInputStream bais = new ByteArrayInputStream(base64);
         try {
             ObjectInputStream bis = new ObjectInputStream(bais);
-            object =  bis.readObject();
+            Object object = bis.readObject();
             Log.d(this.getClass().getSimpleName(), "Get object success");
             return object;
         } catch (Exception e) {

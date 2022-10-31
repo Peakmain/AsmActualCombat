@@ -13,7 +13,7 @@ import java.lang.ref.WeakReference;
  * describe：
  */
 public class FragmentCacheUtil {
-    private static LruCache<String, WeakReference<Object>> sFragmentLruCache = new LruCache<>(Integer.MAX_VALUE);
+    private static final LruCache<String, WeakReference<Object>> sFragmentLruCache = new LruCache<>(Integer.MAX_VALUE);
     public static void setFragmentToCache(String fragmentName, Object object) {
         if (!TextUtils.isEmpty(fragmentName) && null != object) {
             sFragmentLruCache.put(fragmentName, new WeakReference<>(object));

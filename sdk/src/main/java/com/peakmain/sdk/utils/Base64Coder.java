@@ -1,6 +1,6 @@
 package com.peakmain.sdk.utils;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * author ：Peakmain
@@ -14,9 +14,9 @@ public class Base64Coder {
     public static final String CHARSET_UTF8 = "UTF-8";
 
     // Mapping table from 6-bit nibbles to Base64 characters.
-    private static char[] map1 = new char[64];
+    private static final char[] map1 = new char[64];
     // Mapping table from Base64 characters to 6-bit nibbles.
-    private static byte[] map2 = new byte[128];
+    private static final byte[] map2 = new byte[128];
 
     static {
         int i = 0;
@@ -45,12 +45,7 @@ public class Base64Coder {
      * @return A String with the Base64 encoded data.
      */
     public static String encodeString(String s) {
-        try {
-            return new String(encode(s.getBytes(CHARSET_UTF8)));
-        } catch (UnsupportedEncodingException e) {
-            LogManager.printStackTrace(e);
-        }
-        return "";
+        return new String(encode(s.getBytes(StandardCharsets.UTF_8)));
     }
 
     /**

@@ -37,7 +37,7 @@ public class SensorsDataAPI {
     ListenerInfo mListenerInfo;
 
 
-    private ISensorsDataInstance iSensorsDataInstance;
+    private final ISensorsDataInstance iSensorsDataInstance;
 
     ListenerInfo getListenerInfo() {
         if (mListenerInfo != null) {

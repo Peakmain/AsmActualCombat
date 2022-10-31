@@ -17,10 +17,10 @@ public class SensorsDatabaseHelper {
     public static final String APP_STARTED = "$app_started";
     public static final String APP_END_STATE = "$app_end_state";
     public static final String APP_PAUSED_TIME = "$app_paused_time";
-    private ContentResolver mContentResolver;
-    private Uri mAppStart;
-    private Uri mAppEndState;
-    private Uri mAppPausedTime;
+    private final ContentResolver mContentResolver;
+    private final Uri mAppStart;
+    private final Uri mAppEndState;
+    private final Uri mAppPausedTime;
 
     public SensorsDatabaseHelper(Context context, String packageName) {
         mContentResolver = context.getContentResolver();
