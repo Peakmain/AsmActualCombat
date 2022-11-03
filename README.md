@@ -93,6 +93,7 @@ monitorPlugin {
             "com.peakmain.plugin"
     ]
     methodStatus = 1//1代表方法体替换，其他都是正常情况
+    enableLog=true//是否开启日志打印，默认不打印
 }
 
 ```
