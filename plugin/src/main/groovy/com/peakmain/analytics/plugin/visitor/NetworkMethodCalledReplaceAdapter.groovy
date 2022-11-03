@@ -47,11 +47,13 @@ class NetworkMethodCalledReplaceAdapter extends MonitorDefalutMethodAdapter {
     void visitMethodInsn(int opcodeAndSource, String owner, String name, String descriptor, boolean isInterface) {
         HashMap<String, MethodCalledBean> methodReplaceBeans = NetworkHookMethodConfig.methodCalledBeans
         String desc = owner + name + descriptor
-        if(methodReplaceBeans.containsKey(desc)){
-            println("拦截网络请求的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
+        if (methodReplaceBeans.containsKey(desc)) {
+            if (monitorConfig.enableLog) {
+                println("拦截网络请求的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
+            }
             MethodCalledBean bean = methodReplaceBeans.get(desc)
             super.visitMethodInsn(bean.newOpcode, bean.newMethodOwner, bean.newMethodName, bean.newMethodDescriptor.get(descriptor), false)
-        }else{
+        } else {
             super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface)
         }
     }
