@@ -389,13 +389,13 @@ public class SensorsDataUtils {
             if (!TextUtils.isEmpty(tag)) {
                 long lastOnClickTimestamp = Long.parseLong(tag);
                 if ((currentOnClickTimestamp - lastOnClickTimestamp) < 750) {
-                    return false;
+                    return true;
                 }
             }
             view.setTag(R.id.sensors_analytics_tag_view_onclick_timestamp, String.valueOf(currentOnClickTimestamp));
         } catch (Exception e) {
             LogManager.printStackTrace(e);
         }
-        return true;
+        return false;
     }
 }
