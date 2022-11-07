@@ -11,100 +11,30 @@
       <artifactId>asm</artifactId>
       <version>9.2</version>
       <scope>runtime</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>MobTools</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>MobCommons</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>MobGuard</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm-commons</artifactId>
       <version>9.2</version>
       <scope>runtime</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>MobTools</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>MobCommons</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>MobGuard</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm-analysis</artifactId>
       <version>9.2</version>
       <scope>runtime</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>MobTools</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>MobCommons</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>MobGuard</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm-util</artifactId>
       <version>9.2</version>
       <scope>runtime</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>MobTools</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>MobCommons</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>MobGuard</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm-tree</artifactId>
       <version>9.2</version>
       <scope>runtime</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>MobTools</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>MobCommons</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>MobGuard</artifactId>
-          <groupId>com.mob</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 </project>
