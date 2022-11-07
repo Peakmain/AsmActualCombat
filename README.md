@@ -35,7 +35,7 @@ Add it in your root build.gradle at the end of repositories:
 - Step 2. Add the dependency
 ```
 	dependencies {
-	       implementation 'com.github.Peakmain:AsmActualCombat:1.1.3'
+	       implementation 'com.github.Peakmain:AsmActualCombat:1.1.4'
 	}
 ```
 #### 新版本添加方式
