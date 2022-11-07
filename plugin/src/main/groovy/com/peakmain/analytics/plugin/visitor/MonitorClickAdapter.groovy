@@ -124,13 +124,9 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
                 methodVisitor.visitVarInsn(ALOAD, 1)
                 methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, "trackViewOnClick", "(Landroid/view/View;)Z", false)
                 methodVisitor.visitVarInsn(ISTORE, 2)
-                Label label1 = new Label()
-                methodVisitor.visitLabel(label1)
                 methodVisitor.visitVarInsn(ILOAD, 2)
                 Label label2 = new Label()
                 methodVisitor.visitJumpInsn(IFNE, label2)
-                Label l3 = new Label()
-                methodVisitor.visitLabel(l3)
                 methodVisitor.visitInsn(RETURN)
                 methodVisitor.visitLabel(label2)
                 Object[] obj = new Object[1]
