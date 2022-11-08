@@ -42,14 +42,14 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
         HashMap<String, MethodCalledBean> methodCalledBeans = MonitorHookMethodConfig.methodCalledBeans
         if (!monitorConfig.whiteList.contains(mClassName) && !monitorConfig.exceptSet.contains(mClassName) && methodCalledBeans.containsKey(owner + name + descriptor)) {
             println("调用方法的class:" + mClassName + ",方法的名字:" + name + ",方法的描述符：" + descriptor)
-            clearMethodBody(mv, mClassName, access, name, descriptor,mDesc)
+            clearMethodBody(mv, mClassName, access, name, descriptor, mDesc)
             return
         }
         super.visitMethodInsn(opcodeAndSource, owner, name, descriptor, isInterface);
     }
 
 
-    static void clearMethodBody(MethodVisitor mv, String className, int access, String name, String descriptor,String methodDescriptor) {
+    static void clearMethodBody(MethodVisitor mv, String className, int access, String name, String descriptor, String methodDescriptor) {
         Type type = Type.getType(descriptor)
         Type methodType = Type.getType(methodDescriptor)
         Type methodReturnType = methodType.getReturnType()
@@ -63,9 +63,18 @@ class MonitorMethodCalledClearAdapter extends MonitorDefalutMethodAdapter {
         mv.visitCode()
         if (methodReturnType.getSort() == Type.VOID) {
             mv.visitInsn(RETURN)
-        } else if (methodReturnType.getSort() >= Type.BOOLEAN && methodReturnType.getSort() <= Type.DOUBLE) {
-            mv.visitInsn(methodReturnType.getOpcode(ICONST_1))
-            mv.visitInsn(methodReturnType.getOpcode(IRETURN))
+        } else if (methodReturnType.getSort() >= Type.BOOLEAN && methodReturnType.getSort() <= Type.INT) {
+            mv.visitInsn(ICONST_1)
+            mv.visitInsn(IRETURN)
+        } else if (returnType.getSort() == Type.LONG) {
+            mv.visitInsn(LCONST_0)
+            mv.visitInsn(LRETURN)
+        } else if (returnType.getSort() == Type.FLOAT) {
+            mv.visitInsn(FCONST_0)
+            mv.visitInsn(FRETURN)
+        } else if (returnType.getSort() == Type.DOUBLE) {
+            mv.visitInsn(DCONST_0)
+            mv.visitInsn(DRETURN)
         } else if (methodReturnType.getInternalName() == "java/lang/String") {
             mv.visitLdcInsn("")
             mv.visitInsn(ARETURN)
