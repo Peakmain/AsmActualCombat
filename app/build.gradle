@@ -51,8 +51,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation project(path: ':sdk')
-    implementation 'com.github.Peakmain:BasicLibrary:1.1.1'
-    implementation 'com.github.Peakmain:BasicUI:1.1.14'
+    implementation 'com.github.Peakmain:BasicLibrary:+'
+    implementation 'com.github.Peakmain:BasicUI:+'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor "com.android.databinding:compiler:3.1.4"
     implementation(rootProject.ext.dependencies.jpush)

@@ -14,115 +14,145 @@
         tools:context="com.peakmain.asmactualcombat.activity.ClickDealActivity">
 
         <LinearLayout
-            android:id="@+id/rootView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_50"
+                android:layout_gravity="center_vertical"
+                android:background="@color/ui_color_2F73F6"
+                android:gravity="center_vertical"
+                tools:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/all_title_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/app_name"
+                    android:textColor="@color/ui_color_272A2B"
+                    android:textSize="@dimen/font_size_16"
+                    android:textStyle="bold" />
 
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button"
+            </androidx.appcompat.widget.Toolbar>
+
+            <LinearLayout
+                android:id="@+id/rootView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="普通 setOnClickListener"
-                android:textAllCaps="false" />
+                android:orientation="vertical"
+                android:padding="16dp">
 
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/xmlOnClick"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="xmlOnClick"
-                android:text="android:onClick 绑定 OnClickListener"
-                android:textAllCaps="false" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="普通 setOnClickListener"
+                    android:textAllCaps="false" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/kotlinOnClick"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="xmlOnClick"
-                android:text="kotlin实现 OnClickListener"
-                android:textAllCaps="false" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/dataBinding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="@{handlers::dataBindingOnClick}"
-                android:text="DataBinding 绑定 OnClickListener"
-                android:textAllCaps="false" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/xmlOnClick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="xmlOnClick"
+                    android:text="android:onClick 绑定 OnClickListener"
+                    android:textAllCaps="false" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/lambdaButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Lambda 语法 setOnClickListener"
-                android:textAllCaps="false" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/kotlinOnClick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="xmlOnClick"
+                    android:text="kotlin实现 OnClickListener"
+                    android:textAllCaps="false" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/showDialogButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="点击出现 Dialog"
-                android:textAllCaps="false" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/dataBinding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{handlers::dataBindingOnClick}"
+                    android:text="DataBinding 绑定 OnClickListener"
+                    android:textAllCaps="false" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/showMultiChoiceDialogButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="点击出现 MultiChoice Dialog"
-                android:textAllCaps="false" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/lambdaButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lambda 语法 setOnClickListener"
+                    android:textAllCaps="false" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/tabHostButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TabHost Test"
-                android:textAllCaps="false" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/showDialogButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="点击出现 Dialog"
+                    android:textAllCaps="false" />
 
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="插件" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/showMultiChoiceDialogButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="点击出现 MultiChoice Dialog"
+                    android:textAllCaps="false" />
 
-            <androidx.appcompat.widget.AppCompatRatingBar
-                android:id="@+id/ratingBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/tabHostButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TabHost Test"
+                    android:textAllCaps="false" />
 
-            <androidx.appcompat.widget.AppCompatSeekBar
-                android:id="@+id/seekBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp" />
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="插件" />
 
-            <fragment
-                android:id="@+id/testFragment"
-                android:name="com.peakmain.asmactualcombat.fragment.TestClickFragment"
-                android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/ratingBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <androidx.appcompat.widget.AppCompatSeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/adapterViewTest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="AdapterView Test"
-                android:textAllCaps="false" />
+                <fragment
+                    android:id="@+id/testFragment"
+                    android:name="com.peakmain.asmactualcombat.fragment.TestClickFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/expandableListViewTest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ExpandableListView Test"
-                android:textAllCaps="false" />
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/adapterViewTest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AdapterView Test"
+                    android:textAllCaps="false" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/expandableListViewTest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ExpandableListView Test"
+                    android:textAllCaps="false" />
+            </LinearLayout>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

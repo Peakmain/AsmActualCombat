@@ -183,9 +183,17 @@ class ClickDealActivity(override val layoutId: Int = R.layout.activity_deal) :
         val dialog = builder.create()
         dialog.show()
     }
-
+    private fun initToolBar() {
+        mBinding.toolBar.apply {
+            setNavigationIcon(R.drawable.ui_ic_left_back)
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
+    }
     override fun initView() {
         mBinding.handlers = this
+        initToolBar()
         initButton()
         initLambdaButton()
         initKotlinLambadaButton()
@@ -199,4 +207,6 @@ class ClickDealActivity(override val layoutId: Int = R.layout.activity_deal) :
         initExpandableListViewTest()
         initTabHostButton()
     }
+
+
 }
