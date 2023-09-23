@@ -426,7 +426,34 @@ public class SensorsDataAutoTrackHelper {
         }
         return true;
     }
-
+    @Keep
+    public static void trackViewOnClickLambda(View view) {
+        if (SensorsDataUtils.isDoubleClick(view)) {
+            return;
+        }
+        boolean isUserAgreement = true;
+        try {
+            SensorsDataAPI.OnUserAgreementListener mOnUserAgreement = SensorsDataAPI.getInstance().getListenerInfo().mOnUserAgreement;
+            if (mOnUserAgreement != null) {
+                isUserAgreement = mOnUserAgreement.onUserAgreement();
+            }
+            if (!isUserAgreement) {
+                return;
+            }
+            Activity activity = SensorsDataUtils.getActivityFromView(view);
+            Object fragment = AopUtils.getFragmentFromView(view,activity);
+            JSONObject jsonObject = SensorsDataManager.buildPageInfo(activity);
+            if (fragment != null) {
+                SensorsDataManager.getScreenNameAndTitleFromFragment(jsonObject, fragment, activity);
+            }
+            jsonObject.put(SensorsDataConstants.ELEMENT_TYPE, SensorsDataUtils.getElementType(view));
+            jsonObject.put(SensorsDataConstants.ELEMENT_ID, SensorsDataUtils.getViewId(view));
+            jsonObject.put(SensorsDataConstants.ELEMENT_CONTENT, SensorsDataUtils.getElementContent(view));
+            SensorsDataAPI.getInstance().track(SensorsDataConstants.APP_VIEW_CLICK__EVENT_NAME, jsonObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

@@ -13,8 +13,8 @@ class PeakmainHookConfig {
                 'onClick',
                 '(Landroid/view/View;)V',
                 'Landroid/view/View$OnClickListener;',
-                'trackViewOnClick',
-                '(Landroid/view/View;)Z',
+                'trackViewOnClickLambda',
+                '(Landroid/view/View;)V',
                 1, 1,
                 [Opcodes.ALOAD])
         LAMBDA_METHODS.put(onClick.parent + onClick.name + onClick.desc, onClick)
