@@ -65,7 +65,7 @@ dependencyResolutionManagement {
 ```
 plugins {
     //插件依赖和版本
-    id "io.github.peakmain" version "1.1.2" apply false
+    id "io.github.peakmain" version "1.1.3" apply false
 }
 ```
 **sdk版本依赖**
