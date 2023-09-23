@@ -71,7 +71,7 @@ plugins {
 **sdk版本依赖**
 
 ```
-implementation 'com.github.Peakmain:AsmActualCombat:1.1.4'
+implementation 'com.github.Peakmain:AsmActualCombat:1.1.5'
 ```
 
 ### 功能介绍
