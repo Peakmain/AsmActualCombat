@@ -22,7 +22,7 @@ class PeakmainHookConfig {
                 'onCheckedChanged',
                 '(Landroid/widget/CompoundButton;Z)V',
                 'Landroid/widget/CompoundButton$OnCheckedChangeListener;',
-                'trackViewOnClick',
+                'trackViewOnClickLambda',
                 '(Landroid/view/View;)V',
                 1, 1,
                 [Opcodes.ALOAD])
@@ -32,7 +32,7 @@ class PeakmainHookConfig {
                 'onRatingChanged',
                 '(Landroid/widget/RatingBar;FZ)V',
                 'Landroid/widget/RatingBar$OnRatingBarChangeListener;',
-                'trackViewOnClick',
+                'trackViewOnClickLambda',
                 '(Landroid/view/View;)V',
                 1, 1,
                 [Opcodes.ALOAD])
@@ -43,7 +43,7 @@ class PeakmainHookConfig {
                 'onStopTrackingTouch',
                 '(Landroid/widget/SeekBar;)V',
                 'Landroid/widget/SeekBar$OnSeekBarChangeListener;',
-                'trackViewOnClick',
+                'trackViewOnClickLambda',
                 '(Landroid/view/View;)V',
                 1, 1,
                 [Opcodes.ALOAD])
