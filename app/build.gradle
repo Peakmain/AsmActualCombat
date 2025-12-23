@@ -5,6 +5,8 @@ plugins {
 }
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
+    namespace 'com.peakmain.asmactualcombat'
+
 
     defaultConfig {
         applicationId applicationId
@@ -37,9 +39,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        dataBinding {
-            enabled true
-        }
+        dataBinding = true
     }
 }
 
@@ -64,6 +64,7 @@ monitorPlugin {
             "com.peakmain.plugin"
     ]
     methodStatus = 1
+    status = 1
     disableStackMapFrame = false
     interceptPackageName = "com.peakmain"
 }

@@ -12,7 +12,7 @@ import android.telephony.SubscriptionInfo;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import androidx.multidex.MultiDex;
+
 
 import com.peakmain.sdk.BuildConfig;
 import com.peakmain.sdk.SensorsDataAPI;
@@ -36,7 +36,6 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(this);
     }
 
     @Override

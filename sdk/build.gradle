@@ -4,7 +4,7 @@ plugins {
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
-
+    namespace 'com.peakmain.sdk'
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion

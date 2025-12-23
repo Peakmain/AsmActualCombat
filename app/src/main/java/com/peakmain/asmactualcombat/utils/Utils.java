@@ -191,6 +191,7 @@ public class Utils {
     }
 
     public static String getAndroidId(Context context) {
+        Log.e("TAG","getAndroidId");
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 }

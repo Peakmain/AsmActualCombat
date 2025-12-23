@@ -185,7 +185,7 @@ class ClickDealActivity(override val layoutId: Int = R.layout.activity_deal) :
     }
     private fun initToolBar() {
         mBinding.toolBar.apply {
-            setNavigationIcon(R.drawable.ui_ic_left_back)
+            setNavigationIcon(com.peakmain.ui.R.drawable.ui_ic_left_back)
             setNavigationOnClickListener {
                 finish()
             }

@@ -5,7 +5,6 @@ import com.peakmain.analytics.plugin.ext.PeakmainHookConfig
 import com.peakmain.analytics.plugin.entity.PeakmainMethodCell
 import com.peakmain.analytics.plugin.utils.OpcodesUtils
 import com.peakmain.analytics.plugin.visitor.base.MonitorDefalutMethodAdapter
-import org.apache.http.util.TextUtils
 import org.objectweb.asm.AnnotationVisitor
 import org.objectweb.asm.Handle
 import org.objectweb.asm.Label

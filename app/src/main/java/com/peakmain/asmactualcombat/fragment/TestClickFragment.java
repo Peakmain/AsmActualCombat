@@ -28,7 +28,7 @@ public class TestClickFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test, container, false);
         AppCompatButton button = view.findViewById(R.id.button);
-        button.setTag(R.id.sensors_analytics_tag_view_fragment_name,TestClickFragment.class.getCanonicalName());
+        button.setTag(com.peakmain.sdk.R.id.sensors_analytics_tag_view_fragment_name,TestClickFragment.class.getCanonicalName());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

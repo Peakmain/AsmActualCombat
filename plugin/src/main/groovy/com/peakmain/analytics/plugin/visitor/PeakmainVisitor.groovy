@@ -56,11 +56,11 @@ class PeakmainVisitor extends ClassVisitor {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions)
         methodVisitor = new MonitorClickAdapter(methodVisitor, access, name, descriptor, mMethodCells, mInterfaces, mMonitorConfig, mClassName)
         methodVisitor = new MonitorPrintParametersReturnValueAdapter(methodVisitor, access, name, descriptor, mClassName, classVisitor)
-        if (mMonitorConfig.getStatusEnum() == MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE) {
+        if (mMonitorConfig.getStatus() == MethodFieldUtils.METHOD_STATE_REPLACE) {
             methodVisitor = new MonitorMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor, mClassName, mMonitorConfig)
         }
         if (mMonitorConfig.isInterceptNetworks) {
-            methodVisitor = new NetworkMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor,mClassName,mMonitorConfig)
+            methodVisitor = new NetworkMethodCalledReplaceAdapter(methodVisitor, access, name, descriptor, classVisitor, mClassName, mMonitorConfig)
         }
         if (!mMonitorConfig.disableStackMapFrame)
             methodVisitor = new MonitorMethodStackMapFrameAdapter(mClassName, access, name, descriptor, methodVisitor)

@@ -2,8 +2,6 @@ package com.peakmain.analytics.plugin.transform
 
 import com.peakmain.analytics.plugin.ext.MonitorConfig
 import com.peakmain.analytics.plugin.visitor.PeakmainVisitor
-import org.apache.commons.codec.digest.DigestUtils
-import org.apache.commons.compress.utils.IOUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 
@@ -69,85 +67,12 @@ class MonitorAnalyticsTransform {
                 className.contains('BuildConfig.class')
     }
 
-    static File modifyClassFile(File dir, File classFile, File tempDir, MonitorConfig monitorConfig) {
-        File modified = null
-        try {
-            String className = path2ClassName(classFile.absolutePath.replace(dir.absolutePath + File.separator, ""))
-            byte[] sourceClassBytes = IOUtils.toByteArray(new FileInputStream(classFile))
-            byte[] modifiedClassBytes = modifyClass(sourceClassBytes, monitorConfig)
-            if (modifiedClassBytes) {
-                modified = new File(tempDir, className.replace('.', '') + '.class')
-                if (modified.exists()) {
-                    modified.delete()
-                }
-                modified.createNewFile()
-                new FileOutputStream(modified).write(modifiedClassBytes)
-            }
-        } catch (Exception e) {
-            e.printStackTrace()
-            modified = classFile
-        }
-        return modified
-    }
-
     private static byte[] modifyClass(byte[] srcClass, MonitorConfig monitorConfig) throws IOException {
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS)
         PeakmainVisitor classVisitor = new PeakmainVisitor(classWriter, monitorConfig)
         ClassReader cr = new ClassReader(srcClass)
         cr.accept(classVisitor, ClassReader.SKIP_FRAMES)
         return classWriter.toByteArray()
-    }
-
-    static File modifyJar(File jarFile, File tempDir, boolean nameHex, MonitorConfig monitorConfig) {
-        /**
-         * 读取原 jar
-         */
-        def file = new JarFile(jarFile, false)
-
-        /**
-         * 设置输出到的 jar
-         */
-        def hexName = ""
-        if (nameHex) {
-            hexName = DigestUtils.md5Hex(jarFile.absolutePath).substring(0, 8)
-        }
-        def outputJar = new File(tempDir, hexName + jarFile.name)
-        JarOutputStream jarOutputStream = new JarOutputStream(new FileOutputStream(outputJar))
-        Enumeration enumeration = file.entries()
-        while (enumeration.hasMoreElements()) {
-            JarEntry jarEntry = (JarEntry) enumeration.nextElement()
-            InputStream inputStream
-            try {
-                inputStream = file.getInputStream(jarEntry)
-            } catch (Exception e) {
-                return null
-            }
-            String entryName = jarEntry.getName()
-            if (entryName.endsWith(".DSA") || entryName.endsWith(".SF")) {
-                //ignore
-            } else {
-                String className
-                JarEntry jarEntry2 = new JarEntry(entryName)
-                jarOutputStream.putNextEntry(jarEntry2)
-
-                byte[] modifiedClassBytes = null
-                byte[] sourceClassBytes = IOUtils.toByteArray(inputStream)
-                if (entryName.endsWith(".class")) {
-                    className = entryName.replace(Matcher.quoteReplacement(File.separator), ".").replace(".class", "")
-                    if (isShouldModify(className)) {
-                        modifiedClassBytes = modifyClass(sourceClassBytes, monitorConfig)
-                    }
-                }
-                if (modifiedClassBytes == null) {
-                    modifiedClassBytes = sourceClassBytes
-                }
-                jarOutputStream.write(modifiedClassBytes)
-                jarOutputStream.closeEntry()
-            }
-        }
-        jarOutputStream.close()
-        file.close()
-        return outputJar
     }
 
     static String path2ClassName(String pathName) {

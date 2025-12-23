@@ -1,22 +1,28 @@
 apply plugin: 'groovy'
-apply plugin: 'maven'
 repositories {
     jcenter()
 }
 
-uploadArchives {
-    repositories.mavenDeployer {
-        //本地仓库路径，以放到项目根目录下的 repo 的文件夹为例
-        repository(url: uri('../repo'))
+publishing {
+    publications {
+        // 定义一个名为 maven 的发布任务
+        maven(MavenPublication) {
+            // 如果是插件项目，通常发布的是 java 组件
+            from components.java
 
-        //groupId
-        pom.groupId = 'com.peakmain'
+            // 对应你原先的 pom 配置
+            groupId = 'com.peakmain'
+            artifactId = 'android.plugin'
+            version = '1.0.0'
+        }
+    }
 
-        //artifactId
-        pom.artifactId = 'android.plugin'
-
-        //插件版本号
-        pom.version = '1.0.0'
+    repositories {
+        maven {
+            // 本地仓库路径：项目根目录下的 repo 文件夹
+            // 使用 layout.projectDirectory 可以更准确地定位路径
+            name = "LocalRepo"
+            url = file("../repo").toURI()
+        }
     }
 }
-

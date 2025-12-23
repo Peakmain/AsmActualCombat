@@ -1,28 +1,21 @@
 package com.peakmain.analytics.plugin.ext
 
 import com.peakmain.analytics.plugin.utils.MethodFieldUtils
-import org.apache.http.util.TextUtils
+import groovy.transform.CompileStatic
 
+import java.io.Serializable
 /**
  * author ：Peakmain
  * createTime：2022/3/29
  * mail:2726449200@qq.com
  * describe：
  */
+@CompileStatic // 添加这个注解，强制静态编译，剔除 Groovy 动态元数据
+class MonitorConfig implements Serializable{
 
-class MonitorConfig {
-
-    /**
-     * 是否禁用多线程构建
-     */
-    public boolean disableMultiThreadBuild = false
-    /**
-     * 是否开启增量更新
-     */
-    public boolean isIncremental = false
     public ArrayList<String> whiteList = []
     //是否拦截网络
-    public boolean isInterceptNetworks = true
+    public boolean isInterceptNetworks = false
     /**
      * 隐私方法方法的状态
      * @params 1 代表替换方法体
@@ -31,7 +24,7 @@ class MonitorConfig {
     public int methodStatus = 0
     //是否开启日志
     public boolean enableLog
-    private MethodFieldUtils.StatusEnum statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL
+    public Integer status = MethodFieldUtils.METHOD_STATE_NORMAL
     private final HashSet<String> special = [
             'com.peakmain.sdk.utils.SensorsDataUtils',
             'androidx.core.app.NotificationManagerCompat',
@@ -46,6 +39,7 @@ class MonitorConfig {
      */
     public String interceptPackageName = ""
 
+
     void convertConfig() {
         for (String value : special) {
             value = value.replace(".", "/")
@@ -54,19 +48,13 @@ class MonitorConfig {
         for (int i = 0; i < whiteList.size(); i++) {
             whiteList.set(i, whiteList.get(i).replace(".", "/"))
         }
-        println("当前方法的Status:" + methodStatus)
-        if (methodStatus == MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE.value) {
-            statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_REPLACE
-        } else {
-            statusEnum = MethodFieldUtils.StatusEnum.METHOD_STATE_NORMAL
-        }
-        if (!TextUtils.isEmpty(interceptPackageName)) {
+        if (interceptPackageName.length()>0 && interceptPackageName != null) {
             interceptPackageName = interceptPackageName.replace(".", ",")
         }
     }
 
-    MethodFieldUtils.StatusEnum getStatusEnum() {
-        return statusEnum
+    int getStatus() {
+        return status
     }
 
     void reset() {
@@ -76,8 +64,8 @@ class MonitorConfig {
 
     @Override
     String toString() {
-        return "MonitorPlugin:\n[\n\t是否开启多线程编译:${!disableMultiThreadBuild},\n" +
-                "\t是否开启增量更新:${!isIncremental},\n\t白名单是:${listToString(whiteList)}\n]"
+        return "MonitorPlugin:\n[\n" +
+                "\t白名单是:${listToString(whiteList)}\n]"
 
     }
 

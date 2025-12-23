@@ -4,7 +4,9 @@ import org.objectweb.asm.Opcodes
 
 class MethodFieldUtils {
     public static final String PLUGIN_VERSION = "1.1.4"
-    enum StatusEnum {
+    public static final int METHOD_STATE_NORMAL=0
+    public static final int  METHOD_STATE_REPLACE=1
+ /*   enum StatusEnum implements Serializable {
         METHOD_STATE_NORMAL(0),
         METHOD_STATE_REPLACE(1)
         private int value
@@ -17,7 +19,7 @@ class MethodFieldUtils {
             return value
         }
     }
-
+*/
 
     public static final String LOG_MANAGER = "com/peakmain/sdk/utils/LogManager"
     public static final String NEW_METHOD_OWNER = "com/peakmain/sdk/utils/ReplaceMethodUtils"
