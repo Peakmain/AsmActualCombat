@@ -63,7 +63,9 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
             mMethodCells.put(it.name + it.desc, peakmainMethodCell)
         }
     }
-
+    private static boolean isEmpty( CharSequence str) {
+        return str == null || str.length() == 0;
+    }
 
     @Override
     protected void onMethodEnter() {
@@ -130,7 +132,7 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
                 methodVisitor.visitLabel(label2)
                 Object[] obj = new Object[1]
                 obj[0] = INTEGER
-                if (mClassName.contains(mMonitorConfig.interceptPackageName) && !TextUtils.isEmpty(mMonitorConfig.interceptPackageName)) {
+                if (mClassName.contains(mMonitorConfig.interceptPackageName) && !isEmpty(mMonitorConfig.interceptPackageName)) {
                     methodVisitor.visitFrame(F_APPEND, 1, obj, 0, null)
                 }
 
