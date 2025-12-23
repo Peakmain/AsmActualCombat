@@ -1,6 +1,7 @@
 # AsmActualCombat
 **使用文档链接:https://github.com/Peakmain/AsmActualCombat/wiki**
 
+
 ### How To
 
 #### 旧版本添加方式
@@ -15,7 +16,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "io.github.peakmain:plugin:1.1.4"
+    classpath "io.github.peakmain:plugin:1.1.5"
   }
 }
 
