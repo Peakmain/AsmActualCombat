@@ -16,7 +16,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "io.github.peakmain:plugin:1.1.7"
+    classpath "io.github.peakmain:plugin:1.1.8"
   }
 }
 
@@ -36,7 +36,7 @@ Add it in your root build.gradle at the end of repositories:
 - Step 2. Add the dependency
 ```
 	dependencies {
-	       implementation 'com.github.Peakmain:AsmActualCombat:1.1.7'
+	       implementation 'com.github.Peakmain:AsmActualCombat:1.1.8'
 	}
 ```
 #### 新版本添加方式
@@ -66,13 +66,13 @@ dependencyResolutionManagement {
 ```
 plugins {
     //插件依赖和版本
-    id "io.github.peakmain" version "1.1.7" apply false
+    id "io.github.peakmain" version "1.1.8" apply false
 }
 ```
 **sdk版本依赖**
 
 ```
-implementation 'com.github.Peakmain:AsmActualCombat:1.1.7'
+implementation 'com.github.Peakmain:AsmActualCombat:1.1.8'
 ```
 
 ### 功能介绍
