@@ -50,7 +50,7 @@ class PeakmainPlugin implements Plugin<Project> {
                 // 在 Variant 数字化阶段注册插桩
                 androidComponents.onVariants(androidComponents.selector().all()) { Variant variant ->
                     // 注册新的 ASM 工厂
-                    extension.convertConfig()
+                   // extension.convertConfig()
                     variant.instrumentation.transformClassesWith(
                             MonitorAsmFactory.class,
                             com.android.build.api.instrumentation.InstrumentationScope.ALL // 相当于旧版的 TransformManager.SCOPE_FULL_PROJECT
@@ -61,6 +61,7 @@ class PeakmainPlugin implements Plugin<Project> {
                         params.getExceptSet().set(extension.exceptSet.toList()) // 将 HashSet 转为 List
                         params.getDisableStackMapFrame().set(extension.disableStackMapFrame)
                         params.getStatus().set(extension.getStatus())
+                        params.getWhiteList().set(extension.whiteList)
                     }
 
                     // 设置栈帧计算模式

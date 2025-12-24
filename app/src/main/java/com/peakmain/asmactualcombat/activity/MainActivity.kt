@@ -7,6 +7,7 @@ import com.peakmain.asmactualcombat.viewmodel.ClickDealViewModel
 import com.peakmain.asmactualcombat.R
 import com.peakmain.asmactualcombat.databinding.ActivityMainBinding
 import com.peakmain.asmactualcombat.utils.Utils
+import com.peakmain.ui.utils.TextUtils
 import com.peakmain.ui.utils.ToastUtils
 
 /**
@@ -19,6 +20,7 @@ class MainActivity(override val layoutId: Int = R.layout.activity_main) :
     BaseActivity<ActivityMainBinding, ClickDealViewModel>() {
 
     override fun initView() {
+        TextUtils.toString()
         mBinding.buttonClick.setOnClickListener {
             startActivity(Intent(this, ClickDealActivity::class.java))
         }

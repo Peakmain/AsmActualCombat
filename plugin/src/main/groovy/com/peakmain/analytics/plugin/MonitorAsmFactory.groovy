@@ -4,6 +4,7 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import com.android.build.api.instrumentation.InstrumentationParameters
+import com.android.tools.r8.naming.P
 import com.peakmain.analytics.plugin.ext.MonitorConfig
 import com.peakmain.analytics.plugin.visitor.PeakmainVisitor
 import org.gradle.api.provider.ListProperty
@@ -28,6 +29,9 @@ abstract class MonitorAsmFactory implements AsmClassVisitorFactory<Params> {
 
         @Input
         Property<Integer> getStatus()
+
+        @Input
+        ListProperty<String> getWhiteList()
     }
 
     @Override
@@ -42,7 +46,8 @@ abstract class MonitorAsmFactory implements AsmClassVisitorFactory<Params> {
         config.exceptSet = new HashSet<>(params.getExceptSet().getOrElse([]))
         config.disableStackMapFrame = params.getDisableStackMapFrame()
         config.status = params.getStatus().get()
-
+        config.whiteList = new ArrayList<>(params.getWhiteList().getOrElse([]))
+        config.convertConfig()
         // 返回你的 Visitor
         return new PeakmainVisitor(nextClassVisitor, config)
 
