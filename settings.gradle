@@ -1,4 +1,4 @@
 include ':sdk'
-include ':plugin'
+//include ':plugin'
 include ':app'
 rootProject.name = "AsmActualCombat"
