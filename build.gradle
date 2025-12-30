@@ -19,7 +19,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         //classpath "io.github.peakmain:plugin:1.0.1"
-        classpath 'com.peakmain:android.plugin:1.0.0'
+        //classpath 'com.peakmain:android.plugin:1.0.0'
     }
 }
 

@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'com.peakmain.plugin'
+   // id 'com.peakmain.plugin'
 }
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -58,6 +58,7 @@ dependencies {
     implementation(rootProject.ext.dependencies.jpush)
     implementation 'com.qiniu:qiniu-android-sdk:7.3.15'
 }
+/*
 monitorPlugin {
     whiteList = [
             "com.peakmain.asmactualcombat.utils.TestUtils",
@@ -68,3 +69,4 @@ monitorPlugin {
     disableStackMapFrame = false
     interceptPackageName = "com.peakmain"
 }
+*/
