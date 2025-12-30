@@ -427,9 +427,9 @@ public class SensorsDataAutoTrackHelper {
         return true;
     }
     @Keep
-    public static void trackViewOnClickLambda(View view) {
+    public static boolean trackViewOnClickLambda(View view) {
         if (SensorsDataUtils.isDoubleClick(view)) {
-            return;
+            return false;
         }
         boolean isUserAgreement = true;
         try {
@@ -438,7 +438,7 @@ public class SensorsDataAutoTrackHelper {
                 isUserAgreement = mOnUserAgreement.onUserAgreement();
             }
             if (!isUserAgreement) {
-                return;
+                return false;
             }
             Activity activity = SensorsDataUtils.getActivityFromView(view);
             Object fragment = AopUtils.getFragmentFromView(view,activity);
@@ -453,6 +453,7 @@ public class SensorsDataAutoTrackHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return true;
     }
 
 

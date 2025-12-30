@@ -12,6 +12,7 @@ import com.peakmain.analytics.plugin.utils.log.Logger
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import com.peakmain.analytics.plugin.MonitorAsmFactory
+import org.objectweb.asm.tree.ClassNode
 
 /**
  * author ：Peakmain

@@ -63,7 +63,8 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
             mMethodCells.put(it.name + it.desc, peakmainMethodCell)
         }
     }
-    private static boolean isEmpty( CharSequence str) {
+
+    private static boolean isEmpty(CharSequence str) {
         return str == null || str.length() == 0;
     }
 
@@ -75,9 +76,14 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
          */
         PeakmainMethodCell lambdaMethodCell = mMethodCells.get(nameDesc)
         if (lambdaMethodCell != null) {
+            //返回一个 Type[]，每一项是一个参数
             Type[] types = Type.getArgumentTypes(lambdaMethodCell.desc)
+            //参数的个数
             int length = types.length
+            // 当前正在 visit 的方法描述符，descriptor lambda$onCreate$0(Landroid/view/View;)V
+            // lambdaTypes = [Type(Landroid/view/View;)]
             Type[] lambdaTypes = Type.getArgumentTypes(descriptor)
+            //view参数在第几个位置
             int paramStart = lambdaTypes.length - length
             if (paramStart < 0) {
                 return
@@ -97,11 +103,26 @@ class MonitorClickAdapter extends MonitorDefalutMethodAdapter {
                     return
                 }
             }
-
+            Label continueLabel = new Label();
             for (int i = paramStart; i < paramStart + lambdaMethodCell.paramsCount; i++) {
+                //methodVisitor.visitVarInsn(ALOAD, 0)
                 methodVisitor.visitVarInsn(lambdaMethodCell.opcodes.get(i - paramStart), getVisitPosition(lambdaTypes, i, isStaticMethod))
             }
             methodVisitor.visitMethodInsn(INVOKESTATIC, SDK_API_CLASS, lambdaMethodCell.agentName, lambdaMethodCell.agentDesc, false)
+            if (lambdaMethodCell.agentDesc == '(Landroid/view/View;)Z') {
+                methodVisitor.visitVarInsn(ISTORE, lambdaTypes.length + 1)
+                methodVisitor.visitVarInsn(ILOAD, lambdaTypes.length + 1)
+                methodVisitor.visitJumpInsn(IFNE, continueLabel);
+                methodVisitor.visitInsn(RETURN)
+
+                // 4. 直接落下执行原 lambda（不引入新栈状态）
+                methodVisitor.visitLabel(continueLabel)
+                Object[] obj = new Object[1]
+                obj[0] = INTEGER
+                if (mClassName.contains(mMonitorConfig.interceptPackageName) && !isEmpty(mMonitorConfig.interceptPackageName)) {
+                    methodVisitor.visitFrame(F_APPEND, 1, obj, 0, null)
+                }
+            }
             return
         }
 
