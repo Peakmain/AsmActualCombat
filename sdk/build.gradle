@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish'
 }
 
 android {
@@ -34,3 +35,4 @@ dependencies {
     implementation 'com.qiniu:qiniu-android-sdk:7.3.15'
     implementation 'androidx.preference:preference:1.1.1'
 }
+
