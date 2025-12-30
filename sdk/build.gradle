@@ -26,8 +26,25 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId = project.group
+                artifactId = "sdk"
+                version = project.version
 
+                from components["release"]
+            }
+        }
+    }
+}
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
